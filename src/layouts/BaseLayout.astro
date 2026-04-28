@@ -1,0 +1,147 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../lib/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = site.description } = Astro.props;
+const pageTitle = title ? `${title} - ${site.name}` : site.name;
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0d0e0c" />
+    <link rel="canonical" href={new URL(Astro.url.pathname, site.url)} />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem("theme");
+        document.documentElement.dataset.theme = saved === "light" ? "light" : "dark";
+      })();
+    </script>
+  </head>
+  <body>
+    <Header currentPath={Astro.url.pathname} />
+    <main class="shell">
+      <slot />
+    </main>
+    <Footer />
+    <script is:inline>
+      (() => {
+        const button = document.querySelector("[data-theme-toggle]");
+        if (!button) return;
+
+        button.addEventListener("click", () => {
+          const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem("theme", next);
+        });
+      })();
+    </script>
+    <script is:inline>
+      (() => {
+        const images = Array.from(document.querySelectorAll(".prose img"));
+        if (!images.length || typeof HTMLDialogElement === "undefined") return;
+
+        const items = images.map((image) => {
+          const figure = image.closest("figure");
+          const caption = figure?.querySelector("figcaption")?.textContent?.trim() ?? "";
+          return {
+            alt: image.getAttribute("alt") || caption || "Post image",
+            caption,
+            src: image.getAttribute("src") || image.currentSrc
+          };
+        });
+
+        const dialog = document.createElement("dialog");
+        dialog.className = "photo-lightbox";
+        dialog.innerHTML = `
+          <div class="photo-lightbox__body">
+            <img class="photo-lightbox__image" alt="" />
+            <div class="photo-lightbox__bar">
+              <span data-photo-count></span>
+              <span class="photo-lightbox__caption" data-photo-caption></span>
+              <button type="button" data-photo-prev aria-label="Previous image">&lt;</button>
+              <button type="button" data-photo-next aria-label="Next image">&gt;</button>
+              <button type="button" data-photo-close aria-label="Close image">x</button>
+            </div>
+          </div>
+        `;
+        document.body.append(dialog);
+
+        const lightboxImage = dialog.querySelector(".photo-lightbox__image");
+        const count = dialog.querySelector("[data-photo-count]");
+        const caption = dialog.querySelector("[data-photo-caption]");
+        const previous = dialog.querySelector("[data-photo-prev]");
+        const next = dialog.querySelector("[data-photo-next]");
+        const close = dialog.querySelector("[data-photo-close]");
+        let index = 0;
+        let startX = null;
+
+        const show = (nextIndex) => {
+          index = (nextIndex + items.length) % items.length;
+          const item = items[index];
+          lightboxImage.src = item.src;
+          lightboxImage.alt = item.alt;
+          count.textContent = `${index + 1}/${items.length}`;
+          caption.textContent = item.caption;
+        };
+
+        const open = (nextIndex) => {
+          show(nextIndex);
+          dialog.showModal();
+        };
+
+        images.forEach((image, imageIndex) => {
+          image.tabIndex = 0;
+          image.setAttribute("role", "button");
+          image.addEventListener("click", () => open(imageIndex));
+          image.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter" && event.key !== " ") return;
+            event.preventDefault();
+            open(imageIndex);
+          });
+        });
+
+        previous.addEventListener("click", () => show(index - 1));
+        next.addEventListener("click", () => show(index + 1));
+        close.addEventListener("click", () => dialog.close());
+        dialog.addEventListener("click", (event) => {
+          if (event.target === dialog) dialog.close();
+        });
+        dialog.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowLeft") show(index - 1);
+          if (event.key === "ArrowRight") show(index + 1);
+        });
+        dialog.addEventListener(
+          "touchstart",
+          (event) => {
+            startX = event.changedTouches[0]?.clientX ?? null;
+          },
+          { passive: true }
+        );
+        dialog.addEventListener(
+          "touchend",
+          (event) => {
+            if (startX === null) return;
+            const endX = event.changedTouches[0]?.clientX ?? startX;
+            const delta = endX - startX;
+            startX = null;
+            if (Math.abs(delta) < 42) return;
+            show(delta < 0 ? index + 1 : index - 1);
+          },
+          { passive: true }
+        );
+      })();
+    </script>
+  </body>
+</html>

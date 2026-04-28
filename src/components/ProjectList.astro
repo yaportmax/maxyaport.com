@@ -1,0 +1,29 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  projects: CollectionEntry<"projects">[];
+}
+
+const { projects } = Astro.props;
+---
+
+{
+  projects.length > 0 ? (
+    <div class="list">
+      {projects.map((project) => (
+        <article class="row">
+          <div>
+            <h3 class="row__title">
+              {project.data.url ? <a href={project.data.url}>{project.data.title}</a> : project.data.title}
+            </h3>
+            {project.data.description && <p class="row__description">{project.data.description}</p>}
+          </div>
+          <div class="row__meta">{project.data.date.getFullYear()}</div>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <p class="empty">No projects published yet.</p>
+  )
+}

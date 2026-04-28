@@ -1,0 +1,548 @@
+---
+import RecentList from "./RecentList.astro";
+import { getRecent } from "../lib/site";
+
+const recent = (await getRecent()).slice(0, 12);
+
+const races = [
+  {
+    title: "Canyons 100K",
+    href: "https://live.utmb.world/canyons/2026/runners/1775",
+    detail: "Auburn, CA - 100K",
+    result: "2026 - 15:46:47",
+    rank: "OA 256/539 / AG 79/118 20-34M",
+  },
+  {
+    title: "California International Marathon",
+    href: "https://myrace.ai/races/cim-2025/results",
+    detail: "Sacramento, CA - Marathon",
+    result: "2025 - DNS",
+  },
+  {
+    title: "IRONMAN 70.3 Santa Cruz Relay",
+    href: "https://www.ironman.com/races/im703-santa-cruz",
+    detail: "Santa Cruz, CA - Relay - Bib 4073, T. M. Men",
+    result: "2025 - 4:23:37",
+    rank: "Team 2/50 / Run 1:28:40",
+  },
+  {
+    title: "Tamalpa Headlands 50K",
+    href: "https://statistik.d-u-v.org/getresultevent.php?event=112347",
+    detail: "Muir Beach, CA - 50K",
+    result: "2025 - 5:25:47",
+    rank: "OA 72/251 / AG 26/58 M23",
+  },
+  {
+    title: "Broken Arrow Skyrace",
+    href: "https://www.berglaufpur.de/berglauf/documents/BrokenArrowSkyrace23Km.pdf",
+    detail: "Olympic Valley, CA - 23K",
+    result: "2025 - 3:07:52",
+    rank: "OA 190/603 / AG 26/44 M20-29",
+  },
+  {
+    title: "IRONMAN 70.3 St. George",
+    href: "https://sportstats.one/event/ironman-703-st-george/leaderboard/143338",
+    detail: "St. George, UT - 70.3",
+    result: "2025 - 4:55:08",
+    rank: "OA 205/2093 / AG 30/211 M25-29",
+  },
+  {
+    title: "IRONMAN 70.3 World Championship",
+    href: "https://www.btu-info.de/images/stories/2024/Ergebnisse/Ergebnis_2024_12_14_Taupo_703_WC_Ironman_M%C3%A4nner.pdf",
+    detail: "Taupo, New Zealand - 70.3",
+    result: "2024 - 4:56:13",
+    rank: "OA 1415/3083 / AG 87/128 M18-24",
+  },
+  {
+    title: "Golden Gate Trail Classic",
+    href: "https://www.spartan.com/en/race/past-results/8233",
+    detail: "San Francisco, CA - 50K",
+    result: "2024 - 5:21:04",
+    rank: "OA 24/304 / AG 10/63 M20-29",
+  },
+  {
+    title: "IRONMAN 70.3 Santa Cruz",
+    href: "https://sportstats.one/event/ironman-703-santa-cruz/tracker?pid=140177:1812",
+    detail: "Santa Cruz, CA - 70.3",
+    result: "2024 - 4:45:04",
+    rank: "OA 108/2166 / AG 9/114 M18-24",
+  },
+  {
+    title: "Hood to Coast",
+    href: "https://eclecticedgeracing.overallraceresults.com/overall-results/888",
+    detail: "Oregon - Relay",
+    result: "2024 - ~24 hours",
+  },
+  {
+    title: "Twilight 5000",
+    href: "https://diablotiming.com/results/2024-07-17/results_39.html",
+    detail: "San Francisco, CA - 5K",
+    result: "2024 - 18:20.22",
+    rank: "OA 120/292",
+  },
+  {
+    title: "Broken Arrow Skyrace",
+    href: "https://my.raceresult.com/290460/results/pdf?name=Online%20Results%7C18K%20Results&contest=3&lang=en",
+    detail: "Olympic Valley, CA - 18K",
+    result: "2024 - 2:39:17",
+    rank: "OA 68/375 / AG 14/34 M20-29",
+  },
+  {
+    title: "Escape from Alcatraz Triathlon",
+    href: "https://www.escapealcatraztri.com/results/2024",
+    detail: "San Francisco, CA - Triathlon",
+    result: "2024 - 2:29:38",
+    rank: "OA 65/1628 / AG 10/47 M20-24",
+  },
+  {
+    title: "IRONMAN 70.3 Morro Bay",
+    href: "https://sportstats.one/event/ironman-703-morro-bay/tracker?pid=140134:669",
+    detail: "Morro Bay, CA - 70.3",
+    result: "2024 - 5:08:46",
+    rank: "OA 115/1107 / AG 12/97 M18-24",
+  },
+  {
+    title: "Napa Valley Marathon",
+    href: "https://results.svetiming.com/Napa-Valley-Marathon/events/2024/kaiser-permanente-napa-valley-marathon/1682/entrant",
+    detail: "Napa, CA - Marathon",
+    result: "2024 - 3:26:38",
+    rank: "OA 219/1699 / AG 16/52 M21-24",
+  },
+  {
+    title: "Santa Cruz Triathlon",
+    href: "https://results.svetiming.com/Santa-Cruz-Triathlon/events/2023/Santa-Cruz-Triathlon/results",
+    detail: "Santa Cruz, CA - Olympic",
+    result: "2023 - 2:34:21",
+    rank: "OA 68/623 / AG 5/18 M20-24",
+  },
+];
+
+const travel = [
+  {
+    title: "Truckee and Auburn",
+    detail: "Altitude training and Canyons 100K",
+    date: "Apr 2026",
+  },
+  {
+    title: "Sedona",
+    detail: "Trail running",
+    date: "Mar 2026",
+  },
+  {
+    title: "Lake Almanor",
+    detail: "Remote work week",
+    date: "Mar 2026",
+  },
+  {
+    title: "Tahoe",
+    detail: "Palisades ski weekend",
+    date: "Feb 2026",
+  },
+  {
+    title: "Costa Mesa",
+    detail: "Visit",
+    date: "Jan 2026",
+  },
+  {
+    title: "Maui",
+    detail: "Trail running",
+    date: "Dec 2025",
+  },
+  {
+    title: "Paso Robles and Los Osos",
+    detail: "Gravel, trails, wine",
+    date: "Nov 2025",
+  },
+  {
+    title: "Broomfield",
+    detail: "Colorado",
+    date: "Nov 2025",
+  },
+  {
+    title: "Eastern Sierra and Utah",
+    detail: "Road trip: hot springs, cowboy camping, big trails, and 14ers",
+    date: "Oct 2025",
+  },
+  {
+    title: "Arnold",
+    detail: "Mountain biking",
+    date: "Sep 2025",
+  },
+  {
+    title: "Santa Cruz",
+    detail: "70.3 relay weekend",
+    date: "Sep 2025",
+  },
+  {
+    title: "Mammoth",
+    detail: "Trail running, camping, and Thousand Island Lake",
+    date: "Aug 2025",
+  },
+  {
+    title: "Yosemite",
+    detail: "Trail running",
+    date: "Jul 2025",
+  },
+  {
+    title: "Lake Como",
+    detail: "Cycling and lake vibes",
+    date: "Jul 2025",
+  },
+  {
+    title: "Tahoe",
+    detail: "Broken Arrow weekend",
+    date: "Jun 2025",
+  },
+  {
+    title: "Kauai",
+    detail: "Trails, poke, and helicopter",
+    date: "Jun 2025",
+  },
+  {
+    title: "Santa Rosa",
+    detail: "Farm camping and wine tasting",
+    date: "May 2025",
+  },
+  {
+    title: "Utah and Zion",
+    detail: "St. George 70.3, the Narrows, EDC, and Grateful Dead at the Sphere",
+    date: "May 2025",
+  },
+  {
+    title: "Humboldt and the Redwoods",
+    detail: "Fern Canyon road trip",
+    date: "Apr 2025",
+  },
+  {
+    title: "Arnold",
+    detail: "Bear Valley skiing",
+    date: "Mar 2025",
+  },
+  {
+    title: "Death Valley",
+    detail: "Brother's bachelor party and sand dunes",
+    date: "Mar 2025",
+  },
+  {
+    title: "Big Sur",
+    detail: "Backpacking",
+    date: "Mar 2025",
+  },
+  {
+    title: "New Zealand",
+    detail: "North Island, South Island, Queenstown",
+    date: "Dec 2024",
+  },
+  {
+    title: "Yosemite",
+    detail: "Camping and North Dome",
+    date: "Nov 2024",
+  },
+  {
+    title: "Mendocino",
+    detail: "Camping",
+    date: "Sep 2024",
+  },
+  {
+    title: "Oregon",
+    detail: "Hood to Coast",
+    date: "Aug 2024",
+  },
+  {
+    title: "Tahoe",
+    detail: "Broken Arrow weekend",
+    date: "Jun 2024",
+  },
+  {
+    title: "Morro Bay",
+    detail: "Race weekend",
+    date: "May 2024",
+  },
+  {
+    title: "Occidental",
+    detail: "Training weekend",
+    date: "May 2024",
+  },
+  {
+    title: "Mexico City",
+    detail: "City trip",
+    date: "Feb 2024",
+  },
+  {
+    title: "Joshua Tree",
+    detail: "Camping",
+    date: "Jan 2024",
+  },
+  {
+    title: "San Luis Obispo",
+    detail: "Super bloom",
+    date: "Apr 2023",
+  },
+  {
+    title: "San Luis Obispo and San Simeon",
+    detail: "First running race",
+    date: "Feb 2023",
+  },
+  {
+    title: "Yosemite",
+    detail: "Winter hiking",
+    date: "Feb 2023",
+  },
+  {
+    title: "Seattle",
+    detail: "Visit and skiing",
+    date: "Jan 2023",
+  },
+  {
+    title: "Portland and Bend",
+    detail: "Mount Bachelor and New Year's",
+    date: "Dec 2022",
+  },
+  {
+    title: "Yosemite",
+    detail: "Solo backpacking",
+    date: "Oct 2022",
+  },
+  {
+    title: "Sequoia and Kings Canyon",
+    detail: "Family trip",
+    date: "Aug 2022",
+  },
+  {
+    title: "Graduation Road Trip",
+    detail: "California, Southwest, Rockies, Oregon",
+    date: "Jul 2022",
+  },
+  {
+    title: "Reno",
+    detail: "Visit",
+    date: "Jun 2022",
+  },
+  {
+    title: "Yosemite",
+    detail: "Backpacking",
+    date: "May 2022",
+  },
+  {
+    title: "Northern California and Oregon",
+    detail: "Humboldt, Mount Hood, Crater Lake",
+    date: "Mar 2022",
+  },
+  {
+    title: "Mount Pinos",
+    detail: "Snow backpacking",
+    date: "Feb 2022",
+  },
+  {
+    title: "Big Sur",
+    detail: "Backpacking and camping",
+    date: "Jan 2022",
+  },
+  {
+    title: "Santa Barbara",
+    detail: "Hot springs",
+    date: "Oct 2021",
+  },
+  {
+    title: "Croatia, Andorra, Amsterdam",
+    detail: "Regatta, Plitvice, Europe",
+    date: "Sep 2021",
+  },
+  {
+    title: "Pinnacles",
+    detail: "Camping",
+    date: "Jun 2021",
+  },
+  {
+    title: "Joshua Tree",
+    detail: "Camping",
+    date: "May 2021",
+  },
+  {
+    title: "Big Sur",
+    detail: "First backpacking trip",
+    date: "May 2021",
+  },
+  {
+    title: "Arches and Canyonlands",
+    detail: "Utah",
+    date: "Sep 2020",
+  },
+  {
+    title: "Washington to California Coast",
+    detail: "Surf road trip",
+    date: "Aug 2020",
+  },
+  {
+    title: "Eastern Sierra",
+    detail: "Mammoth",
+    date: "Aug 2020",
+  },
+  {
+    title: "Eastern Sierra",
+    detail: "Bristlecones and Mono Lake",
+    date: "Jun 2020",
+  },
+];
+---
+
+<section class="about-page" aria-labelledby="about-title">
+  <header class="about-hero">
+    <h1 id="about-title" class="about-title">Max Yaport</h1>
+    <div class="about-intro" aria-label="Intro">
+      <p>Building with the data science team at Magnite.</p>
+      <p>Obsessed with running, biking, and the outdoors.</p>
+      <p>Spending too much free time exploring AI.</p>
+    </div>
+  </header>
+
+  <section class="musings-list" aria-labelledby="musings-title">
+    <h2 id="musings-title">Musings</h2>
+    <RecentList items={recent} />
+  </section>
+
+  <section class="about-tabs" aria-label="About details">
+    <div class="tab-list" role="tablist" aria-label="About sections">
+      <button
+        id="tab-work"
+        class="tab-button is-active"
+        type="button"
+        role="tab"
+        aria-selected="true"
+        aria-controls="panel-work"
+        data-about-tab="work"
+      >
+        Work
+      </button>
+      <button
+        id="tab-races"
+        class="tab-button"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panel-races"
+        data-about-tab="races"
+      >
+        Races
+      </button>
+      <button
+        id="tab-travel"
+        class="tab-button"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panel-travel"
+        data-about-tab="travel"
+      >
+        Travel
+      </button>
+    </div>
+
+    <section
+      id="panel-work"
+      class="tab-panel work-list"
+      role="tabpanel"
+      aria-labelledby="tab-work"
+      data-about-panel="work"
+    >
+      <div class="work-row">
+        <div>
+          <p>Magnite</p>
+          <small>Product Manager</small>
+        </div>
+        <span>2025 - Present</span>
+      </div>
+      <div class="work-row">
+        <div>
+          <p>PubMatic</p>
+          <small>Business Operations Manager</small>
+        </div>
+        <span>2024 - 2025</span>
+      </div>
+      <div class="work-row">
+        <div>
+          <p>PwC</p>
+          <small>M&A Valuations Consultant</small>
+        </div>
+        <span>2022 - 2024</span>
+      </div>
+      <div class="work-row">
+        <div>
+          <p>Cal Poly SLO</p>
+          <small>Economics & Finance</small>
+        </div>
+        <span>2018 - 2022</span>
+      </div>
+    </section>
+
+    <section
+      id="panel-races"
+      class="tab-panel race-list"
+      role="tabpanel"
+      aria-labelledby="tab-races"
+      data-about-panel="races"
+      hidden
+    >
+      {
+        races.map((race) => (
+          <div class="race-row">
+            <div>
+              <p>
+                <a href={race.href} target="_blank" rel="noreferrer">
+                  {race.title}
+                </a>
+              </p>
+              <small>{race.detail}</small>
+            </div>
+            <div class="race-result">
+              <span>{race.result}</span>
+              {race.rank && <small>{race.rank}</small>}
+            </div>
+          </div>
+        ))
+      }
+    </section>
+
+    <section
+      id="panel-travel"
+      class="tab-panel travel-list"
+      role="tabpanel"
+      aria-labelledby="tab-travel"
+      data-about-panel="travel"
+      hidden
+    >
+      {
+        travel.map((trip) => (
+          <div class="travel-row">
+            <div>
+              <p>{trip.title}</p>
+              <small>{trip.detail}</small>
+            </div>
+            <span>{trip.date}</span>
+          </div>
+        ))
+      }
+    </section>
+  </section>
+</section>
+
+<script>
+  const tabs = document.querySelectorAll("[data-about-tab]");
+  const panels = document.querySelectorAll("[data-about-panel]");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const activeTab = tab.getAttribute("data-about-tab");
+
+      tabs.forEach((item) => {
+        const isActive = item === tab;
+        item.classList.toggle("is-active", isActive);
+        item.setAttribute("aria-selected", String(isActive));
+      });
+
+      panels.forEach((panel) => {
+        panel.hidden = panel.getAttribute("data-about-panel") !== activeTab;
+      });
+    });
+  });
+</script>

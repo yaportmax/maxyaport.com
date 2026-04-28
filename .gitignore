@@ -1,0 +1,10 @@
+.DS_Store
+node_modules/
+dist/
+.astro/
+.playwright-cli/
+.env
+.env.*
+!.env.example
+notes/private-*.md
+npm-debug.log*

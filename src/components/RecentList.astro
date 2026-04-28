@@ -1,0 +1,41 @@
+---
+import { formatDate } from "../lib/site";
+
+interface RecentItem {
+  id: string;
+  kind: string;
+  title: string;
+  description: string;
+  date: Date;
+  href?: string;
+}
+
+interface Props {
+  items: RecentItem[];
+}
+
+const { items } = Astro.props;
+---
+
+{
+  items.length > 0 ? (
+    <div class="list">
+      {items.map((item) => (
+        <article class="row">
+          <div>
+            <h3 class="row__title">
+              {item.href ? <a href={item.href}>{item.title}</a> : item.title}
+            </h3>
+            {item.description && <p class="row__description">{item.description}</p>}
+          </div>
+          <div class="row__meta">
+            <span>{item.kind}</span>
+            <time datetime={item.date.toISOString()}>{formatDate(item.date)}</time>
+          </div>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <p class="empty">Nothing here yet.</p>
+  )
+}
