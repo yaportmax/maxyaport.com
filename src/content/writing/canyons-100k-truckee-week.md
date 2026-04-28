@@ -37,15 +37,23 @@ The final prep was mostly bags. Carbs in bags, SiS green apple gels in bags, toi
 
 After seven nights in Truckee, we drove toward Auburn and stayed in a huge house in Colfax. It was tucked way out in a rural area with forest all around it, and the whole place had a very specific personality. There was a neighbor with big quiet hours and no trespassing signs, and the host had warned us about him, so that became a bit immediately.
 
-Anna and I had the third floor, with a balcony, nice views, and for some reason the nicest massage chair I have ever tried. The house used to be a place where they bred Bichon Frise dogs, so it also had all these strange remnants of that life: a dog tunnel from the kitchen to an outside area, a basement grooming setup, random little quirks everywhere. Apparently Steve Wozniak got some of his Bichon Frise dogs from there. I did not know he was a big Bichon Frise guy, but now that is information I have.
+Anna and I had the third floor, with a balcony, nice views, and for some reason the nicest massage chair I have ever tried. The owners used to breed Bichon Frise dogs at the house, so it had all these strange quirks. Like a full grooming room in the basement and also an underground tunnel for dogs going from the kitchen island downstairs to the backyard.
 
 <figure class="photo-grid photo-grid--2">
   <img src="/images/canyons-100k-truckee-week/07-colfax-room.jpg" alt="Third floor room in the Colfax house" loading="lazy" />
   <img src="/images/canyons-100k-truckee-week/08-massage-chair.jpg" alt="Massage chair in the Colfax house" loading="lazy" />
+  <img src="/images/canyons-100k-truckee-week/29-colfax-dog-door.jpeg" alt="Dog tunnel entrance in the Colfax kitchen island" loading="lazy" />
+  <img src="/images/canyons-100k-truckee-week/32-colfax-house-table.jpeg" alt="Kitchen and dining area at the Colfax house" loading="lazy" />
   <figcaption>The Colfax house was huge and extremely specific.</figcaption>
 </figure>
 
 There was a trail down to a lake, so we did a little shakeout run the day before the race. Then we picked up bibs, got Thai food, and settled into the usual pre-race sorting and second-guessing.
+
+<figure class="photo-grid photo-grid--2">
+  <img src="/images/canyons-100k-truckee-week/30-colfax-trail-run.jpeg" alt="Shakeout run near Colfax the day before Canyons" loading="lazy" />
+  <img src="/images/canyons-100k-truckee-week/31-colfax-thai-food.jpeg" alt="Thai food after bib pickup before Canyons" loading="lazy" />
+  <figcaption>Shakeout run and Thai food.</figcaption>
+</figure>
 
 <figure>
   <img src="/images/canyons-100k-truckee-week/09-colfax-sunset.jpg" alt="Sunset near Colfax before Canyons" loading="lazy" />
@@ -72,7 +80,12 @@ The next morning started around 2 a.m. We drove to the shuttle pickup, got on a 
 
 Then we got there and saw the huge puddle of melted plastic goop from 21 burned-down porta-potties. Very real. Thankfully the race organizers had brought more, so the morning did not become a total disaster.
 
-It was cold at the start. We had warm clothes, dropped them in the morning bags, and stood around waiting. The pro men went off at 5 a.m., the pro women shortly after, and then the goober amateurs, aka all of us, started running.
+It was cold at the start. We had warm clothes, dropped them in the morning bags, and stood around waiting. The pro men went off at 5 a.m., the pro women shortly after, and then the goobers, aka all of us, started running.
+
+<figure class="photo-wide">
+  <img src="/images/canyons-100k-truckee-week/22-race-start-group.jpg" alt="Group photo at the Canyons 100K race start" loading="lazy" />
+  <figcaption>Race start.</figcaption>
+</figure>
 
 <figure>
   <img src="/images/canyons-100k-truckee-week/15-start-line.jpg" alt="Canyons 100K start line before sunrise" loading="lazy" />
@@ -81,19 +94,23 @@ It was cold at the start. We had warm clothes, dropped them in the morning bags,
 
 It was dark at first, headlamps on, everyone bunched together. We warmed up fast. Maybe an hour or a little more into the race, the sun came out and it turned into this beautiful day. The early course had some real climbs, like 1,500 to 2,000 feet at a time, but spirits were high and the whole thing still felt fun.
 
-<figure class="photo-grid photo-grid--2">
+<figure>
   <img src="/images/canyons-100k-truckee-week/16-headlamps.jpg" alt="Headlamps in the dark at Canyons 100K" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/17-climb.jpg" alt="Runners climbing through the forest during Canyons 100K" loading="lazy" />
-  <figcaption>Dark start, crowded climbs.</figcaption>
+  <figcaption>Headlamps in the dark.</figcaption>
 </figure>
 
 ## Deadwood 1, Devil's Thumb, Swinging Bridge, and Back
 
-At Deadwood 1 the vibes were great. Music, people yelling, everyone moving. I refilled my bottles and learned very quickly that dumping a Ziploc bag with 100 grams of carbs into a flask and shaking it into something drinkable is actually kind of hard. I had some chunkiness in the bottles for the rest of that section, but carbs are carbs at the end of the day.
+At Deadwood 1 the vibes were great. Music, people yelling, everyone moving. I refilled my bottles and learned very quickly that dumping a Ziploc bag with 100 grams of carbs into a flask and shaking it into something drinkable is actually kind of hard. I had some chunkiness in the bottles for the rest of the race, but carbs are carbs at the end of the day.
 
-The only real out-and-back came from Devil's Thumb down to Swinging Bridge and back up. It was basically straight down, straight back up.
+There was an out-and-back from Devil's Thumb down to Swinging Bridge and back up. It was basically straight down, straight back up.
 
-Douglas and I were having a great time here. We started reading names off people's bibs as they came the other way and hyping them up with little nicknames. The best part was the range of reactions. Some people loved it and yelled back at us. Other people were fully unable to process how we knew their names. We kept that bit going for a while.
+<figure>
+  <img src="/images/canyons-100k-truckee-week/17-climb.jpg" alt="Runners climbing through the forest during the Swinging Bridge out-and-back" loading="lazy" />
+  <figcaption>Swinging Bridge out-and-back.</figcaption>
+</figure>
+
+Douglas and I were having a great time here. We started reading names off people's bibs as they came the other way and hyping them up with little nicknames. The best part was the range of reactions. Some people loved it and yelled back at us. Other people were so confused they almost fell off the trail. We kept that bit going for a while.
 
 ## Michigan Bluff to Foresthill
 
@@ -102,6 +119,11 @@ Eventually we got back up and started moving toward Michigan Bluff, the first cr
 Mathilde was crewing for me, and she was an absolute legend. A real grizzled ultra veteran. She had a chair ready, helped me change out of my wet shoes and stinky wet socks after the river crossing, refilled everything, gave me wipes, and generally handled everything I could have possibly needed.
 
 This was also the first little tactical mistake of the day. The girls were ready before the boys, and while we were daydreaming and relaxing, Anna, Eliza, and Cara took off. Once we realized they were gone, we got moving too. I started with Luke and Cyrus, and then Cyrus and Douglas started speeding up. I hung back with Luke for a bit, thinking through whether I should keep it easy or chase the bigger group.
+
+<figure>
+  <img src="/images/canyons-100k-truckee-week/24-leaving-michigan-bluff.png" alt="Leaving Michigan Bluff during Canyons 100K" loading="lazy" />
+  <figcaption>Leaving Michigan Bluff.</figcaption>
+</figure>
 
 Eventually I decided that even if it made the race harder right then, the day would probably be easier if I could stay with more people. So I took off. Luke was still moving well, so I felt good about him.
 
@@ -117,6 +139,11 @@ I kept running faster and faster downhill, trying to catch Cyrus and Douglas, an
 The next major crew stop was Foresthill. We had a big road climb up into it, and I still felt pretty good. Tired, obviously, but confident. It all still felt relatively controlled.
 
 I changed socks again because my feet were wet again, but I had no more dry shoes. Next race I guess I need to bring four pairs of shoes instead of two.
+
+<figure class="photo-wide">
+  <img src="/images/canyons-100k-truckee-week/25-foresthill-crew-stop.jpg" alt="Foresthill crew stop during Canyons 100K" loading="lazy" />
+  <figcaption>Foresthill crew stop.</figcaption>
+</figure>
 
 <figure>
   <img src="/images/canyons-100k-truckee-week/19-crew-stop.jpg" alt="Crew stop during Canyons 100K" loading="lazy" />
@@ -141,23 +168,21 @@ The vibes were pretty good, but I was getting real tired. There was a big climb,
 
 This might have been the part of the race where we made the dumbest jokes, which also means it might have been one of the best parts. Everyone was pretty brain dead. We were just moving along this canyon floor by the river for what felt like forever, water starting to run low, jokes getting worse.
 
-At some point something switched in my brain. I do not know if I would call it a second wind exactly. It was more like my brain went numb in a useful way. The jokes slowed down, the emotions got quieter, and I became very focused on the act of running itself. It felt good to move a little faster.
+At some point something switched in my brain. I don't know if I would call it a second wind exactly. It was more like my brain went numb in a useful way, and the pressure of wanting to get to the end of the race quickly started to build. The jokes slowed down, the emotions got quieter, and I became very focused on the act of running itself. It felt good to move a little faster.
 
-I pulled ahead a bit and Cyrus came with me. There was a little river crossing that broke my flow, and for some reason I got weirdly frustrated by it. Normally I do not care about stopping and starting on trails, but in that state, having to stop felt like an offense.
+I pulled ahead a bit and Cyrus came with me. There was a little river crossing that broke my flow, and for some reason I got weirdly frustrated by it. Normally I don't care about stopping and starting on trails, but in that state, having to stop felt like an offense.
 
-Thankfully the race organizers had left some water jugs before the next big climb. Eliza went to the bathroom, and Cyrus and I kept moving. We climbed and climbed, trying to jog when we could, passing people, worrying for a second that the few droplets we felt meant it was going to rain. It never really did.
+Thankfully the race organizers had left some water jugs before the next big climb. Eliza went to the bathroom, and Cyrus and I kept moving. We climbed and climbed, trying to jog when we could, passing people, worrying for a second that the few droplets we felt meant it was going to rain, but thankfully it never did.
 
-By the time we got to Drivers Flat around mile 46, the vibes were different. I was not exactly destroyed, but I was spacey and very focused. Things were processing slower. I mostly just wanted to get what I needed and keep moving. I switched more heavily to SiS green apple gels because I had been drinking Skratch carb mix for nine or ten hours and the idea of more of it was starting to lose its appeal.
+By the time we got to Drivers Flat around mile 46, the vibes were different. I was not exactly destroyed, but I was somehow both spacey and hyper focused at the same time. Things were processing slower. I mostly just wanted to get what I needed and keep moving. I switched more heavily to SiS green apple gels because I had been drinking Skratch carb mix for nine or ten hours and the idea of more of it was starting to lose its appeal.
 
 Douglas and Eliza came in shortly after us. Douglas got taped up at the med tent for his MCL. I remember being worried about him, but my brain was not really working well enough to hold onto much besides forward motion.
 
 ## The Weird Good Part
 
-I was worried about the sunset. Anna and Eliza took off, so I took off too. Then something very strange happened: I had this overwhelming urge to run fast.
+I was worried about the sunset. Anna and Eliza took off, so I took off too. Then something very strange happened: I had this overwhelming urge to run fast. It was like the previous second wind, but significantly more intense. A hypnotic tunnel vision.
 
 The trail after that crew stop was beautiful, flowy singletrack. Basically the exact trail you would choose if you wanted to run well. I put headphones on for the first time all race, put my phone on airplane mode and do not disturb, and started blasting music even though my battery was low.
-
-Then I started moving.
 
 I passed 103 people in 8 miles. I was running the hills. At one point I blasted up a little climb past a guy who was walking, and he just said, "Woah." That was very funny to me at the time.
 
@@ -193,7 +218,17 @@ It was weirdly anticlimactic at first. My body was still stuck in fight-or-fligh
 
 We waited for everyone else to come in. Anna finished only 14 minutes after me and had an incredible last stretch. Getting to share the whole experience with her was really special. We ate ice cold pizza and bean and cheese burritos and waited.
 
+<figure class="photo-wide">
+  <img src="/images/canyons-100k-truckee-week/26-finish-line-nap.jpg" alt="Max and Goober napping while waiting for others to finish" loading="lazy" />
+  <figcaption>Max and Goober nap time after the race.</figcaption>
+</figure>
+
 Cara and Meg came in. Then Eliza and Cyrus. It was great seeing everyone finish after sharing so many hours on the trail together. Lots of hugs and emotions. I felt extremely grateful for the crew giving their entire day to us.
+
+<figure>
+  <img src="/images/canyons-100k-truckee-week/27-eliza-finish-hug.png" alt="Max and Eliza hugging after Canyons 100K" loading="lazy" />
+  <figcaption>Max and Eliza hug time.</figcaption>
+</figure>
 
 <figure>
   <img src="/images/canyons-100k-truckee-week/20-finish-group.jpg" alt="Group after finishing Canyons 100K" loading="lazy" />
@@ -214,6 +249,11 @@ When we got back to the house, the regret of staying on the third floor set in i
 
 The next day was a painful blur. Eventually we made it home, and I celebrated properly with pizza, the couch, and a movie. Of course, almost immediately, I started thinking about the next race and the next big challenge. Kind of crazy how fast the mind goes there when the pain is still so fresh.
 
+<figure class="photo-wide">
+  <img src="/images/canyons-100k-truckee-week/23-day-after-race.jpg" alt="Recovering in Normatec boots the day after Canyons 100K" loading="lazy" />
+  <figcaption>Day after race.</figcaption>
+</figure>
+
 ## To the Group
 
 One of my biggest fears when I was trying to get this group together was losing the sense of camaraderie I had gotten from big GGTC group programs like LDP. Running and endurance sports for me are as much about community and friendship as they are about getting a good workout in.
@@ -223,3 +263,8 @@ Thankfully, the exact opposite happened. I feel much closer to everyone than I d
 I am incredibly grateful to everyone for taking a chance on something new and giving it their all. Selfishly, I am not sure the training or the race would have been possible for me without the group, or at least it would have been way, way tougher mentally. I would love to do this sort of thing again and see what else we can accomplish together. It is hard to get everyone's busy schedules to align around one race, but it would be so epic.
 
 100 miler next year?
+
+<figure>
+  <img src="/images/canyons-100k-truckee-week/28-mr-peanut.png" alt="Mr Peanut resting after Canyons weekend" loading="lazy" />
+  <figcaption>Mr Peanut.</figcaption>
+</figure>
