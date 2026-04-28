@@ -17,14 +17,15 @@ We started the trip 9 days before the race in Truckee for altitude and heat trai
 
 The week went by in the blink of an eye. We spent some time talking about the course, looking at plans, thinking through crew stops, and generally trying to convince ourselves we knew what we were doing. At some point we went up around Donner Pass for a nice little hike and a bit of off-roading. One night it snowed and we woke up to a little dusting, which made the whole place feel very pretty and very fake.
 
-<figure class="photo-grid photo-grid--3">
+<figure class="photo-grid photo-grid--2">
   <img src="/images/canyons-100k-truckee-week/03-snow-run.jpg" alt="Snowy trail running near Truckee" loading="lazy" />
   <img src="/images/canyons-100k-truckee-week/04-donner-pass.jpg" alt="Donner Pass view before Canyons" loading="lazy" />
+  <img src="/images/canyons-100k-truckee-week/06-dog-tunnel.jpg" alt="Snow tunnel during the Donner Pass hike" loading="lazy" />
   <img src="/images/canyons-100k-truckee-week/05-snow-dusting.jpg" alt="Fresh snow around the Truckee sauna" loading="lazy" />
   <figcaption>Snowy trails, Donner Pass, and one nice little dusting.</figcaption>
 </figure>
 
-The final prep was mostly bags. Carbs in bags, SiS green apple gels in bags, toilet paper in bags, salt pills in bags, writing things on bags, putting those bags into other bags, then putting those bags into even bigger bags. A lot of bags. That was basically the sport before the sport.
+The final prep was mostly bags. Carbs in bags, SiS green apple gels in bags, toilet paper in bags, salt pills in bags, writing things on bags, putting those bags into other bags, then putting those bags into even bigger bags. A lot of bags.
 
 <figure class="photo-grid photo-grid--2">
   <img src="/images/canyons-100k-truckee-week/10-drop-bags.jpg" alt="Race supplies packed into labeled bags" loading="lazy" />
@@ -38,27 +39,26 @@ After seven nights in Truckee, we drove toward Auburn and stayed in a huge house
 
 Anna and I had the third floor, with a balcony, nice views, and for some reason the nicest massage chair I have ever tried. The house used to be a place where they bred Bichon Frise dogs, so it also had all these strange remnants of that life: a dog tunnel from the kitchen to an outside area, a basement grooming setup, random little quirks everywhere. Apparently Steve Wozniak got some of his Bichon Frise dogs from there. I did not know he was a big Bichon Frise guy, but now that is information I have.
 
-<figure class="photo-grid photo-grid--3">
-  <img src="/images/canyons-100k-truckee-week/06-dog-tunnel.jpg" alt="Dog tunnel in the Colfax house" loading="lazy" />
+<figure class="photo-grid photo-grid--2">
   <img src="/images/canyons-100k-truckee-week/07-colfax-room.jpg" alt="Third floor room in the Colfax house" loading="lazy" />
   <img src="/images/canyons-100k-truckee-week/08-massage-chair.jpg" alt="Massage chair in the Colfax house" loading="lazy" />
   <figcaption>The Colfax house was huge and extremely specific.</figcaption>
 </figure>
 
-There was a trail down to a lake, so we did a little shakeout run the day before the race. Then we picked up bibs, got Thai food, and returned to our core pre-race skill: more bags.
+There was a trail down to a lake, so we did a little shakeout run the day before the race. Then we picked up bibs, got Thai food, and settled into the usual pre-race sorting and second-guessing.
 
-<figure class="photo-grid photo-grid--2">
+<figure>
   <img src="/images/canyons-100k-truckee-week/09-colfax-sunset.jpg" alt="Sunset near Colfax before Canyons" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/12-race-kit.jpg" alt="Canyons race kit laid out before race day" loading="lazy" />
-  <figcaption>Colfax sunset and race kit, finally laid out.</figcaption>
+  <figcaption>Colfax sunset.</figcaption>
 </figure>
 
-Cyrus made a kilo and a half of his famous Cyrus goo, which is literally sugar and water. Simple syrup in tubes. It is incredible to watch someone put that much sugar into little containers and know that the plan is to put all of it into his body later. Douglas made an insane amount of lasagna. I do not think I have ever seen that much lasagna in my life. Everyone ate a lot. Then we tried to go to bed early and, of course, did not sleep that much.
+Cyrus made a kilo and a half of his famous Cyrus goo, which is literally sugar and water. Simple syrup in tubes. It is incredible to watch someone put that much sugar into little containers and know that the plan is to put all of it into his body later. Douglas made an insane amount of lasagna. Everyone ate a lot. Then we tried to go to bed early and, of course, did not sleep that much.
 
-<figure class="photo-grid photo-grid--2">
+<figure class="photo-grid photo-grid--3">
+  <img src="/images/canyons-100k-truckee-week/12-race-kit.jpg" alt="Canyons race kit laid out before race day" loading="lazy" />
   <img src="/images/canyons-100k-truckee-week/13-cyrus-goo.jpg" alt="Cyrus making homemade race fuel" loading="lazy" />
   <img src="/images/canyons-100k-truckee-week/14-lasagna.jpg" alt="Pre-race lasagna and pasta" loading="lazy" />
-  <figcaption>Cyrus goo and a very serious amount of lasagna.</figcaption>
+  <figcaption>Race kit, Cyrus goo, and a very serious amount of lasagna.</figcaption>
 </figure>
 
 <figure>
@@ -107,6 +107,11 @@ Eventually I decided that even if it made the race harder right then, the day wo
 
 I kept running faster and faster downhill, trying to catch Cyrus and Douglas, and somehow I still could not see them. At some point I was basically sprinting down this long flowy hill. Finally, at the bottom, there was another river crossing, my shoes got completely soaked again, and I caught Cyrus and Douglas. Right after that, we caught the girls. The big group was back together.
 
+<figure>
+  <img src="/images/canyons-100k-truckee-week/18-road-group.jpg" alt="Running with the group before Foresthill during Canyons 100K" loading="lazy" />
+  <figcaption>Back together before Foresthill.</figcaption>
+</figure>
+
 ## Foresthill to Cal 2
 
 The next major crew stop was Foresthill. We had a big road climb up into it, and I still felt pretty good. Tired, obviously, but confident. It all still felt relatively controlled.
@@ -125,11 +130,6 @@ For a while it was me and Anna and Eliza, and this is where the race really star
 We ran into a guy named Ben, who told us that a few years earlier he had fallen 400 feet while climbing and broken his back. That was one of those stories that gives you a little energy because suddenly your own problem feels less dramatic. Also it was just nice to be distracted.
 
 Anna kept saying she could see Cyrus ahead. I kept saying I did not see Cyrus. She kept pointing at this pink hat and I kept thinking he was long gone. Eventually, of course, we actually did catch him, and then we had a little band of four again.
-
-<figure>
-  <img src="/images/canyons-100k-truckee-week/18-road-group.jpg" alt="Running with the group during Canyons 100K" loading="lazy" />
-  <figcaption>Still moving as a pack.</figcaption>
-</figure>
 
 Around mile 37 at Cal 2, I ate real food for the first time all day: a quesadilla and a little sip of broth. It might have been one of the best quesadillas I have ever eaten in my life.
 
