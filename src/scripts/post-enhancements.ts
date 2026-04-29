@@ -6,7 +6,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/style.css";
-import {along, bbox, distance, length, lineString, point} from "@turf/turf";
+import {along, bbox, bearing as turfBearing, distance, length, lineString, point} from "@turf/turf";
 
 type CarouselSettings = {
   loop?: boolean;
@@ -58,6 +58,9 @@ if (mapboxToken) {
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 const gpxCache = new Map<string, Promise<TrackPoint[]>>();
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const defaultRouteColor = "#b7d39a";
+const fastRouteColor = "#f4d35e";
+const finishRouteColor = "#f0b07a";
 
 function readJsonAttribute<T>(element: Element, name: string, fallback: T): T {
   try {
@@ -228,6 +231,87 @@ function partialCoordinates(coords: number[][], progress: number) {
   return partial;
 }
 
+function progressLineColor(payload: RoutePayload) {
+  if (payload.mood === "finish") return finishRouteColor;
+  return payload.animation === "fast" || payload.mood === "weird-good" ? fastRouteColor : defaultRouteColor;
+}
+
+function progressLineGradient(progress: number, payload: RoutePayload) {
+  const color = progressLineColor(payload);
+  const transparent = color === fastRouteColor ? "rgba(244, 211, 94, 0)" : "rgba(183, 211, 154, 0)";
+  const stop = clamp(progress, 0.0001, 0.9999);
+
+  return ["step", ["line-progress"], color, stop, transparent];
+}
+
+function routeBearing(coords: number[][]) {
+  if (coords.length < 2) return -18;
+
+  const start = coords[Math.max(0, Math.floor(coords.length * 0.16))] || coords[0];
+  const end = coords[Math.min(coords.length - 1, Math.floor(coords.length * 0.84))] || coords[coords.length - 1];
+  return turfBearing(point(start), point(end));
+}
+
+function cardPadding(card: HTMLElement, payload?: RoutePayload) {
+  const narrow = card.clientWidth < 640;
+  if (payload?.mood === "overview") {
+    return narrow
+      ? {top: 132, right: 38, bottom: 146, left: 38}
+      : {top: 172, right: 84, bottom: 150, left: 84};
+  }
+
+  return narrow
+    ? {top: 118, right: 28, bottom: 136, left: 28}
+    : {top: 108, right: 74, bottom: 142, left: 74};
+}
+
+function fitRouteBounds(
+  map: mapboxgl.Map,
+  card: HTMLElement,
+  source: GeoJSON.Feature<GeoJSON.LineString>,
+  bearing: number,
+  pitch: number,
+  payload: RoutePayload,
+) {
+  const [minLng, minLat, maxLng, maxLat] = bbox(source);
+  map.fitBounds(
+    [
+      [minLng, minLat],
+      [maxLng, maxLat],
+    ],
+    {
+      padding: cardPadding(card, payload),
+      duration: 0,
+      bearing,
+      pitch,
+    },
+  );
+}
+
+function applyCinematicTerrain(map: mapboxgl.Map, payload: RoutePayload) {
+  try {
+    if (!map.getSource("mapbox-dem")) {
+      map.addSource("mapbox-dem", {
+        type: "raster-dem",
+        url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+        tileSize: 512,
+        maxzoom: 14,
+      });
+    }
+
+    map.setTerrain({source: "mapbox-dem", exaggeration: payload.mood === "overview" ? 1.22 : 1.55});
+    map.setFog({
+      color: "rgb(12, 14, 11)",
+      "high-color": "rgb(76, 91, 74)",
+      "horizon-blend": 0.1,
+      "space-color": "rgb(3, 5, 6)",
+      "star-intensity": 0.08,
+    });
+  } catch (error) {
+    console.warn("Could not enable Mapbox terrain", error);
+  }
+}
+
 function profileSvg(points: TrackPoint[], startMile = 0, endMile?: number) {
   const elevations = points.map((trackPoint) => trackPoint.ele).filter((value): value is number => Number.isFinite(value));
   if (elevations.length < 2) return "";
@@ -262,7 +346,14 @@ function addMarker(map: mapboxgl.Map, lngLat: [number, number], className: strin
   const markerElement = document.createElement("div");
   markerElement.className = className;
   if (label) markerElement.textContent = label;
-  return new mapboxgl.Marker({element: markerElement}).setLngLat(lngLat).addTo(map);
+  const isLabel = className.includes("route-label");
+  return new mapboxgl.Marker({
+    element: markerElement,
+    anchor: isLabel ? "top" : "center",
+    offset: isLabel ? [0, 12] : [0, 0],
+  })
+    .setLngLat(lngLat)
+    .addTo(map);
 }
 
 function routeShouldAnimate(payload: RoutePayload) {
@@ -410,7 +501,7 @@ function createRouteOverlay(
           ease: "power2.out",
           scrollTrigger: {
             trigger: card,
-            start: "bottom 54%",
+            start: "top 68%",
           },
         },
       );
@@ -472,6 +563,16 @@ async function initRouteCard(card: HTMLElement) {
     : hasRoute
       ? (segmentCoords[Math.floor(segmentCoords.length / 2)] as [number, number])
       : ([-120.9, 39] as [number, number]);
+  const routeCardBearing =
+    typeof payload.bearing === "number" ? payload.bearing : hasRoute ? routeBearing(segmentCoords) : -18;
+  const routeCardPitch =
+    typeof payload.pitch === "number"
+      ? payload.pitch
+      : payload.mood === "overview"
+        ? 45
+        : payload.animation === "fast"
+          ? 66
+          : 58;
 
   if (elevationElement && payload.showElevation !== false && hasRoute) {
     elevationElement.innerHTML = profileSvg(points, payload.mileStart || 0, payload.mileEnd);
@@ -488,27 +589,32 @@ async function initRouteCard(card: HTMLElement) {
 
   const map = new mapboxgl.Map({
     container: mapElement,
-    style: "mapbox://styles/mapbox/outdoors-v12",
+    style: "mapbox://styles/mapbox/standard-satellite",
+    config: {
+      basemap: {
+        lightPreset: "dusk",
+        showPointOfInterestLabels: false,
+        showTransitLabels: false,
+        showRoadLabels: true,
+      },
+    },
     center,
     zoom: payload.zoom || 9,
-    pitch: payload.followCamera ? payload.pitch ?? 48 : 0,
-    bearing: payload.followCamera ? payload.bearing ?? 0 : 0,
+    pitch: routeCardPitch,
+    bearing: routeCardBearing,
     projection: payload.globe ? "globe" : "mercator",
     attributionControl: false,
     interactive: false,
     antialias: true,
   });
 
+  map.on("style.load", () => {
+    applyCinematicTerrain(map, payload);
+  });
+
   map.on("load", () => {
     map.resize();
-    if (payload.globe) {
-      map.setFog({
-        color: "rgb(8, 13, 18)",
-        "horizon-blend": 0.08,
-        "space-color": "rgb(4, 6, 9)",
-        "star-intensity": 0.16,
-      });
-    }
+    applyCinematicTerrain(map, payload);
     card.classList.add("route-card--map-ready");
     const labelElements: HTMLElement[] = [];
 
@@ -517,16 +623,42 @@ async function initRouteCard(card: HTMLElement) {
       map.addSource("route-segment", {type: "geojson", data: segmentLine});
       map.addSource("route-progress", {
         type: "geojson",
-        data: lineString(partialCoordinates(segmentCoords, payload.animation === "static" ? 1 : 0)),
+        lineMetrics: true,
+        data: segmentLine,
+      });
+      map.addLayer({
+        id: "route-full-casing",
+        type: "line",
+        source: "route-full",
+        paint: {
+          "line-color": "#07100c",
+          "line-width": 5.8,
+          "line-opacity": 0.46,
+          "line-blur": 0.4,
+          "line-emissive-strength": 0.65,
+        },
       });
       map.addLayer({
         id: "route-full",
         type: "line",
         source: "route-full",
         paint: {
-          "line-color": "#d8d2bf",
+          "line-color": "#f4ead1",
           "line-width": 2.2,
-          "line-opacity": 0.34,
+          "line-opacity": 0.44,
+          "line-emissive-strength": 0.72,
+        },
+      });
+      map.addLayer({
+        id: "route-segment-casing",
+        type: "line",
+        source: "route-segment",
+        paint: {
+          "line-color": "#070907",
+          "line-width": 12,
+          "line-opacity": 0.62,
+          "line-blur": 1.6,
+          "line-emissive-strength": 0.7,
         },
       });
       map.addLayer({
@@ -534,9 +666,22 @@ async function initRouteCard(card: HTMLElement) {
         type: "line",
         source: "route-segment",
         paint: {
-          "line-color": "#fff0c2",
-          "line-width": 4.2,
+          "line-color": "#f3e5ba",
+          "line-width": 5.8,
           "line-opacity": 0.74,
+          "line-emissive-strength": 0.9,
+        },
+      });
+      map.addLayer({
+        id: "route-progress-glow",
+        type: "line",
+        source: "route-progress",
+        paint: {
+          "line-gradient": progressLineGradient(payload.animation === "static" ? 1 : 0, payload),
+          "line-width": payload.animation === "fast" ? 17 : 14,
+          "line-opacity": 0.36,
+          "line-blur": 2.8,
+          "line-emissive-strength": 1,
         },
       });
       map.addLayer({
@@ -544,21 +689,16 @@ async function initRouteCard(card: HTMLElement) {
         type: "line",
         source: "route-progress",
         paint: {
-          "line-color": payload.animation === "fast" ? "#f4d35e" : "#9fb77d",
-          "line-width": payload.animation === "fast" ? 7 : 5,
+          "line-gradient": progressLineGradient(payload.animation === "static" ? 1 : 0, payload),
+          "line-width": payload.animation === "fast" ? 9.2 : 7.8,
           "line-opacity": 0.96,
+          "line-blur": 0.15,
+          "line-emissive-strength": 1,
         },
       });
 
       const boundsSource = payload.mileStart !== undefined || payload.mileEnd !== undefined ? segmentLine : routeLine;
-      const [minLng, minLat, maxLng, maxLat] = bbox(boundsSource);
-      map.fitBounds(
-        [
-          [minLng, minLat],
-          [maxLng, maxLat],
-        ],
-        {padding: {top: 126, right: 72, bottom: 150, left: 72}, duration: 0},
-      );
+      fitRouteBounds(map, card, boundsSource, routeCardBearing, routeCardPitch, payload);
 
       for (const routeLabel of payload.routeLabels || []) {
         if (!routeLabel?.label || typeof routeLabel.mile !== "number") continue;
@@ -585,12 +725,17 @@ async function initRouteCard(card: HTMLElement) {
       : null;
     const shouldAnimate = routeShouldAnimate(payload);
     const progress = {value: shouldAnimate ? 0 : 1};
-    const source = map.getSource("route-progress") as mapboxgl.GeoJSONSource | undefined;
 
     const update = () => {
-      if (!segmentLine || !source || !movingMarker) return;
+      if (!segmentLine || !movingMarker) return;
       const safeProgress = clamp(progress.value, 0, 1);
-      source.setData(lineString(partialCoordinates(segmentCoords, safeProgress)));
+      if (map.getLayer("route-progress")) {
+        const gradient = progressLineGradient(safeProgress, payload);
+        map.setPaintProperty("route-progress", "line-gradient", gradient);
+        if (map.getLayer("route-progress-glow")) {
+          map.setPaintProperty("route-progress-glow", "line-gradient", gradient);
+        }
+      }
       const totalMiles = length(segmentLine, {units: "miles"});
       const markerPoint = along(segmentLine, totalMiles * safeProgress, {units: "miles"}).geometry
         .coordinates as [number, number];
@@ -598,12 +743,11 @@ async function initRouteCard(card: HTMLElement) {
       card.style.setProperty("--route-progress", String(safeProgress));
 
       if (payload.followCamera && safeProgress > 0.02 && safeProgress < 0.98) {
-        map.easeTo({
+        map.jumpTo({
           center: markerPoint,
-          zoom: Math.max(map.getZoom(), payload.animation === "fast" ? 10.2 : 9.4),
-          pitch: payload.pitch ?? 48,
-          bearing: payload.bearing ?? 0,
-          duration: 0,
+          zoom: Math.max(map.getZoom(), payload.animation === "fast" ? 10.4 : 9.7),
+          pitch: routeCardPitch,
+          bearing: routeCardBearing,
         });
       }
     };
@@ -630,7 +774,7 @@ async function initRouteCard(card: HTMLElement) {
             ease: "power2.out",
             scrollTrigger: {
               trigger: card,
-              start: "bottom 54%",
+              start: "top 68%",
             },
           },
         );

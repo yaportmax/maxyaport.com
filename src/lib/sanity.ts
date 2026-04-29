@@ -436,6 +436,8 @@ function renderCanyonsAutoChapter(title: string, blocks: any[], routeUrl: string
     callout: config.callout,
     routeLabels: config.routeLabels || [],
     showElevation: true,
+    followCamera: config.mood !== "finish",
+    pitch: config.mood === "weird-good" ? 66 : 58,
     height: title === "The Weird Good Part" ? "tall" : "standard",
   });
   const callout = config.callout ? `<aside class="chapter-callout">${attr(config.callout)}</aside>` : "";
@@ -462,6 +464,8 @@ function renderCanyonsArticle(body: any[] = []) {
       {label: "Finish", mile: 63.1},
     ],
     showElevation: true,
+    pitch: 38,
+    bearing: -22,
     height: "tall",
   })}</section>`);
   output.push(renderRaceStats({

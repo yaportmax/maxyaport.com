@@ -468,14 +468,18 @@ main {
 
 .prose .route-card {
   position: relative;
-  min-height: 430px;
+  min-height: clamp(440px, 54vw, 580px);
   margin-top: 1.6rem;
   margin-bottom: 1.6rem;
-  border: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
-  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, #b7d39a 30%, var(--border));
+  border-radius: 10px;
   overflow: hidden;
-  background: #0a0b0c;
-  box-shadow: 0 28px 80px var(--shadow);
+  background:
+    radial-gradient(circle at 62% 44%, rgba(159, 183, 125, 0.18), transparent 34%),
+    linear-gradient(135deg, #0a100d, #040504 70%);
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 250, 240, 0.08);
 }
 
 .prose .route-card--compact {
@@ -484,6 +488,10 @@ main {
 
 .prose .route-card--tall {
   min-height: min(72vh, 620px);
+}
+
+.race-chapter .route-card {
+  width: min(100%, 980px);
 }
 
 .prose .route-card .route-card__map {
@@ -495,7 +503,13 @@ main {
 }
 
 .route-card__map .mapboxgl-canvas {
-  filter: saturate(0.94) contrast(1.08) brightness(0.82);
+  filter: saturate(0.86) contrast(1.08) brightness(0.74);
+  opacity: 0;
+  transition: opacity 520ms ease, filter 520ms ease;
+}
+
+.route-card--map-ready .route-card__map .mapboxgl-canvas {
+  opacity: 1;
 }
 
 .route-card__map img {
@@ -514,16 +528,18 @@ main {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(10, 10, 10, 0.46), transparent 38%),
-    linear-gradient(0deg, rgba(10, 10, 10, 0.58), transparent 46%),
-    linear-gradient(90deg, rgba(10, 10, 10, 0.24), transparent 42%);
+    linear-gradient(180deg, rgba(4, 5, 4, 0.78), transparent 28%),
+    linear-gradient(0deg, rgba(4, 5, 4, 0.78), transparent 42%),
+    radial-gradient(circle at 68% 46%, rgba(183, 211, 154, 0.14), transparent 36%),
+    linear-gradient(90deg, rgba(4, 5, 4, 0.54), transparent 50%);
 }
 
 .route-card--map-ready .route-card__scrim {
   background:
-    linear-gradient(180deg, rgba(10, 10, 10, 0.34), transparent 34%),
-    linear-gradient(0deg, rgba(10, 10, 10, 0.42), transparent 42%),
-    linear-gradient(90deg, rgba(10, 10, 10, 0.2), transparent 38%);
+    linear-gradient(180deg, rgba(4, 5, 4, 0.48), transparent 30%),
+    linear-gradient(0deg, rgba(4, 5, 4, 0.58), transparent 44%),
+    radial-gradient(circle at 66% 48%, rgba(183, 211, 154, 0.1), transparent 38%),
+    linear-gradient(90deg, rgba(4, 5, 4, 0.34), transparent 48%);
 }
 
 .route-card__overlay {
@@ -594,7 +610,13 @@ main {
   top: 18px;
   left: 18px;
   z-index: 3;
-  width: min(78%, 420px);
+  width: min(76%, 460px);
+  padding: 14px 15px;
+  border: 1px solid rgba(255, 250, 240, 0.12);
+  border-radius: 8px;
+  background: rgba(5, 7, 5, 0.58);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(12px);
 }
 
 .route-card__meta h3,
@@ -604,7 +626,7 @@ main {
 
 .route-card__meta h3 {
   color: #fffaf0;
-  font-size: clamp(1.2rem, 3vw, 2rem);
+  font-size: clamp(1.18rem, 2.8vw, 2rem);
   line-height: 1.1;
 }
 
@@ -631,8 +653,9 @@ main {
   z-index: 3;
   padding: 10px 12px;
   border: 1px solid rgba(255, 250, 240, 0.12);
-  border-radius: 7px;
-  background: rgba(10, 10, 10, 0.62);
+  border-radius: 9px;
+  background: rgba(4, 6, 5, 0.66);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(10px);
 }
 
@@ -646,7 +669,12 @@ main {
 }
 
 .elevation-highlight {
-  fill: color-mix(in srgb, var(--accent) calc((var(--route-progress, 0.18) * 45%)), transparent);
+  fill: color-mix(in srgb, var(--accent) 42%, transparent);
+  opacity: 0.65;
+  transform: scaleX(var(--route-progress, 0));
+  transform-box: fill-box;
+  transform-origin: left center;
+  transition: transform 80ms linear;
 }
 
 .elevation-line {
@@ -657,25 +685,29 @@ main {
 }
 
 .route-marker {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border: 2px solid #fffaf0;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 25%, transparent), 0 8px 18px rgba(0, 0, 0, 0.35);
+  box-shadow:
+    0 0 0 8px color-mix(in srgb, var(--accent) 24%, transparent),
+    0 0 22px color-mix(in srgb, var(--accent) 48%, transparent),
+    0 8px 18px rgba(0, 0, 0, 0.35);
 }
 
 .route-label {
   opacity: 0;
-  padding: 4px 7px;
-  border: 1px solid rgba(255, 250, 240, 0.18);
+  padding: 5px 8px;
+  border: 1px solid rgba(255, 250, 240, 0.2);
   border-radius: 999px;
   color: #fffaf0;
-  background: rgba(10, 10, 10, 0.72);
+  background: rgba(5, 7, 5, 0.72);
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   white-space: nowrap;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px);
 }
 
 .route-card--error .route-card__scrim,
@@ -1361,13 +1393,14 @@ main {
   .prose .route-card,
   .prose .route-card--compact,
   .prose .route-card--tall {
-    min-height: 430px;
+    min-height: 440px;
   }
 
   .route-card__meta {
     top: 14px;
     left: 14px;
     width: calc(100% - 28px);
+    padding: 12px;
   }
 
   .route-card__elevation {
