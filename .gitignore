@@ -8,6 +8,7 @@ dist/
 !.env.example
 notes/private-*.md
 npm-debug.log*
+output/
 .vercel
 __pycache__/
 *.pyc

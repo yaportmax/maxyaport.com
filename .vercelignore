@@ -20,3 +20,4 @@ photo-review/
 .editor-work/
 .sanity-migration/
 npm-debug.log*
+output/
