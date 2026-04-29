@@ -10,26 +10,32 @@ draft: false
 We started the trip 9 days before the race in Truckee for altitude and heat training. There were a lot of people coming through at different times: Anna and Eliza, Cyrus for the weekend, Ash and Joe and their friend Inigo. We were working remote, running snowy trails, doing some gravel biking, cooking a bunch, and spending a probably unreasonable amount of time in the sauna and hot tub.
 
 <figure class="photo-grid photo-grid--2">
-  <img src="/images/canyons-100k-truckee-week/01-sauna-hats.jpg" alt="Sauna hats in the Truckee house mirror" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/02-sauna.jpg" alt="Sauna time in Truckee" loading="lazy" />
+  <div class="photo-grid__rail">
+    <img src="/images/canyons-100k-truckee-week/01-sauna-hats.jpg" alt="Sauna hats in the Truckee house mirror" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/02-sauna.jpg" alt="Sauna time in Truckee" loading="lazy" />
+  </div>
   <figcaption>Truckee training camp.</figcaption>
 </figure>
 
 The week went by in the blink of an eye. We spent some time talking about the course, looking at plans, thinking through crew stops, and generally trying to convince ourselves we knew what we were doing. At some point we went up around Donner Pass for a nice little hike and a bit of off-roading. One night it snowed and we woke up to a little dusting, which made the whole place feel very pretty and very fake.
 
 <figure class="photo-grid photo-grid--2">
-  <img src="/images/canyons-100k-truckee-week/03-snow-run.jpg" alt="Snowy trail running near Truckee" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/04-donner-pass.jpg" alt="Donner Pass view before Canyons" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/06-dog-tunnel.jpg" alt="Snow tunnel during the Donner Pass hike" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/05-snow-dusting.jpg" alt="Fresh snow around the Truckee sauna" loading="lazy" />
+  <div class="photo-grid__rail">
+    <img src="/images/canyons-100k-truckee-week/03-snow-run.jpg" alt="Snowy trail running near Truckee" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/04-donner-pass.jpg" alt="Donner Pass view before Canyons" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/06-dog-tunnel.jpg" alt="Snow tunnel during the Donner Pass hike" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/05-snow-dusting.jpg" alt="Fresh snow around the Truckee sauna" loading="lazy" />
+  </div>
   <figcaption>Snowy trails, Donner Pass, and one nice little dusting.</figcaption>
 </figure>
 
 The final prep was mostly bags. Carbs in bags, SiS green apple gels in bags, toilet paper in bags, salt pills in bags, writing things on bags, putting those bags into other bags, then putting those bags into even bigger bags. A lot of bags.
 
 <figure class="photo-grid photo-grid--2">
-  <img src="/images/canyons-100k-truckee-week/10-drop-bags.jpg" alt="Race supplies packed into labeled bags" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/11-toilet-paper-bags.jpg" alt="Toilet paper packed into race bags" loading="lazy" />
+  <div class="photo-grid__rail">
+    <img src="/images/canyons-100k-truckee-week/10-drop-bags.jpg" alt="Race supplies packed into labeled bags" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/11-toilet-paper-bags.jpg" alt="Toilet paper packed into race bags" loading="lazy" />
+  </div>
   <figcaption>Truckee bag operations.</figcaption>
 </figure>
 
@@ -40,18 +46,22 @@ After seven nights in Truckee, we drove toward Auburn and stayed in a huge house
 Anna and I had the third floor, with a balcony, nice views, and for some reason the nicest massage chair I have ever tried. The owners used to breed Bichon Frise dogs at the house, so it had all these strange quirks. Like a full grooming room in the basement and also an underground tunnel for dogs going from the kitchen island downstairs to the backyard.
 
 <figure class="photo-grid photo-grid--2">
-  <img src="/images/canyons-100k-truckee-week/07-colfax-room.jpg" alt="Third floor room in the Colfax house" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/08-massage-chair.jpg" alt="Massage chair in the Colfax house" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/29-colfax-dog-door.jpeg" alt="Dog tunnel entrance in the Colfax kitchen island" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/32-colfax-house-table.jpeg" alt="Kitchen and dining area at the Colfax house" loading="lazy" />
+  <div class="photo-grid__rail">
+    <img src="/images/canyons-100k-truckee-week/07-colfax-room.jpg" alt="Third floor room in the Colfax house" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/08-massage-chair.jpg" alt="Massage chair in the Colfax house" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/29-colfax-dog-door.jpeg" alt="Dog tunnel entrance in the Colfax kitchen island" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/32-colfax-house-table.jpeg" alt="Kitchen and dining area at the Colfax house" loading="lazy" />
+  </div>
   <figcaption>The Colfax house was huge and extremely specific.</figcaption>
 </figure>
 
 There was a trail down to a lake, so we did a little shakeout run the day before the race. Then we picked up bibs, got Thai food, and settled into the usual pre-race sorting and second-guessing.
 
 <figure class="photo-grid photo-grid--2">
-  <img src="/images/canyons-100k-truckee-week/30-colfax-trail-run.jpeg" alt="Shakeout run near Colfax the day before Canyons" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/31-colfax-thai-food.jpeg" alt="Thai food after bib pickup before Canyons" loading="lazy" />
+  <div class="photo-grid__rail">
+    <img src="/images/canyons-100k-truckee-week/30-colfax-trail-run.jpeg" alt="Shakeout run near Colfax the day before Canyons" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/31-colfax-thai-food.jpeg" alt="Thai food after bib pickup before Canyons" loading="lazy" />
+  </div>
   <figcaption>Shakeout run and Thai food.</figcaption>
 </figure>
 
@@ -63,9 +73,11 @@ There was a trail down to a lake, so we did a little shakeout run the day before
 Cyrus made a kilo and a half of his famous Cyrus goo, which is literally sugar and water. Simple syrup in tubes. It is incredible to watch someone put that much sugar into little containers and know that the plan is to put all of it into his body later. Douglas made an insane amount of lasagna. Everyone ate a lot. Then we tried to go to bed early and, of course, did not sleep that much.
 
 <figure class="photo-grid photo-grid--3">
-  <img src="/images/canyons-100k-truckee-week/12-race-kit.jpg" alt="Canyons race kit laid out before race day" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/13-cyrus-goo.jpg" alt="Cyrus making homemade race fuel" loading="lazy" />
-  <img src="/images/canyons-100k-truckee-week/14-lasagna.jpg" alt="Pre-race lasagna and pasta" loading="lazy" />
+  <div class="photo-grid__rail">
+    <img src="/images/canyons-100k-truckee-week/12-race-kit.jpg" alt="Canyons race kit laid out before race day" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/13-cyrus-goo.jpg" alt="Cyrus making homemade race fuel" loading="lazy" />
+    <img src="/images/canyons-100k-truckee-week/14-lasagna.jpg" alt="Pre-race lasagna and pasta" loading="lazy" />
+  </div>
   <figcaption>Race kit, Cyrus goo, and a very serious amount of lasagna.</figcaption>
 </figure>
 

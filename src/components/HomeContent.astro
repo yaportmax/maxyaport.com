@@ -3,6 +3,11 @@ import RecentList from "./RecentList.astro";
 import { getRecent } from "../lib/site";
 
 const recent = (await getRecent()).slice(0, 12);
+const tripSlug = (date: string, title: string) =>
+  `${date} ${title}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
 const races = [
   {
@@ -69,9 +74,10 @@ const races = [
   },
   {
     title: "Hood to Coast",
-    href: "https://eclecticedgeracing.overallraceresults.com/overall-results/888",
-    detail: "Oregon - Relay",
-    result: "2024 - ~24 hours",
+    href: "https://eclecticedgeracing.overallraceresults.com/individual-results/888/559016",
+    detail: "Oregon - Relay - Run for Days, Mixed Open",
+    result: "2024 - 24:25:55.2",
+    rank: "OA 74/1183 / Div 16/296",
   },
   {
     title: "Twilight 5000",
@@ -390,14 +396,13 @@ const travel = [
   <header class="about-hero">
     <h1 id="about-title" class="about-title">Max Yaport</h1>
     <div class="about-intro" aria-label="Intro">
-      <p>Building with the data science team at Magnite.</p>
       <p>Obsessed with running, biking, and the outdoors.</p>
       <p>Spending too much free time exploring AI.</p>
     </div>
   </header>
 
   <section class="musings-list" aria-labelledby="musings-title">
-    <h2 id="musings-title">Musings</h2>
+    <h2 id="musings-title">Posts</h2>
     <RecentList items={recent} />
   </section>
 
@@ -447,28 +452,28 @@ const travel = [
     >
       <div class="work-row">
         <div>
-          <p>Magnite</p>
+          <p><a href="https://www.magnite.com/">Magnite</a></p>
           <small>Product Manager</small>
         </div>
         <span>2025 - Present</span>
       </div>
       <div class="work-row">
         <div>
-          <p>PubMatic</p>
+          <p><a href="https://pubmatic.com/">PubMatic</a></p>
           <small>Business Operations Manager</small>
         </div>
         <span>2024 - 2025</span>
       </div>
       <div class="work-row">
         <div>
-          <p>PwC</p>
+          <p><a href="https://www.pwc.com/">PwC</a></p>
           <small>M&A Valuations Consultant</small>
         </div>
         <span>2022 - 2024</span>
       </div>
       <div class="work-row">
         <div>
-          <p>Cal Poly SLO</p>
+          <p><a href="https://www.calpoly.edu/">Cal Poly SLO</a></p>
           <small>Economics & Finance</small>
         </div>
         <span>2018 - 2022</span>
@@ -515,7 +520,7 @@ const travel = [
         travel.map((trip) => (
           <div class="travel-row">
             <div>
-              <p>{trip.title}</p>
+              <p><a href={`/travel/#${tripSlug(trip.date, trip.title)}`}>{trip.title}</a></p>
               <small>{trip.detail}</small>
             </div>
             <span>{trip.date}</span>

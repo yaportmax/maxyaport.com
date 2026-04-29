@@ -1,0 +1,675 @@
+{
+  "trips": [
+    {
+      "type": "trip",
+      "slug": "apr-2026-truckee-and-auburn",
+      "title": "Truckee and Auburn",
+      "detail": "Altitude training and Canyons 100K",
+      "date": "Apr 2026",
+      "lat": 39.1,
+      "lon": -120.7
+    },
+    {
+      "type": "trip",
+      "slug": "mar-2026-sedona",
+      "title": "Sedona",
+      "detail": "Trail running",
+      "date": "Mar 2026",
+      "lat": 34.85,
+      "lon": -111.8
+    },
+    {
+      "type": "trip",
+      "slug": "mar-2026-lake-almanor",
+      "title": "Lake Almanor",
+      "detail": "Remote work week",
+      "date": "Mar 2026",
+      "lat": 40.25,
+      "lon": -121.2
+    },
+    {
+      "type": "trip",
+      "slug": "feb-2026-tahoe",
+      "title": "Tahoe",
+      "detail": "Palisades ski weekend",
+      "date": "Feb 2026",
+      "lat": 39.1,
+      "lon": -120.05
+    },
+    {
+      "type": "trip",
+      "slug": "jan-2026-costa-mesa",
+      "title": "Costa Mesa",
+      "detail": "Visit",
+      "date": "Jan 2026",
+      "lat": 33.65,
+      "lon": -117.9
+    },
+    {
+      "type": "trip",
+      "slug": "dec-2025-maui",
+      "title": "Maui",
+      "detail": "Trail running",
+      "date": "Dec 2025",
+      "lat": 20.85,
+      "lon": -156.35
+    },
+    {
+      "type": "trip",
+      "slug": "nov-2025-paso-robles-and-los-osos",
+      "title": "Paso Robles and Los Osos",
+      "detail": "Gravel, trails, wine",
+      "date": "Nov 2025",
+      "lat": 35.6,
+      "lon": -120.9
+    },
+    {
+      "type": "trip",
+      "slug": "nov-2025-broomfield",
+      "title": "Broomfield",
+      "detail": "Colorado",
+      "date": "Nov 2025",
+      "lat": 39.95,
+      "lon": -105.0
+    },
+    {
+      "type": "trip",
+      "slug": "oct-2025-eastern-sierra-and-utah",
+      "title": "Eastern Sierra and Utah",
+      "detail": "Road trip: hot springs, cowboy camping, big trails, and 14ers",
+      "date": "Oct 2025",
+      "lat": 37.4,
+      "lon": -118.25
+    },
+    {
+      "type": "trip",
+      "slug": "sep-2025-arnold",
+      "title": "Arnold",
+      "detail": "Mountain biking",
+      "date": "Sep 2025",
+      "lat": 38.3,
+      "lon": -120.2
+    },
+    {
+      "type": "trip",
+      "slug": "sep-2025-santa-cruz",
+      "title": "Santa Cruz",
+      "detail": "70.3 relay weekend",
+      "date": "Sep 2025",
+      "lat": 36.95,
+      "lon": -122.0
+    },
+    {
+      "type": "trip",
+      "slug": "aug-2025-mammoth",
+      "title": "Mammoth",
+      "detail": "Trail running, camping, and Thousand Island Lake",
+      "date": "Aug 2025",
+      "lat": 37.75,
+      "lon": -118.9
+    },
+    {
+      "type": "trip",
+      "slug": "jul-2025-yosemite",
+      "title": "Yosemite",
+      "detail": "Trail running",
+      "date": "Jul 2025",
+      "lat": 37.8,
+      "lon": -119.65
+    },
+    {
+      "type": "trip",
+      "slug": "jul-2025-lake-como",
+      "title": "Lake Como",
+      "detail": "Cycling and lake vibes",
+      "date": "Jul 2025",
+      "lat": 46.0,
+      "lon": 9.2
+    },
+    {
+      "type": "trip",
+      "slug": "jun-2025-tahoe",
+      "title": "Tahoe",
+      "detail": "Broken Arrow weekend",
+      "date": "Jun 2025",
+      "lat": 39.1,
+      "lon": -120.05
+    },
+    {
+      "type": "trip",
+      "slug": "jun-2025-kauai",
+      "title": "Kauai",
+      "detail": "Trails, poke, and helicopter",
+      "date": "Jun 2025",
+      "lat": 22.05,
+      "lon": -159.55
+    },
+    {
+      "type": "trip",
+      "slug": "may-2025-santa-rosa",
+      "title": "Santa Rosa",
+      "detail": "Farm camping and wine tasting",
+      "date": "May 2025",
+      "lat": 38.5,
+      "lon": -122.7
+    },
+    {
+      "type": "trip",
+      "slug": "may-2025-utah-and-zion",
+      "title": "Utah and Zion",
+      "detail": "St. George 70.3, the Narrows, EDC, and Grateful Dead at the Sphere",
+      "date": "May 2025",
+      "lat": 36.75,
+      "lon": -114.05
+    },
+    {
+      "type": "trip",
+      "slug": "apr-2025-humboldt-and-the-redwoods",
+      "title": "Humboldt and the Redwoods",
+      "detail": "Fern Canyon road trip",
+      "date": "Apr 2025",
+      "lat": 41.0,
+      "lon": -124.0
+    },
+    {
+      "type": "trip",
+      "slug": "mar-2025-arnold",
+      "title": "Arnold",
+      "detail": "Bear Valley skiing",
+      "date": "Mar 2025",
+      "lat": 38.3,
+      "lon": -120.2
+    },
+    {
+      "type": "trip",
+      "slug": "mar-2025-death-valley",
+      "title": "Death Valley",
+      "detail": "Brother's bachelor party and sand dunes",
+      "date": "Mar 2025",
+      "lat": 36.45,
+      "lon": -117.0
+    },
+    {
+      "type": "trip",
+      "slug": "mar-2025-big-sur",
+      "title": "Big Sur",
+      "detail": "Backpacking",
+      "date": "Mar 2025",
+      "lat": 36.2,
+      "lon": -121.8
+    },
+    {
+      "type": "trip",
+      "slug": "dec-2024-new-zealand",
+      "title": "New Zealand",
+      "detail": "North Island, South Island, Queenstown",
+      "date": "Dec 2024",
+      "lat": -40.7,
+      "lon": 172.5
+    },
+    {
+      "type": "trip",
+      "slug": "nov-2024-yosemite",
+      "title": "Yosemite",
+      "detail": "Camping and North Dome",
+      "date": "Nov 2024",
+      "lat": 37.8,
+      "lon": -119.65
+    },
+    {
+      "type": "trip",
+      "slug": "sep-2024-mendocino",
+      "title": "Mendocino",
+      "detail": "Camping",
+      "date": "Sep 2024",
+      "lat": 39.35,
+      "lon": -123.65
+    },
+    {
+      "type": "trip",
+      "slug": "aug-2024-oregon",
+      "title": "Oregon",
+      "detail": "Hood to Coast",
+      "date": "Aug 2024",
+      "lat": 44.2,
+      "lon": -122.9
+    },
+    {
+      "type": "trip",
+      "slug": "jun-2024-tahoe",
+      "title": "Tahoe",
+      "detail": "Broken Arrow weekend",
+      "date": "Jun 2024",
+      "lat": 39.1,
+      "lon": -120.05
+    },
+    {
+      "type": "trip",
+      "slug": "may-2024-morro-bay",
+      "title": "Morro Bay",
+      "detail": "Race weekend",
+      "date": "May 2024",
+      "lat": 35.35,
+      "lon": -120.85
+    },
+    {
+      "type": "trip",
+      "slug": "may-2024-occidental",
+      "title": "Occidental",
+      "detail": "Training weekend",
+      "date": "May 2024",
+      "lat": 38.45,
+      "lon": -122.95
+    },
+    {
+      "type": "trip",
+      "slug": "feb-2024-mexico-city",
+      "title": "Mexico City",
+      "detail": "City trip",
+      "date": "Feb 2024",
+      "lat": 19.4,
+      "lon": -99.15
+    },
+    {
+      "type": "trip",
+      "slug": "jan-2024-joshua-tree",
+      "title": "Joshua Tree",
+      "detail": "Camping",
+      "date": "Jan 2024",
+      "lat": 34.0,
+      "lon": -116.0
+    },
+    {
+      "type": "trip",
+      "slug": "apr-2023-san-luis-obispo",
+      "title": "San Luis Obispo",
+      "detail": "Super bloom",
+      "date": "Apr 2023",
+      "lat": 35.25,
+      "lon": -120.6
+    },
+    {
+      "type": "trip",
+      "slug": "feb-2023-san-luis-obispo-and-san-simeon",
+      "title": "San Luis Obispo and San Simeon",
+      "detail": "First running race",
+      "date": "Feb 2023",
+      "lat": 35.45,
+      "lon": -120.85
+    },
+    {
+      "type": "trip",
+      "slug": "feb-2023-yosemite",
+      "title": "Yosemite",
+      "detail": "Winter hiking",
+      "date": "Feb 2023",
+      "lat": 37.8,
+      "lon": -119.65
+    },
+    {
+      "type": "trip",
+      "slug": "jan-2023-seattle",
+      "title": "Seattle",
+      "detail": "Visit and skiing",
+      "date": "Jan 2023",
+      "lat": 47.6,
+      "lon": -121.9
+    },
+    {
+      "type": "trip",
+      "slug": "dec-2022-portland-and-bend",
+      "title": "Portland and Bend",
+      "detail": "Mount Bachelor and New Year's",
+      "date": "Dec 2022",
+      "lat": 44.9,
+      "lon": -122.1
+    },
+    {
+      "type": "trip",
+      "slug": "oct-2022-yosemite",
+      "title": "Yosemite",
+      "detail": "Solo backpacking",
+      "date": "Oct 2022",
+      "lat": 37.8,
+      "lon": -119.65
+    },
+    {
+      "type": "trip",
+      "slug": "aug-2022-sequoia-and-kings-canyon",
+      "title": "Sequoia and Kings Canyon",
+      "detail": "Family trip",
+      "date": "Aug 2022",
+      "lat": 36.55,
+      "lon": -118.8
+    },
+    {
+      "type": "trip",
+      "slug": "jul-2022-graduation-road-trip",
+      "title": "Graduation Road Trip",
+      "detail": "California, Southwest, Rockies, Oregon",
+      "date": "Jul 2022",
+      "lat": 40.5,
+      "lon": -114.4
+    },
+    {
+      "type": "trip",
+      "slug": "jun-2022-reno",
+      "title": "Reno",
+      "detail": "Visit",
+      "date": "Jun 2022",
+      "lat": 39.55,
+      "lon": -119.8
+    },
+    {
+      "type": "trip",
+      "slug": "may-2022-yosemite",
+      "title": "Yosemite",
+      "detail": "Backpacking",
+      "date": "May 2022",
+      "lat": 37.8,
+      "lon": -119.65
+    },
+    {
+      "type": "trip",
+      "slug": "mar-2022-northern-california-and-oregon",
+      "title": "Northern California and Oregon",
+      "detail": "Humboldt, Mount Hood, Crater Lake",
+      "date": "Mar 2022",
+      "lat": 42.7,
+      "lon": -122.9
+    },
+    {
+      "type": "trip",
+      "slug": "feb-2022-mount-pinos",
+      "title": "Mount Pinos",
+      "detail": "Snow backpacking",
+      "date": "Feb 2022",
+      "lat": 34.75,
+      "lon": -119.1
+    },
+    {
+      "type": "trip",
+      "slug": "jan-2022-big-sur",
+      "title": "Big Sur",
+      "detail": "Backpacking and camping",
+      "date": "Jan 2022",
+      "lat": 36.2,
+      "lon": -121.8
+    },
+    {
+      "type": "trip",
+      "slug": "oct-2021-santa-barbara",
+      "title": "Santa Barbara",
+      "detail": "Hot springs",
+      "date": "Oct 2021",
+      "lat": 34.45,
+      "lon": -119.75
+    },
+    {
+      "type": "trip",
+      "slug": "sep-2021-croatia-andorra-amsterdam",
+      "title": "Croatia, Andorra, Amsterdam",
+      "detail": "Regatta, Plitvice, Europe",
+      "date": "Sep 2021",
+      "lat": 44.4,
+      "lon": 16.4
+    },
+    {
+      "type": "trip",
+      "slug": "jun-2021-pinnacles",
+      "title": "Pinnacles",
+      "detail": "Camping",
+      "date": "Jun 2021",
+      "lat": 36.55,
+      "lon": -121.2
+    },
+    {
+      "type": "trip",
+      "slug": "may-2021-joshua-tree",
+      "title": "Joshua Tree",
+      "detail": "Camping",
+      "date": "May 2021",
+      "lat": 34.0,
+      "lon": -116.0
+    },
+    {
+      "type": "trip",
+      "slug": "may-2021-big-sur",
+      "title": "Big Sur",
+      "detail": "First backpacking trip",
+      "date": "May 2021",
+      "lat": 36.2,
+      "lon": -121.8
+    },
+    {
+      "type": "trip",
+      "slug": "sep-2020-arches-and-canyonlands",
+      "title": "Arches and Canyonlands",
+      "detail": "Utah",
+      "date": "Sep 2020",
+      "lat": 38.65,
+      "lon": -109.75
+    },
+    {
+      "type": "trip",
+      "slug": "aug-2020-washington-to-california-coast",
+      "title": "Washington to California Coast",
+      "detail": "Surf road trip",
+      "date": "Aug 2020",
+      "lat": 42.9,
+      "lon": -123.35
+    },
+    {
+      "type": "trip",
+      "slug": "aug-2020-eastern-sierra",
+      "title": "Eastern Sierra",
+      "detail": "Mammoth",
+      "date": "Aug 2020",
+      "lat": 37.4,
+      "lon": -118.25
+    },
+    {
+      "type": "trip",
+      "slug": "jun-2020-eastern-sierra",
+      "title": "Eastern Sierra",
+      "detail": "Bristlecones and Mono Lake",
+      "date": "Jun 2020",
+      "lat": 37.4,
+      "lon": -118.25
+    }
+  ],
+  "races": [
+    {
+      "type": "race",
+      "slug": "2026-canyons-100k-auburn-ca-100k",
+      "title": "Canyons 100K",
+      "detail": "Auburn, CA - 100K",
+      "date": "2026",
+      "result": "2026 - 15:46:47",
+      "rank": "OA 256/539 / AG 79/118 20-34M",
+      "href": "https://live.utmb.world/canyons/2026/runners/1775",
+      "lat": 39.118,
+      "lon": -120.947
+    },
+    {
+      "type": "race",
+      "slug": "2025-california-international-marathon-sacramento-ca-marathon",
+      "title": "California International Marathon",
+      "detail": "Sacramento, CA - Marathon",
+      "date": "2025",
+      "result": "2025 - DNS",
+      "rank": "",
+      "href": "https://myrace.ai/races/cim-2025/results",
+      "lat": 38.581,
+      "lon": -121.494
+    },
+    {
+      "type": "race",
+      "slug": "2025-ironman-70-3-santa-cruz-relay-santa-cruz-ca-relay-bib-4073-t-m-men",
+      "title": "IRONMAN 70.3 Santa Cruz Relay",
+      "detail": "Santa Cruz, CA - Relay - Bib 4073, T. M. Men",
+      "date": "2025",
+      "result": "2025 - 4:23:37",
+      "rank": "Team 2/50 / Run 1:28:40",
+      "href": "https://www.ironman.com/races/im703-santa-cruz",
+      "lat": 36.974,
+      "lon": -122.03
+    },
+    {
+      "type": "race",
+      "slug": "2025-tamalpa-headlands-50k-muir-beach-ca-50k",
+      "title": "Tamalpa Headlands 50K",
+      "detail": "Muir Beach, CA - 50K",
+      "date": "2025",
+      "result": "2025 - 5:25:47",
+      "rank": "OA 72/251 / AG 26/58 M23",
+      "href": "https://statistik.d-u-v.org/getresultevent.php?event=112347",
+      "lat": 37.862,
+      "lon": -122.581
+    },
+    {
+      "type": "race",
+      "slug": "2025-broken-arrow-skyrace-olympic-valley-ca-23k",
+      "title": "Broken Arrow Skyrace",
+      "detail": "Olympic Valley, CA - 23K",
+      "date": "2025",
+      "result": "2025 - 3:07:52",
+      "rank": "OA 190/603 / AG 26/44 M20-29",
+      "href": "https://www.berglaufpur.de/berglauf/documents/BrokenArrowSkyrace23Km.pdf",
+      "lat": 39.197,
+      "lon": -120.235
+    },
+    {
+      "type": "race",
+      "slug": "2025-ironman-70-3-st-george-st-george-ut-70-3",
+      "title": "IRONMAN 70.3 St. George",
+      "detail": "St. George, UT - 70.3",
+      "date": "2025",
+      "result": "2025 - 4:55:08",
+      "rank": "OA 205/2093 / AG 30/211 M25-29",
+      "href": "https://sportstats.one/event/ironman-703-st-george/leaderboard/143338",
+      "lat": 37.096,
+      "lon": -113.568
+    },
+    {
+      "type": "race",
+      "slug": "2024-ironman-70-3-world-championship-taupo-new-zealand-70-3",
+      "title": "IRONMAN 70.3 World Championship",
+      "detail": "Taupo, New Zealand - 70.3",
+      "date": "2024",
+      "result": "2024 - 4:56:13",
+      "rank": "OA 1415/3083 / AG 87/128 M18-24",
+      "href": "https://www.btu-info.de/images/stories/2024/Ergebnisse/Ergebnis_2024_12_14_Taupo_703_WC_Ironman_M%C3%A4nner.pdf",
+      "lat": -38.685,
+      "lon": 176.07
+    },
+    {
+      "type": "race",
+      "slug": "2024-golden-gate-trail-classic-san-francisco-ca-50k",
+      "title": "Golden Gate Trail Classic",
+      "detail": "San Francisco, CA - 50K",
+      "date": "2024",
+      "result": "2024 - 5:21:04",
+      "rank": "OA 24/304 / AG 10/63 M20-29",
+      "href": "https://www.spartan.com/en/race/past-results/8233",
+      "lat": 37.775,
+      "lon": -122.419
+    },
+    {
+      "type": "race",
+      "slug": "2024-ironman-70-3-santa-cruz-santa-cruz-ca-70-3",
+      "title": "IRONMAN 70.3 Santa Cruz",
+      "detail": "Santa Cruz, CA - 70.3",
+      "date": "2024",
+      "result": "2024 - 4:45:04",
+      "rank": "OA 108/2166 / AG 9/114 M18-24",
+      "href": "https://sportstats.one/event/ironman-703-santa-cruz/tracker?pid=140177:1812",
+      "lat": 36.974,
+      "lon": -122.03
+    },
+    {
+      "type": "race",
+      "slug": "2024-hood-to-coast-oregon-relay-run-for-days-mixed-open",
+      "title": "Hood to Coast",
+      "detail": "Oregon - Relay - Run for Days, Mixed Open",
+      "date": "2024",
+      "result": "2024 - 24:25:55.2",
+      "rank": "OA 74/1183 / Div 16/296",
+      "href": "https://eclecticedgeracing.overallraceresults.com/individual-results/888/559016",
+      "lat": 45.515,
+      "lon": -122.679
+    },
+    {
+      "type": "race",
+      "slug": "2024-twilight-5000-san-francisco-ca-5k",
+      "title": "Twilight 5000",
+      "detail": "San Francisco, CA - 5K",
+      "date": "2024",
+      "result": "2024 - 18:20.22",
+      "rank": "OA 120/292",
+      "href": "https://diablotiming.com/results/2024-07-17/results_39.html",
+      "lat": 37.775,
+      "lon": -122.419
+    },
+    {
+      "type": "race",
+      "slug": "2024-broken-arrow-skyrace-olympic-valley-ca-18k",
+      "title": "Broken Arrow Skyrace",
+      "detail": "Olympic Valley, CA - 18K",
+      "date": "2024",
+      "result": "2024 - 2:39:17",
+      "rank": "OA 68/375 / AG 14/34 M20-29",
+      "href": "https://my.raceresult.com/290460/results/pdf?name=Online%20Results%7C18K%20Results&contest=3&lang=en",
+      "lat": 39.197,
+      "lon": -120.235
+    },
+    {
+      "type": "race",
+      "slug": "2024-escape-from-alcatraz-triathlon-san-francisco-ca-triathlon",
+      "title": "Escape from Alcatraz Triathlon",
+      "detail": "San Francisco, CA - Triathlon",
+      "date": "2024",
+      "result": "2024 - 2:29:38",
+      "rank": "OA 65/1628 / AG 10/47 M20-24",
+      "href": "https://www.escapealcatraztri.com/results/2024",
+      "lat": 37.807,
+      "lon": -122.426
+    },
+    {
+      "type": "race",
+      "slug": "2024-ironman-70-3-morro-bay-morro-bay-ca-70-3",
+      "title": "IRONMAN 70.3 Morro Bay",
+      "detail": "Morro Bay, CA - 70.3",
+      "date": "2024",
+      "result": "2024 - 5:08:46",
+      "rank": "OA 115/1107 / AG 12/97 M18-24",
+      "href": "https://sportstats.one/event/ironman-703-morro-bay/tracker?pid=140134:669",
+      "lat": 35.365,
+      "lon": -120.849
+    },
+    {
+      "type": "race",
+      "slug": "2024-napa-valley-marathon-napa-ca-marathon",
+      "title": "Napa Valley Marathon",
+      "detail": "Napa, CA - Marathon",
+      "date": "2024",
+      "result": "2024 - 3:26:38",
+      "rank": "OA 219/1699 / AG 16/52 M21-24",
+      "href": "https://results.svetiming.com/Napa-Valley-Marathon/events/2024/kaiser-permanente-napa-valley-marathon/1682/entrant",
+      "lat": 38.502,
+      "lon": -122.265
+    },
+    {
+      "type": "race",
+      "slug": "2023-santa-cruz-triathlon-santa-cruz-ca-olympic",
+      "title": "Santa Cruz Triathlon",
+      "detail": "Santa Cruz, CA - Olympic",
+      "date": "2023",
+      "result": "2023 - 2:34:21",
+      "rank": "OA 68/623 / AG 5/18 M20-24",
+      "href": "https://results.svetiming.com/Santa-Cruz-Triathlon/events/2023/Santa-Cruz-Triathlon/results",
+      "lat": 36.974,
+      "lon": -122.03
+    }
+  ]
+}

@@ -1,37 +1,40 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { formatDate } from "../../lib/site";
+import { getSanityPosts, type SanityPost } from "../../lib/sanity";
 
 export async function getStaticPaths() {
-  const posts = (await getCollection("writing", ({ data }) => !data.draft)).sort(
-    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-  );
-
+  const posts = await getSanityPosts();
   return posts.map((post) => ({
-    params: { slug: post.id },
+    params: { slug: post.slug },
     props: { post }
   }));
 }
 
 interface Props {
-  post: CollectionEntry<"writing">;
+  post: SanityPost;
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+if (post.url) {
+  return Astro.redirect(post.url);
+}
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout title={post.title} description={post.description}>
   <article>
     <header class="page-header">
-      <h1 class="page-title">{post.data.title}</h1>
+      <h1 class="page-title">{post.title}</h1>
       <p class="page-intro">
-        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+        <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
       </p>
     </header>
     <div class="prose">
-      <Content />
+      <Fragment set:html={post.html} />
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  import "../../scripts/post-enhancements";
+</script>

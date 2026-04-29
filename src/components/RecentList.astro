@@ -29,7 +29,6 @@ const { items } = Astro.props;
             {item.description && <p class="row__description">{item.description}</p>}
           </div>
           <div class="row__meta">
-            <span>{item.kind}</span>
             <time datetime={item.date.toISOString()}>{formatDate(item.date)}</time>
           </div>
         </article>

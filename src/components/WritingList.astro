@@ -1,9 +1,9 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { formatDate } from "../lib/site";
+import type { SanityPost } from "../lib/sanity";
 
 interface Props {
-  posts: CollectionEntry<"writing">[];
+  posts: SanityPost[];
 }
 
 const { posts } = Astro.props;
@@ -16,12 +16,12 @@ const { posts } = Astro.props;
         <article class="row">
           <div>
             <h3 class="row__title">
-              <a href={`/writing/${post.id}/`}>{post.data.title}</a>
+              <a href={post.url ?? `/writing/${post.slug}/`}>{post.title}</a>
             </h3>
-            {post.data.description && <p class="row__description">{post.data.description}</p>}
+            {post.description && <p class="row__description">{post.description}</p>}
           </div>
           <div class="row__meta">
-            <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+            <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
           </div>
         </article>
       ))}

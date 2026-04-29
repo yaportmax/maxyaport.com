@@ -1,4 +1,5 @@
 import { getCollection } from "astro:content";
+import { getSanityPosts } from "./sanity";
 
 export const site = {
   name: "Max Yaport",
@@ -6,12 +7,12 @@ export const site = {
   url: "https://maxyaport.com"
 };
 
-export const navItems: { href: string; label: string }[] = [];
+export const navItems: { href: string; label: string }[] = [
+  { href: "/travel/", label: "travel" }
+];
 
 export async function getWriting() {
-  return (await getCollection("writing", ({ data }) => !data.draft)).sort(
-    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-  );
+  return (await getSanityPosts()).sort((a, b) => b.date.valueOf() - a.date.valueOf());
 }
 
 export async function getProjects() {
@@ -21,16 +22,19 @@ export async function getProjects() {
 }
 
 export async function getRecent() {
-  const [writing, projects] = await Promise.all([getWriting(), getProjects()]);
+  const [writing, projects] = await Promise.all([
+    getWriting(),
+    getProjects()
+  ]);
 
-  return [
+  const items = [
     ...writing.map((entry) => ({
-      id: `writing-${entry.id}`,
+      id: `sanity-writing-${entry.slug}`,
       kind: "writing",
-      title: entry.data.title,
-      description: entry.data.description,
-      date: entry.data.date,
-      href: `/writing/${entry.id}/`
+      title: entry.title,
+      description: entry.description,
+      date: entry.date,
+      href: entry.url ?? `/writing/${entry.slug}/`
     })),
     ...projects.map((entry) => ({
       id: `project-${entry.id}`,
@@ -40,7 +44,9 @@ export async function getRecent() {
       date: entry.data.date,
       href: entry.data.url
     }))
-  ].sort((a, b) => b.date.valueOf() - a.date.valueOf());
+  ];
+
+  return items.sort((a, b) => b.date.valueOf() - a.date.valueOf());
 }
 
 export function formatDate(date: Date) {

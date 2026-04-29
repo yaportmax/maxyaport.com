@@ -5,12 +5,24 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "studio": "npm run dev --prefix studio-maxyaport.com",
+    "studio:build": "npm run build --prefix studio-maxyaport.com",
+    "studio:import-posts": "cd studio-maxyaport.com && npx sanity exec scripts/import-local-posts.mjs --with-user-token",
     "build": "astro build",
     "preview": "astro preview"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/roboto-mono": "^5.2.8",
-    "astro": "^6.1.9"
+    "@portabletext/to-html": "^5.0.2",
+    "@sanity/client": "^7.22.0",
+    "@sanity/image-url": "^2.1.1",
+    "@turf/turf": "^7.3.5",
+    "astro": "^6.1.9",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-autoplay": "^8.6.0",
+    "gsap": "^3.15.0",
+    "mapbox-gl": "^3.22.0",
+    "photoswipe": "^5.4.4"
   }
 }

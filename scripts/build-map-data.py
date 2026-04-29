@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import importlib.util
+import json
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+PHOTO_SCRIPT = ROOT / "scripts/build-photo-review.py"
+OUT = ROOT / "src/data/travel-map.json"
+
+RACE_COORDS = {
+    "Canyons 100K": (39.118, -120.947),
+    "California International Marathon": (38.581, -121.494),
+    "IRONMAN 70.3 Santa Cruz Relay": (36.974, -122.03),
+    "Tamalpa Headlands 50K": (37.862, -122.581),
+    "Broken Arrow Skyrace|Olympic Valley, CA - 23K": (39.197, -120.235),
+    "IRONMAN 70.3 St. George": (37.096, -113.568),
+    "IRONMAN 70.3 World Championship": (-38.685, 176.07),
+    "Golden Gate Trail Classic": (37.775, -122.419),
+    "IRONMAN 70.3 Santa Cruz": (36.974, -122.03),
+    "Hood to Coast": (45.515, -122.679),
+    "Twilight 5000": (37.775, -122.419),
+    "Broken Arrow Skyrace|Olympic Valley, CA - 18K": (39.197, -120.235),
+    "Escape from Alcatraz Triathlon": (37.807, -122.426),
+    "IRONMAN 70.3 Morro Bay": (35.365, -120.849),
+    "Napa Valley Marathon": (38.502, -122.265),
+    "Santa Cruz Triathlon": (36.974, -122.03),
+}
+
+
+def load_photo_script():
+    spec = importlib.util.spec_from_file_location("photo_review", PHOTO_SCRIPT)
+    if not spec or not spec.loader:
+        raise RuntimeError("Could not load photo review script.")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def center(boxes):
+    min_lat, max_lat, min_lon, max_lon = boxes[0]
+    return round((min_lat + max_lat) / 2, 5), round((min_lon + max_lon) / 2, 5)
+
+
+def parse_races(source: str):
+    block = re.search(r"const races = \[(.*?)\];", source, re.S)
+    if not block:
+        raise RuntimeError("Could not find races array.")
+    races = []
+    for item in re.finditer(r"\{\s*title:\s*\"([^\"]+)\",\s*href:\s*\"([^\"]+)\",\s*detail:\s*\"([^\"]+)\",\s*result:\s*\"([^\"]+)\"(?:,\s*rank:\s*\"([^\"]+)\")?", block.group(1), re.S):
+        title, href, detail, result, rank = item.groups()
+        coords = RACE_COORDS.get(f"{title}|{detail}") or RACE_COORDS.get(title)
+        if not coords:
+            continue
+        lat, lon = coords
+        slug = re.sub(r"[^a-z0-9]+", "-", f"{result[:4]} {title} {detail}".lower()).strip("-")
+        races.append(
+            {
+                "type": "race",
+                "slug": slug,
+                "title": title,
+                "detail": detail,
+                "date": result[:4],
+                "result": result,
+                "rank": rank or "",
+                "href": href,
+                "lat": lat,
+                "lon": lon,
+            }
+        )
+    return races
+
+
+def main() -> None:
+    photo = load_photo_script()
+    trips = []
+    for trip in photo.trips_from_component():
+        boxes = photo.BOXES.get(trip.title)
+        if not boxes:
+            continue
+        lat, lon = center(boxes)
+        trips.append(
+            {
+                "type": "trip",
+                "slug": trip.slug,
+                "title": trip.title,
+                "detail": trip.detail,
+                "date": trip.month,
+                "lat": lat,
+                "lon": lon,
+            }
+        )
+
+    source = (ROOT / "src/components/HomeContent.astro").read_text()
+    data = {"trips": trips, "races": parse_races(source)}
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(json.dumps(data, indent=2) + "\n")
+    print(f"Wrote {OUT}")
+    print(f"Trips: {len(trips)}")
+    print(f"Races: {len(data['races'])}")
+
+
+if __name__ == "__main__":
+    main()
