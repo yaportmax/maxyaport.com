@@ -89,90 +89,93 @@ const canyonsGpxUrl = "/routes/canyons-2026.gpx";
 const canyonsChapters: Record<string, any> = {
   "Race Start to Deadwood 1": {
     mileStart: 0,
-    mileEnd: 15,
+    mileEnd: 10.1,
     mood: "cold",
     animation: "draw",
     callout: "Cold start, burned porta-potties, and the first real climbs.",
     routeLabels: [
       {label: "China Wall", mile: 0},
-      {label: "Deadwood 1", mile: 15},
+      {label: "Deadwood 1", mile: 10.1},
     ],
   },
   "Deadwood 1, Devil's Thumb, Swinging Bridge, and Back": {
-    mileStart: 15,
+    mileStart: 10.1,
     mileEnd: 24,
     mood: "good",
     animation: "marker",
     callout: "Out-and-back chaos, bib-name heckling, and still having fun.",
     routeLabels: [
-      {label: "Deadwood 1", mile: 15},
-      {label: "Swinging Bridge", mile: 20},
-      {label: "Devil's Thumb", mile: 24},
+      {label: "Deadwood 1", mile: 10.1},
+      {label: "Devil's Thumb", mile: 12},
+      {label: "Swinging Bridge", mile: 13.5},
+      {label: "Devil's Thumb", mile: 15.1},
+      {label: "Deadwood 2", mile: 18.3},
+      {label: "Michigan Bluff", mile: 24},
     ],
   },
   "Michigan Bluff to Foresthill": {
     mileStart: 24,
-    mileEnd: 32,
+    mileEnd: 30,
     mood: "hard",
     animation: "draw",
     callout: "The first real tactical decision of the day.",
     routeLabels: [
       {label: "Michigan Bluff", mile: 24},
-      {label: "Foresthill", mile: 32},
+      {label: "Foresthill", mile: 30},
     ],
   },
   "Foresthill to Cal 2": {
-    mileStart: 32,
-    mileEnd: 37,
+    mileStart: 30,
+    mileEnd: 38.2,
     mood: "hard",
     animation: "marker",
     callout: "Hot, exposed, and starting to hurt.",
     routeLabels: [
-      {label: "Foresthill", mile: 32},
-      {label: "Cal 2", mile: 37},
+      {label: "Foresthill", mile: 30},
+      {label: "Cal 2", mile: 38.2},
     ],
   },
   "Cal 2 to Drivers Flat": {
-    mileStart: 37,
-    mileEnd: 46,
+    mileStart: 38.2,
+    mileEnd: 47.5,
     mood: "hard",
     animation: "draw",
     callout: "Spacey, hyper-focused, and trying to keep moving.",
     routeLabels: [
-      {label: "Cal 2", mile: 37},
-      {label: "Drivers Flat", mile: 46},
+      {label: "Cal 2", mile: 38.2},
+      {label: "Drivers Flat", mile: 47.5},
     ],
   },
   "The Weird Good Part": {
-    mileStart: 46,
-    mileEnd: 54,
+    mileStart: 47.5,
+    mileEnd: 55.5,
     mood: "weird-good",
     animation: "fast",
     callout: "103 people passed in 8 miles.",
     routeLabels: [
-      {label: "Drivers Flat", mile: 46},
-      {label: "+103", mile: 54},
+      {label: "Drivers Flat", mile: 47.5},
+      {label: "Mammoth Bar", mile: 55.5},
     ],
   },
   "Mammoth Bar": {
-    mileStart: 54,
-    mileEnd: 61,
+    mileStart: 55.5,
+    mileEnd: 59.1,
     mood: "hard",
     animation: "draw",
     callout: "The lowest part before the final push.",
     routeLabels: [
-      {label: "Mammoth Bar", mile: 54},
-      {label: "Robie Point", mile: 61},
+      {label: "Mammoth Bar", mile: 55.5},
+      {label: "Confluence", mile: 59.1},
     ],
   },
   Finish: {
-    mileStart: 61,
+    mileStart: 59.1,
     mileEnd: 63.1,
     mood: "finish",
     animation: "finish",
     callout: "15:46, almost two hours ahead of the 17:30 plan.",
     routeLabels: [
-      {label: "Robie Point", mile: 61},
+      {label: "Confluence", mile: 59.1},
       {label: "Finish", mile: 63.1},
     ],
   },
@@ -210,6 +213,10 @@ function firstGpxUrl(body: any[] = []) {
 
 function jsonAttr(value: unknown) {
   return attr(JSON.stringify(value));
+}
+
+function formatMile(value: number) {
+  return Number.isInteger(value) ? String(value) : value.toFixed(1);
 }
 
 function renderImageBlock(value: any) {
@@ -298,6 +305,10 @@ function routePayload(value: any, overrides: Record<string, unknown> = {}) {
     mileEnd: typeof value?.mileEnd === "number" ? value.mileEnd : undefined,
     showElevation: value?.showElevation !== false,
     animation: value?.animation || value?.mapAnimation || "draw",
+    globe: value?.globe === true,
+    followCamera: value?.followCamera === true,
+    pitch: typeof value?.pitch === "number" ? value.pitch : undefined,
+    bearing: typeof value?.bearing === "number" ? value.bearing : undefined,
     mood: value?.mood || "neutral",
     height: value?.height || "standard",
     ...overrides,
@@ -308,7 +319,7 @@ function renderRouteCard(payload: any, caption = "") {
   const title = payload.title ? `<h3>${attr(payload.title)}</h3>` : "";
   const mileRange =
     typeof payload.mileStart === "number" && typeof payload.mileEnd === "number"
-      ? `<span>Miles ${payload.mileStart}-${payload.mileEnd}</span>`
+      ? `<span>Miles ${formatMile(payload.mileStart)}-${formatMile(payload.mileEnd)}</span>`
       : "";
   const callout = payload.callout ? `<p>${attr(payload.callout)}</p>` : "";
   const figcaption = caption ? `<figcaption>${attr(caption)}</figcaption>` : "";
@@ -397,14 +408,24 @@ function isMediaBlock(block: any) {
   return block?._type === "imageBlock" || block?._type === "carousel";
 }
 
+function isCanyonsAutoGeneratedBlock(block: any) {
+  return block?._type === "mapBlock" || block?._type === "raceStats" || block?._type === "raceChapter";
+}
+
 function renderCanyonsAutoChapter(title: string, blocks: any[], routeUrl: string) {
   const config = canyonsChapters[title];
   if (!config) {
-    return `<h2>${attr(title)}</h2>${renderPortableText(blocks)}`;
+    if (title === "Canyons 100k 10-15") {
+      return "";
+    }
+
+    const contentBlocks = blocks.filter((block) => !isCanyonsAutoGeneratedBlock(block));
+    return `<h2>${attr(title)}</h2>${renderPortableText(contentBlocks)}`;
   }
 
-  const textBlocks = blocks.filter((block) => !isMediaBlock(block));
-  const mediaBlocks = blocks.filter(isMediaBlock);
+  const contentBlocks = blocks.filter((block) => !isCanyonsAutoGeneratedBlock(block));
+  const textBlocks = contentBlocks.filter((block) => !isMediaBlock(block));
+  const mediaBlocks = contentBlocks.filter(isMediaBlock);
   const route = renderRouteCard({
     title,
     gpxUrl: routeUrl,
@@ -425,7 +446,7 @@ function renderCanyonsAutoChapter(title: string, blocks: any[], routeUrl: string
 function renderCanyonsArticle(body: any[] = []) {
   const output: string[] = [];
   let index = 0;
-  const routeUrl = firstGpxUrl(body) || canyonsGpxUrl;
+  const routeUrl = canyonsGpxUrl;
 
   output.push(`<section class="canyons-hero-map">${renderRouteCard({
     title: "Canyons 100K",
@@ -437,7 +458,7 @@ function renderCanyonsArticle(body: any[] = []) {
     callout: "Auburn, Truckee, and 63.1 miles through the canyons.",
     routeLabels: [
       {label: "China Wall", mile: 0},
-      {label: "Foresthill", mile: 32},
+      {label: "Foresthill", mile: 30},
       {label: "Finish", mile: 63.1},
     ],
     showElevation: true,
@@ -448,8 +469,6 @@ function renderCanyonsArticle(body: any[] = []) {
     stats: [
       {value: "15:46", label: "Finish time"},
       {value: "63.1 mi", label: "Course"},
-      {value: "~2 hrs", label: "Ahead of plan"},
-      {value: "103", label: "Passed in 8 miles"},
     ],
   }));
 
@@ -466,6 +485,11 @@ function renderCanyonsArticle(body: any[] = []) {
         index += 1;
       }
       output.push(renderCanyonsAutoChapter(title, sectionBlocks, routeUrl));
+      continue;
+    }
+
+    if (isCanyonsAutoGeneratedBlock(block)) {
+      index += 1;
       continue;
     }
 

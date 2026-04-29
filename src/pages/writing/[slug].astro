@@ -5,10 +5,31 @@ import { getSanityPosts, type SanityPost } from "../../lib/sanity";
 
 export async function getStaticPaths() {
   const posts = await getSanityPosts();
-  return posts.map((post) => ({
+  const paths = posts.map((post) => ({
     params: { slug: post.slug },
     props: { post }
   }));
+
+  for (const post of posts) {
+    if (
+      post.id === "post.canyons-100k-truckee-week" ||
+      post.slug === "canyons-100k" ||
+      post.slug === "canyons-100k-truckee-week" ||
+      post.slug === "canyons-100k-2026"
+    ) {
+      for (const slug of ["canyons-100k", "canyons-100k-2026", "canyons-100k-truckee-week"]) {
+        if (!paths.some((path) => path.params.slug === slug)) {
+          paths.push({
+            params: { slug },
+            props: { post }
+          });
+        }
+      }
+      break;
+    }
+  }
+
+  return paths;
 }
 
 interface Props {

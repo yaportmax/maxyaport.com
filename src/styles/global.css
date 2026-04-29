@@ -361,12 +361,24 @@ main {
 .canyons-hero-map,
 .race-stats,
 .race-chapter,
-.prose .route-card,
 .prose .photo-carousel {
   width: min(calc(100vw - 40px), 900px);
   max-width: none;
   margin-left: 50%;
   transform: translateX(-50%);
+}
+
+.prose .route-card {
+  width: min(100%, 900px);
+  max-width: none;
+  margin-right: auto;
+  margin-left: auto;
+  transform: none;
+}
+
+.canyons-hero-map .route-card,
+.race-chapter .route-card {
+  width: 100%;
 }
 
 .canyons-hero-map {
@@ -480,6 +492,10 @@ main {
   z-index: 0;
 }
 
+.route-card__map .mapboxgl-canvas {
+  filter: saturate(0.94) contrast(1.08) brightness(0.82);
+}
+
 .route-card__map img {
   width: auto;
   max-width: none;
@@ -496,8 +512,16 @@ main {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(10, 10, 10, 0.62), transparent 44%),
-    linear-gradient(0deg, rgba(10, 10, 10, 0.68), transparent 48%);
+    linear-gradient(180deg, rgba(10, 10, 10, 0.46), transparent 38%),
+    linear-gradient(0deg, rgba(10, 10, 10, 0.58), transparent 46%),
+    linear-gradient(90deg, rgba(10, 10, 10, 0.24), transparent 42%);
+}
+
+.route-card--map-ready .route-card__scrim {
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.34), transparent 34%),
+    linear-gradient(0deg, rgba(10, 10, 10, 0.42), transparent 42%),
+    linear-gradient(90deg, rgba(10, 10, 10, 0.2), transparent 38%);
 }
 
 .route-card__overlay {
@@ -1086,8 +1110,82 @@ main {
 }
 
 .map-timeline {
-  width: min(100%, 690px);
+  width: 100%;
   margin: 42px 0 0;
+}
+
+.travel-timeline-rail {
+  min-height: 154px;
+  margin-bottom: 24px;
+  padding: 10px 0 0;
+}
+
+.travel-timeline-rail .vis-timeline {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+.travel-timeline-rail .vis-panel,
+.travel-timeline-rail .vis-labelset,
+.travel-timeline-rail .vis-background,
+.travel-timeline-rail .vis-time-axis {
+  border-color: color-mix(in srgb, var(--border) 72%, transparent);
+}
+
+.travel-timeline-rail .vis-panel.vis-center {
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+}
+
+.travel-timeline-rail .vis-time-axis .vis-text {
+  color: var(--subtle);
+  font-size: 0.72rem;
+}
+
+.travel-timeline-rail .vis-grid.vis-major,
+.travel-timeline-rail .vis-grid.vis-minor {
+  border-color: color-mix(in srgb, var(--border) 52%, transparent);
+}
+
+.travel-timeline-rail .vis-item.travel-node {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0;
+  box-shadow: none;
+}
+
+.travel-timeline-rail .vis-item.travel-node .vis-item-content {
+  padding: 0;
+}
+
+.travel-timeline-rail .vis-item.travel-node.vis-dot {
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--bg);
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 72%, transparent);
+}
+
+.travel-timeline-rail .vis-item.travel-node--race.vis-dot {
+  background: #b58246;
+  box-shadow: 0 0 0 1px color-mix(in srgb, #b58246 72%, transparent);
+}
+
+.travel-timeline-rail .vis-item.vis-selected.vis-dot {
+  box-shadow:
+    0 0 0 1px #fffaf0,
+    0 0 0 8px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.travel-timeline-rail .vis-item.vis-line {
+  border-left-color: color-mix(in srgb, var(--accent) 52%, transparent);
+}
+
+.map-timeline__list {
+  width: min(100%, 760px);
   border-left: 1px solid var(--border);
 }
 
@@ -1218,6 +1316,12 @@ main {
     gap: 6px;
   }
 
+  .travel-timeline-rail {
+    min-height: 132px;
+    margin-right: -6px;
+    margin-left: -6px;
+  }
+
   .prose figure {
     max-width: 100%;
   }
@@ -1235,9 +1339,12 @@ main {
   .canyons-hero-map,
   .race-stats,
   .race-chapter,
-  .prose .route-card,
   .prose .photo-carousel {
     width: calc(100vw - 28px);
+  }
+
+  .prose .route-card {
+    width: 100%;
   }
 
   .race-stats > div {

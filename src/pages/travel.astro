@@ -2,6 +2,27 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import mapData from "../data/travel-map.json";
 
+const monthLookup: Record<string, number> = {
+  jan: 0,
+  feb: 1,
+  mar: 2,
+  apr: 3,
+  may: 4,
+  jun: 5,
+  jul: 6,
+  aug: 7,
+  sep: 8,
+  oct: 9,
+  nov: 10,
+  dec: 11,
+};
+const sortDate = (date: string) => {
+  const [month, year] = date.split(/\s+/);
+  const numericYear = Number(year || month) || 0;
+  const monthIndex = monthLookup[(month || "").slice(0, 3).toLowerCase()] ?? 0;
+  return new Date(Date.UTC(numericYear, monthIndex, 15)).getTime();
+};
+const timelineItems = [...mapData.trips, ...mapData.races].sort((a, b) => sortDate(a.date) - sortDate(b.date));
 const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 ---
 
@@ -18,14 +39,17 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         <button type="button" data-map-filter="all" class="is-active">All</button>
         <button type="button" data-map-filter="trip">Trips</button>
         <button type="button" data-map-filter="race">Races</button>
+        <button type="button" data-drive-toggle hidden>Drives</button>
         <button type="button" data-heatmap-toggle hidden>Strava heat</button>
       </div>
     </section>
 
     <section class="map-timeline" aria-label="Travel timeline">
+      <div id="travel-timeline" class="travel-timeline-rail"></div>
+      <div class="map-timeline__list">
       {
-        mapData.trips.map((trip) => (
-          <article id={trip.slug} class="map-timeline__row" data-map-item={trip.slug} data-map-kind="trip">
+        timelineItems.map((trip) => (
+          <article id={trip.slug} class="map-timeline__row" data-map-item={trip.slug} data-map-kind={trip.type}>
             <div>
               <p>{trip.title}</p>
               <small>{trip.detail}</small>
@@ -34,6 +58,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
           </article>
         ))
       }
+      </div>
     </section>
   </section>
 
@@ -43,11 +68,19 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 <script>
   import mapboxgl from "mapbox-gl";
   import "mapbox-gl/dist/mapbox-gl.css";
+  import { DataSet, Timeline } from "vis-timeline/standalone";
+  import "vis-timeline/styles/vis-timeline-graph2d.min.css";
+  import gsap from "gsap";
+  import ScrollTrigger from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
 
   const dataElement = document.getElementById("travel-map-data");
   const mapElement = document.getElementById("travel-map");
+  const timelineElement = document.getElementById("travel-timeline");
   const toolbarButtons = Array.from(document.querySelectorAll("[data-map-filter]"));
   const heatmapButton = document.querySelector("[data-heatmap-toggle]");
+  const driveButton = document.querySelector("[data-drive-toggle]");
   const rows = Array.from(document.querySelectorAll("[data-map-item]"));
   const mapboxToken = import.meta.env.PUBLIC_MAPBOX_TOKEN || "";
 
@@ -60,6 +93,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
   const mapData = JSON.parse(dataElement?.textContent || "{\"trips\":[],\"races\":[]}");
   const allPoints = [...mapData.trips, ...mapData.races];
+  const driveRoutes = Array.isArray(mapData.driveRoutes) ? mapData.driveRoutes : [];
   const featureCollection = {
     type: "FeatureCollection",
     features: allPoints.map((item) => ({
@@ -94,6 +128,55 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     return `<strong>${title}</strong><span>${item.date}</span><small>${meta}</small>`;
   };
 
+  const parseTimelineDate = (date) => {
+    const months = {
+      jan: 0,
+      feb: 1,
+      mar: 2,
+      apr: 3,
+      may: 4,
+      jun: 5,
+      jul: 6,
+      aug: 7,
+      sep: 8,
+      oct: 9,
+      nov: 10,
+      dec: 11,
+    };
+    const [first, second] = String(date || "").split(/\s+/);
+    const year = Number(second || first) || new Date().getUTCFullYear();
+    const month = months[String(first || "").slice(0, 3).toLowerCase()] ?? 0;
+    return new Date(Date.UTC(year, month, 15));
+  };
+
+  const sortedPoints = [...allPoints].sort((a, b) => parseTimelineDate(a.date) - parseTimelineDate(b.date));
+  const timeline =
+    timelineElement && sortedPoints.length
+      ? new Timeline(
+          timelineElement,
+          new DataSet(
+            sortedPoints.map((item) => ({
+              id: item.slug,
+              content: item.title,
+              start: parseTimelineDate(item.date),
+              title: `${item.title} (${item.date})`,
+              className: `travel-node travel-node--${item.type}`,
+            })),
+          ),
+          {
+            stack: false,
+            showCurrentTime: false,
+            selectable: true,
+            zoomKey: "metaKey",
+            orientation: { axis: "bottom", item: "top" },
+            margin: { axis: 14, item: { horizontal: 10, vertical: 18 } },
+            height: "154px",
+            min: new Date(Date.UTC(2023, 0, 1)),
+            max: new Date(Date.UTC(2026, 5, 1)),
+          },
+        )
+      : null;
+
   const selectItem = (slug, shouldScroll = true) => {
     const item = allPoints.find((point) => point.slug === slug);
     if (!item) return;
@@ -105,6 +188,10 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
     map.flyTo({ center: [item.lon, item.lat], zoom: item.type === "race" ? 4.2 : 4.8, duration: 850 });
     popup.setLngLat([item.lon, item.lat]).setHTML(popupHtml(item)).addTo(map);
+    if (timeline) {
+      timeline.setSelection(slug);
+      timeline.focus(slug, { animation: { duration: 650, easingFunction: "easeInOutQuad" } });
+    }
 
     if (shouldScroll) {
       document.getElementById(slug)?.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -118,6 +205,42 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     const filter = kind === "all" ? null : ["==", ["get", "type"], kind];
     if (map.getLayer("map-points")) map.setFilter("map-points", filter);
     if (map.getLayer("map-point-labels")) map.setFilter("map-point-labels", filter);
+  };
+
+  const loadDriveRoutes = () => {
+    const features = driveRoutes
+      .filter((route) => Array.isArray(route.coordinates) && route.coordinates.length > 1)
+      .map((route) => ({
+        type: "Feature",
+        geometry: { type: "LineString", coordinates: route.coordinates },
+        properties: { slug: route.slug, title: route.title || route.slug || "Drive" },
+      }));
+
+    if (!features.length) return;
+
+    map.addSource("drive-routes", { type: "geojson", data: { type: "FeatureCollection", features } });
+    map.addLayer(
+      {
+        id: "drive-routes",
+        type: "line",
+        source: "drive-routes",
+        layout: { visibility: "none", "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": "#f4d35e",
+          "line-width": ["interpolate", ["linear"], ["zoom"], 2, 1.8, 7, 5.5],
+          "line-opacity": 0.68,
+          "line-blur": 0.5,
+        },
+      },
+      "map-points"
+    );
+
+    driveButton.hidden = false;
+    driveButton.addEventListener("click", () => {
+      const visible = map.getLayoutProperty("drive-routes", "visibility") !== "none";
+      map.setLayoutProperty("drive-routes", "visibility", visible ? "none" : "visible");
+      driveButton.classList.toggle("is-active", !visible);
+    });
   };
 
   const loadHeatmap = async () => {
@@ -134,7 +257,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         source: "strava-heatmap",
         maxzoom: 11,
         paint: {
-          "heatmap-weight": ["interpolate", ["linear"], ["get", "weight"], 0, 0, 1, 1],
+          "heatmap-weight": ["interpolate", ["linear"], ["get", "weight"], 0, 0, 6, 1],
           "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 1, 0.6, 9, 2.6],
           "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 1, 3, 9, 22],
           "heatmap-opacity": 0.72,
@@ -217,6 +340,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       },
     });
 
+    loadDriveRoutes();
     loadHeatmap();
   });
 
@@ -241,4 +365,25 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   rows.forEach((row) => {
     row.addEventListener("click", () => selectItem(row.getAttribute("data-map-item"), false));
   });
+
+  if (timeline) {
+    timeline.on("select", (event) => {
+      const slug = event.items?.[0];
+      if (slug) selectItem(slug);
+    });
+  }
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    rows.forEach((row) => {
+      const slug = row.getAttribute("data-map-item");
+      if (!slug) return;
+      ScrollTrigger.create({
+        trigger: row,
+        start: "top 72%",
+        end: "bottom 34%",
+        onEnter: () => selectItem(slug, false),
+        onEnterBack: () => selectItem(slug, false),
+      });
+    });
+  }
 </script>

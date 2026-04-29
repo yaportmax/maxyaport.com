@@ -62,7 +62,7 @@ def sampled_public_points(points: list[tuple[float, float]]) -> list[tuple[float
     trimmed = points[trim:-trim]
     if not trimmed:
         return []
-    stride = max(1, len(trimmed) // 180)
+    stride = max(1, len(trimmed) // 60)
     return trimmed[::stride]
 
 
@@ -71,7 +71,7 @@ def main() -> None:
         raise SystemExit(f"Missing {IN}. Run fetch-strava-activities.py first.")
 
     activities = json.loads(IN.read_text())
-    features = []
+    cells: dict[tuple[float, float], float] = {}
     for activity in activities:
         if activity.get("type") not in ALLOWED_TYPES:
             continue
@@ -84,13 +84,17 @@ def main() -> None:
             continue
         weight = 1.0 if activity.get("type") in {"Run", "TrailRun", "VirtualRun"} else 0.75
         for lat, lon in points:
-            features.append(
-                {
-                    "type": "Feature",
-                    "geometry": {"type": "Point", "coordinates": [round(lon, 5), round(lat, 5)]},
-                    "properties": {"weight": weight},
-                }
-            )
+            key = (round(lon, 4), round(lat, 4))
+            cells[key] = cells.get(key, 0) + weight
+
+    features = [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [lon, lat]},
+            "properties": {"weight": min(round(weight, 2), 6)},
+        }
+        for (lon, lat), weight in sorted(cells.items())
+    ]
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"type": "FeatureCollection", "features": features}, separators=(",", ":")))

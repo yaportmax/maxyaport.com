@@ -31,6 +31,10 @@ type RoutePayload = {
   animation?: string;
   mood?: string;
   showElevation?: boolean;
+  followCamera?: boolean;
+  globe?: boolean;
+  pitch?: number;
+  bearing?: number;
 };
 
 type TrackPoint = {
@@ -390,12 +394,7 @@ function createRouteOverlay(
     gsap.to(progress, {
       value: 1,
       ease: "none",
-      scrollTrigger: {
-        trigger: card,
-        start: "top 78%",
-        end: "bottom 32%",
-        scrub: true,
-      },
+      scrollTrigger: routeScrollTrigger(card),
       onUpdate: update,
     });
 
@@ -419,6 +418,16 @@ function createRouteOverlay(
   } else if (labelElements.length) {
     gsap.set(labelElements, {autoAlpha: 1});
   }
+}
+
+function routeScrollTrigger(card: HTMLElement) {
+  return {
+    trigger: card,
+    start: "top 76%",
+    end: "bottom 36%",
+    scrub: 0.16,
+    invalidateOnRefresh: true,
+  };
 }
 
 function showRouteFallback(card: HTMLElement, message: string) {
@@ -468,11 +477,10 @@ async function initRouteCard(card: HTMLElement) {
     elevationElement.innerHTML = profileSvg(points, payload.mileStart || 0, payload.mileEnd);
   }
 
-  if (routeLine && segmentLine) {
-    createRouteOverlay(card, routeLine, segmentLine, payload);
-  }
-
   if (!mapboxToken) {
+    if (routeLine && segmentLine) {
+      createRouteOverlay(card, routeLine, segmentLine, payload);
+    }
     mapElement.setAttribute("data-map-empty", "true");
     ScrollTrigger.refresh();
     return;
@@ -483,6 +491,9 @@ async function initRouteCard(card: HTMLElement) {
     style: "mapbox://styles/mapbox/outdoors-v12",
     center,
     zoom: payload.zoom || 9,
+    pitch: payload.followCamera ? payload.pitch ?? 48 : 0,
+    bearing: payload.followCamera ? payload.bearing ?? 0 : 0,
+    projection: payload.globe ? "globe" : "mercator",
     attributionControl: false,
     interactive: false,
     antialias: true,
@@ -490,6 +501,15 @@ async function initRouteCard(card: HTMLElement) {
 
   map.on("load", () => {
     map.resize();
+    if (payload.globe) {
+      map.setFog({
+        color: "rgb(8, 13, 18)",
+        "horizon-blend": 0.08,
+        "space-color": "rgb(4, 6, 9)",
+        "star-intensity": 0.16,
+      });
+    }
+    card.classList.add("route-card--map-ready");
     const labelElements: HTMLElement[] = [];
 
     if (routeLine && segmentLine) {
@@ -504,9 +524,9 @@ async function initRouteCard(card: HTMLElement) {
         type: "line",
         source: "route-full",
         paint: {
-          "line-color": "#2c4231",
-          "line-width": 2.4,
-          "line-opacity": 0.58,
+          "line-color": "#d8d2bf",
+          "line-width": 2.2,
+          "line-opacity": 0.34,
         },
       });
       map.addLayer({
@@ -515,8 +535,8 @@ async function initRouteCard(card: HTMLElement) {
         source: "route-segment",
         paint: {
           "line-color": "#fff0c2",
-          "line-width": 4.6,
-          "line-opacity": 0.88,
+          "line-width": 4.2,
+          "line-opacity": 0.74,
         },
       });
       map.addLayer({
@@ -537,7 +557,7 @@ async function initRouteCard(card: HTMLElement) {
           [minLng, minLat],
           [maxLng, maxLat],
         ],
-        {padding: 42, duration: 0},
+        {padding: {top: 126, right: 72, bottom: 150, left: 72}, duration: 0},
       );
 
       for (const routeLabel of payload.routeLabels || []) {
@@ -576,6 +596,16 @@ async function initRouteCard(card: HTMLElement) {
         .coordinates as [number, number];
       movingMarker.setLngLat(markerPoint);
       card.style.setProperty("--route-progress", String(safeProgress));
+
+      if (payload.followCamera && safeProgress > 0.02 && safeProgress < 0.98) {
+        map.easeTo({
+          center: markerPoint,
+          zoom: Math.max(map.getZoom(), payload.animation === "fast" ? 10.2 : 9.4),
+          pitch: payload.pitch ?? 48,
+          bearing: payload.bearing ?? 0,
+          duration: 0,
+        });
+      }
     };
 
     update();
@@ -584,12 +614,7 @@ async function initRouteCard(card: HTMLElement) {
       gsap.to(progress, {
         value: 1,
         ease: "none",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 78%",
-          end: "bottom 32%",
-          scrub: true,
-        },
+        scrollTrigger: routeScrollTrigger(card),
         onUpdate: update,
       });
 
@@ -615,6 +640,8 @@ async function initRouteCard(card: HTMLElement) {
     }
 
     ScrollTrigger.refresh();
+    ScrollTrigger.update();
+    update();
   });
 
   map.on("error", (event) => {
