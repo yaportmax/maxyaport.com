@@ -20,6 +20,7 @@ const pageTitle = title ? `${title} - ${site.name}` : site.name;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0d0e0c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={new URL(Astro.url.pathname, site.url)} />
     <title>{pageTitle}</title>
     <script is:inline>
