@@ -1024,12 +1024,30 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     }, behavior === "smooth" ? 1100 : 260);
   };
 
+  const centerTimelineDot = (slug, behavior = "smooth") => {
+    if (!timelineRail || !slug) return;
+    const dot = timelineDots.find((item) => item.getAttribute("data-map-timeline-item") === slug);
+    if (!dot) return;
+    const railStyle = window.getComputedStyle(timelineRail);
+    const railPaddingLeft = parseFloat(railStyle.paddingLeft) || 0;
+    const dotCenter = railPaddingLeft + dot.offsetLeft;
+    const targetLeft = dotCenter - timelineRail.clientWidth / 2;
+    syncingTimelineScroll = true;
+    timelineRail.scrollTo({
+      left: Math.min(Math.max(0, targetLeft), maxTimelineScroll()),
+      behavior,
+    });
+    window.setTimeout(() => {
+      syncingTimelineScroll = false;
+    }, behavior === "smooth" ? 1100 : 260);
+  };
+
   const scrollTimelineToValue = (value, behavior = "auto") => {
     const state = scrubberStateFromValue(value);
     scrollTimelineToTime(state?.item?.timelineTime || timelineFocusStartTime, behavior);
   };
 
-  const syncScrubberToItem = (item, coordinate = null) => {
+  const syncScrubberToItem = (item, coordinate = null, { centerTimeline = true, behavior = "auto" } = {}) => {
     if (!item) return;
     scrubberValue = clampScrubberValue(scrubberValueForSlug(item.slug));
     updateRouteProgressMarker({
@@ -1039,15 +1057,11 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       inGap: false,
       pathDistance: pathDistance(routeCoordinatesForItem(item)),
     });
-    scrollTimelineToTime(item.timelineTime || timelineFocusStartTime, "auto");
+    if (centerTimeline) centerTimelineDot(item.slug, behavior);
   };
 
   const keepTimelineDotVisible = (slug, behavior = "smooth") => {
-    if (!timelineRail) return;
-    const dot = timelineDots.find((item) => item.getAttribute("data-map-timeline-item") === slug);
-    if (!dot) return;
-    const targetLeft = dot.offsetLeft - timelineRail.clientWidth / 2;
-    timelineRail.scrollTo({ left: Math.max(0, targetLeft), behavior });
+    centerTimelineDot(slug, behavior);
   };
 
   const applyScrubFocus = (item, { centerDot = true } = {}) => {
@@ -1137,7 +1151,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (!routeFit) {
       map.flyTo({ center: [item.lon, item.lat], zoom: item.type === "race" ? 4.2 : 4.8, duration: 850 });
     }
-    syncScrubberToItem(item, popupCoordinate);
+    syncScrubberToItem(item, popupCoordinate, { behavior: shouldScroll ? "smooth" : "auto" });
     showPopup(item, popupCoordinate, popupPlacement.anchor, false);
   };
 
@@ -2549,7 +2563,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   }
 
   timelineDots.forEach((dot) => {
-    dot.addEventListener("click", () => selectItem(dot.getAttribute("data-map-timeline-item"), false));
+    dot.addEventListener("click", () => selectItem(dot.getAttribute("data-map-timeline-item"), true));
   });
 
   const handleTimelineWheel = (event) => {
