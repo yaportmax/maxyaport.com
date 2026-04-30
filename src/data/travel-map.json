@@ -4030,6 +4030,95 @@
     },
     {
       "type": "trip",
+      "slug": "nov-2017-atlanta",
+      "title": "Atlanta",
+      "detail": "SFO out and back",
+      "date": "Nov 2017",
+      "lat": 33.749,
+      "lon": -84.388,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Atlanta",
+          "lat": 33.749,
+          "lon": -84.388
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "nov-2017-st-petersburg-and-pushkin",
+      "title": "St. Petersburg and Pushkin",
+      "detail": "St. Petersburg with a drive to Pushkin",
+      "date": "Nov 2017",
+      "lat": 59.9311,
+      "lon": 30.3609,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "St. Petersburg",
+          "lat": 59.9311,
+          "lon": 30.3609
+        },
+        {
+          "title": "Pushkin",
+          "lat": 59.7167,
+          "lon": 30.4167
+        },
+        {
+          "title": "Return to St. Petersburg",
+          "lat": 59.9311,
+          "lon": 30.3609,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
       "slug": "feb-2017-israel",
       "title": "Israel",
       "detail": "Jerusalem, Dead Sea, Safed, Haifa, Achziv, and Tel Aviv",
