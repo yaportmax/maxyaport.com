@@ -70,16 +70,16 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       <div class="map-stage__content">
         <div class="map-legend" aria-label="Map key">
           <button type="button" class="map-legend__toggle" data-map-layer-toggle="flight" aria-pressed="true">
-            <i class="map-key-line map-key-line--flight"></i>Flights
+            <i class="map-key-line map-key-line--flight"></i>Plane
           </button>
           <button type="button" class="map-legend__toggle" data-map-layer-toggle="drive" aria-pressed="true">
-            <i class="map-key-line map-key-line--drive"></i>Drives
+            <i class="map-key-line map-key-line--drive"></i>Car
           </button>
           <button type="button" class="map-legend__toggle" data-map-layer-toggle="sail" aria-pressed="true">
-            <i class="map-key-line map-key-line--sail"></i>Sails
+            <i class="map-key-line map-key-line--sail"></i>Boat
           </button>
           <button type="button" class="map-legend__toggle" data-map-layer-toggle="train" aria-pressed="true">
-            <i class="map-key-line map-key-line--train"></i>Trains
+            <i class="map-key-line map-key-line--train"></i>Train
           </button>
           <button type="button" class="map-legend__toggle" data-map-layer-toggle="strava" aria-pressed="true">
             <i class="map-key-line map-key-line--strava"></i>Strava
@@ -232,6 +232,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     })
     .filter(Boolean);
   let activeTimelineSlug = "";
+  let activeStravaActivityId = "";
   let stopLookupTimeout = 0;
   let stopLookupRequestId = 0;
   let editorDirty = false;
@@ -525,7 +526,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     new mapboxgl.Popup({
       anchor,
       closeButton: false,
-      closeOnClick: true,
+      closeOnClick: false,
       offset: popupOffset,
       className: "map-popup",
     });
@@ -533,6 +534,10 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   let popup = createPopup();
   let popupTimer = 0;
   let popupSequence = 0;
+  let activePopupChoices = [];
+  let activePopupChoiceIndex = 0;
+  let activePopupCoordinate = null;
+  let handledInteractiveClick = false;
 
   const escapeHtml = (value) =>
     String(value ?? "")
@@ -558,6 +563,85 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     return `<strong>${title}</strong><span>${escapeHtml(item.date)}</span><small>${meta}</small>`;
   };
 
+  const stravaActivityUrl = (id) => {
+    const activityId = String(id || "").trim();
+    return activityId ? `https://www.strava.com/activities/${encodeURIComponent(activityId)}` : "";
+  };
+
+  const linkedTitleHtml = (title, href) =>
+    href
+      ? `<a href="${escapeHtml(href)}" target="_blank" rel="noreferrer">${escapeHtml(title)}</a>`
+      : escapeHtml(title);
+
+  const choiceLabel = (choice) => {
+    if (choice.kind === "strava") return choice.properties.activityGroup || choice.properties.type || "Strava";
+    return choice.item?.type === "race" ? "Race" : "Trip";
+  };
+
+  const choiceTitle = (choice) =>
+    choice.kind === "strava" ? choice.properties.name || "Strava route" : choice.item?.title || "Route";
+
+  const choiceDetails = (choice) => {
+    if (choice.kind === "strava") {
+      const miles = Number(choice.properties.distanceMeters || 0) / 1609.344;
+      const distance = miles > 0 ? `${miles.toFixed(1)} mi` : "";
+      return [choice.properties.activityGroup, distance, String(choice.properties.startDate || "").slice(0, 10)]
+        .filter(Boolean)
+        .join(" / ");
+    }
+    if (choice.item?.type === "race") return [choice.item.date, choice.item.result].filter(Boolean).join(" / ");
+    return [choice.item?.date, choice.item?.detail].filter(Boolean).join(" / ");
+  };
+
+  const popupChoicePanelHtml = (choice) => {
+    const title = choiceTitle(choice);
+    const href = choice.kind === "strava" ? stravaActivityUrl(choice.properties.id) : choice.item?.href;
+    const detail = choiceDetails(choice);
+    const helper =
+      choice.kind === "strava"
+        ? "Open activity on Strava"
+        : choice.item?.type === "race"
+          ? "Selected race route"
+          : "Selected trip route";
+    return `
+      <div class="map-popup-stack__panel">
+        <span>${escapeHtml(choiceLabel(choice))}</span>
+        <strong>${linkedTitleHtml(title, href)}</strong>
+        <small>${escapeHtml(detail)}</small>
+        ${href ? `<a class="map-popup-stack__link" href="${escapeHtml(href)}" target="_blank" rel="noreferrer">${escapeHtml(helper)}</a>` : ""}
+      </div>
+    `;
+  };
+
+  const stackedPopupHtml = (choices, activeIndex = 0) => `
+    <div class="map-popup-stack" data-map-popup-stack>
+      <div class="map-popup-stack__header">
+        <span>${choices.length} options here</span>
+        <div class="map-popup-stack__controls" aria-label="Overlapping route controls">
+          <button type="button" data-popup-stack-step="-1" aria-label="Previous route">‹</button>
+          <button type="button" data-popup-stack-step="1" aria-label="Next route">›</button>
+        </div>
+      </div>
+      <div class="map-popup-stack__rail" data-popup-stack-rail aria-label="Overlapping route options">
+        ${choices
+          .map(
+            (choice, index) => `
+              <button
+                type="button"
+                class="map-popup-stack__choice${index === activeIndex ? " is-active" : ""}"
+                data-popup-choice-index="${index}"
+              >
+                <span>${escapeHtml(choiceLabel(choice))}</span>
+                <strong>${escapeHtml(choiceTitle(choice))}</strong>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+      <div data-popup-stack-panel>${popupChoicePanelHtml(choices[activeIndex])}</div>
+    </div>
+  `;
+
   const setRouteHighlight = (slug) => {
     const visibleModes = ["flight", "drive", "sail", "train"].filter((mode) => layerVisibility[mode]);
     const filter =
@@ -575,6 +659,14 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         ? ["==", ["get", "raceSlug"], slug]
         : ["==", ["get", "raceSlug"], ""];
     for (const layerId of ["race-route-highlight-casing", "race-route-highlight"]) {
+      if (map.getLayer(layerId)) map.setFilter(layerId, filter);
+    }
+  };
+
+  const setStravaRouteHighlight = (activityId) => {
+    const id = Number(activityId);
+    const filter = Number.isFinite(id) && id > 0 ? ["==", ["get", "id"], id] : ["==", ["get", "id"], ""];
+    for (const layerId of ["strava-route-highlight-casing", "strava-route-highlight"]) {
       if (map.getLayer(layerId)) map.setFilter(layerId, filter);
     }
   };
@@ -929,7 +1021,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     });
     window.setTimeout(() => {
       syncingTimelineScroll = false;
-    }, behavior === "smooth" ? 360 : 40);
+    }, behavior === "smooth" ? 1100 : 260);
   };
 
   const scrollTimelineToValue = (value, behavior = "auto") => {
@@ -947,7 +1039,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       inGap: false,
       pathDistance: pathDistance(routeCoordinatesForItem(item)),
     });
-    scrollTimelineToTime(item.timelineTime || timelineFocusStartTime, "smooth");
+    scrollTimelineToTime(item.timelineTime || timelineFocusStartTime, "auto");
   };
 
   const keepTimelineDotVisible = (slug, behavior = "smooth") => {
@@ -962,6 +1054,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (!item) return false;
     const itemChanged = activeTimelineSlug !== item.slug;
     activeTimelineSlug = item.slug;
+    activeStravaActivityId = "";
     updateActiveSummary(item);
     timelineDots.forEach((dot) =>
       dot.classList.toggle("is-active", dot.getAttribute("data-map-timeline-item") === item.slug),
@@ -969,8 +1062,10 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (map.getLayer("map-point-highlight")) {
       map.setFilter("map-point-highlight", ["==", ["get", "slug"], item.slug]);
     }
-    clearScheduledPopup();
-    popup.remove();
+    if (itemChanged) {
+      clearScheduledPopup();
+      popup.remove();
+    }
     updateLayerVisibility();
     if (centerDot) keepTimelineDotVisible(item.slug);
     return itemChanged;
@@ -1022,6 +1117,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (!item) return;
 
     activeTimelineSlug = slug;
+    activeStravaActivityId = "";
     updateActiveSummary(item);
     timelineDots.forEach((dot) =>
       dot.classList.toggle("is-active", dot.getAttribute("data-map-timeline-item") === slug),
@@ -1031,6 +1127,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     }
     setRouteHighlight(item.type === "trip" ? slug : "");
     setRaceRouteHighlight(item.type === "race" ? slug : "");
+    setStravaRouteHighlight("");
     updateLayerVisibility();
 
     const popupCoordinate = popupCoordinateForItem(item, preferredCoordinate);
@@ -1040,18 +1137,20 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (!routeFit) {
       map.flyTo({ center: [item.lon, item.lat], zoom: item.type === "race" ? 4.2 : 4.8, duration: 850 });
     }
-    showPopup(item, popupCoordinate, popupPlacement.anchor, true);
     syncScrubberToItem(item, popupCoordinate);
+    showPopup(item, popupCoordinate, popupPlacement.anchor, false);
   };
 
   const clearSelection = () => {
     activeTimelineSlug = "";
+    activeStravaActivityId = "";
     timelineDots.forEach((dot) => dot.classList.remove("is-active"));
     if (map.getLayer("map-point-highlight")) {
       map.setFilter("map-point-highlight", ["==", ["get", "slug"], ""]);
     }
     setRouteHighlight("");
     setRaceRouteHighlight("");
+    setStravaRouteHighlight("");
     clearScheduledPopup();
     popup.remove();
     updateRouteProgressMarker(null);
@@ -1074,13 +1173,14 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     const activeItem = allPoints.find((point) => point.slug === activeTimelineSlug);
     setRouteHighlight(activeItem?.type === "trip" ? activeTimelineSlug : "");
     setRaceRouteHighlight(activeItem?.type === "race" ? activeTimelineSlug : "");
+    setStravaRouteHighlight(activeStravaActivityId);
 
     setVisibility(["trip-routes-flight"], layerVisibility.flight);
     setVisibility(["trip-routes-drive"], layerVisibility.drive);
     setVisibility(["trip-routes-sail"], layerVisibility.sail);
     setVisibility(["trip-routes-train"], layerVisibility.train);
     setVisibility(["trip-route-nodes"], layerVisibility.stop);
-    setVisibility(["strava-routes-heat", "strava-routes"], layerVisibility.strava);
+    setVisibility(["strava-routes-heat", "strava-routes", "strava-route-highlight-casing", "strava-route-highlight"], layerVisibility.strava);
     setVisibility(["map-points", "map-point-labels"], layerVisibility.race);
     setVisibility(["map-point-highlight"], layerVisibility.race && Boolean(activeTimelineSlug));
     setVisibility(["trip-route-highlight-casing", "trip-route-highlight"], Boolean(activeTimelineSlug) && visibleRouteModesForSlug(activeTimelineSlug));
@@ -1106,6 +1206,224 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       map.getCanvas().style.cursor = "";
     });
   };
+
+  const interactiveFeatureLayers = () =>
+    [
+      "map-points",
+      "map-point-highlight",
+      "trip-routes-flight",
+      "trip-routes-drive",
+      "trip-routes-sail",
+      "trip-routes-train",
+      "trip-route-nodes",
+      "trip-route-highlight",
+      "trip-route-highlight-casing",
+      "trip-route-node-highlight",
+      "race-route-highlight",
+      "race-route-highlight-casing",
+      "strava-routes",
+      "strava-route-highlight",
+      "strava-route-highlight-casing",
+      "route-progress-marker",
+      "route-progress-marker-halo",
+    ].filter((layerId) => map.getLayer(layerId));
+
+  const choiceFromRenderedFeature = (feature) => {
+    const layerId = feature?.layer?.id || "";
+    const properties = feature?.properties || {};
+
+    if (layerId.startsWith("strava-route") || layerId === "strava-routes") {
+      const activityId = properties.id;
+      if (!activityId) return null;
+      return {
+        key: `strava:${activityId}`,
+        kind: "strava",
+        properties,
+      };
+    }
+
+    if (layerId.startsWith("race-route")) {
+      const race = allPointsBySlug.get(properties.raceSlug);
+      return race ? { key: `item:${race.slug}`, kind: "item", item: race } : null;
+    }
+
+    if (layerId.startsWith("trip-route") || layerId.startsWith("map-point") || layerId.startsWith("route-progress")) {
+      const slug = properties.slug || activeTimelineSlug;
+      const item = allPointsBySlug.get(slug);
+      return item ? { key: `item:${item.slug}`, kind: "item", item } : null;
+    }
+
+    return null;
+  };
+
+  const popupChoicesAtPoint = (point) => {
+    if (!point) return [];
+    const layers = interactiveFeatureLayers();
+    if (!layers.length) return [];
+    const hitbox = [
+      [point.x - 10, point.y - 10],
+      [point.x + 10, point.y + 10],
+    ];
+    const seen = new Set();
+    return map
+      .queryRenderedFeatures(hitbox, { layers })
+      .map(choiceFromRenderedFeature)
+      .filter((choice) => {
+        if (!choice || seen.has(choice.key)) return false;
+        seen.add(choice.key);
+        return true;
+      });
+  };
+
+  const syncPopupChoiceScroll = () => {
+    const rail = document.querySelector("[data-popup-stack-rail]");
+    const active = document.querySelector(`[data-popup-choice-index="${activePopupChoiceIndex}"]`);
+    active?.scrollIntoView?.({ block: "nearest", inline: "center" });
+    if (rail && active) rail.setAttribute("aria-activedescendant", `popup-choice-${activePopupChoiceIndex}`);
+  };
+
+  const activatePopupChoice = (index, { render = true } = {}) => {
+    if (!activePopupChoices.length) return;
+    const nextIndex = (index + activePopupChoices.length) % activePopupChoices.length;
+    const choice = activePopupChoices[nextIndex];
+    activePopupChoiceIndex = nextIndex;
+
+    if (choice.kind === "strava") {
+      activeTimelineSlug = "";
+      activeStravaActivityId = String(choice.properties.id || "");
+      timelineDots.forEach((dot) => dot.classList.remove("is-active"));
+      if (map.getLayer("map-point-highlight")) {
+        map.setFilter("map-point-highlight", ["==", ["get", "slug"], ""]);
+      }
+      setRouteHighlight("");
+      setRaceRouteHighlight("");
+      setStravaRouteHighlight(activeStravaActivityId);
+      updateRouteProgressMarker(null);
+      updateActiveSummary({
+        title: choiceTitle(choice),
+        date: String(choice.properties.startDate || "").slice(0, 10),
+      });
+      updateLayerVisibility();
+    } else if (choice.item) {
+      activeTimelineSlug = choice.item.slug;
+      activeStravaActivityId = "";
+      updateActiveSummary(choice.item);
+      timelineDots.forEach((dot) =>
+        dot.classList.toggle("is-active", dot.getAttribute("data-map-timeline-item") === choice.item.slug),
+      );
+      if (map.getLayer("map-point-highlight")) {
+        map.setFilter("map-point-highlight", ["==", ["get", "slug"], choice.item.slug]);
+      }
+      setStravaRouteHighlight("");
+      updateLayerVisibility();
+      updateRouteProgressMarker({
+        item: choice.item,
+        coordinate:
+          activePopupCoordinate ||
+          coordinateAtProgress(routeCoordinatesForItem(choice.item), 0) ||
+          [choice.item.lon, choice.item.lat],
+        routeProgress: 0,
+        inGap: false,
+        pathDistance: pathDistance(routeCoordinatesForItem(choice.item)),
+      });
+      keepTimelineDotVisible(choice.item.slug);
+    }
+
+    if (render && popup?.isOpen?.()) {
+      popup.setHTML(stackedPopupHtml(activePopupChoices, activePopupChoiceIndex));
+      window.requestAnimationFrame(syncPopupChoiceScroll);
+    }
+  };
+
+  const showStackedPopup = (choices, coordinate, activeIndex = 0) => {
+    clearScheduledPopup();
+    popup.remove();
+    activePopupChoices = choices;
+    activePopupChoiceIndex = activeIndex;
+    activePopupCoordinate = coordinate;
+    activatePopupChoice(activeIndex, { render: false });
+    const placement = routePopupPlacement(coordinate);
+    popup = createPopup(placement.anchor);
+    popup.setLngLat(coordinate).setHTML(stackedPopupHtml(choices, activePopupChoiceIndex)).addTo(map);
+    window.requestAnimationFrame(syncPopupChoiceScroll);
+  };
+
+  const showStravaPopup = (properties, lngLat) => {
+    clearScheduledPopup();
+    popup.remove();
+    activeTimelineSlug = "";
+    activeStravaActivityId = String(properties.id || "");
+    timelineDots.forEach((dot) => dot.classList.remove("is-active"));
+    if (map.getLayer("map-point-highlight")) {
+      map.setFilter("map-point-highlight", ["==", ["get", "slug"], ""]);
+    }
+    setRouteHighlight("");
+    setRaceRouteHighlight("");
+    setStravaRouteHighlight(activeStravaActivityId);
+    updateRouteProgressMarker(null);
+    updateLayerVisibility();
+    updateActiveSummary({
+      title: properties.name || "Strava route",
+      date: String(properties.startDate || "").slice(0, 10),
+    });
+    popup = createPopup();
+    popup.setLngLat(lngLat).setHTML(stravaPopupHtml(properties || {})).addTo(map);
+  };
+
+  const selectPopupChoice = (choice, coordinate) => {
+    if (choice.kind === "strava") {
+      showStravaPopup(choice.properties, coordinate);
+      return;
+    }
+    if (choice.item) selectItem(choice.item.slug, false, coordinate);
+  };
+
+  const handleInteractiveMapClick = (event, { markHandled = true } = {}) => {
+    const choices = popupChoicesAtPoint(event.point);
+    const coordinate = event.lngLat ? [event.lngLat.lng, event.lngLat.lat] : null;
+    if (!choices.length || !coordinate) return false;
+    if (markHandled) handledInteractiveClick = true;
+    if (choices.length === 1) {
+      selectPopupChoice(choices[0], coordinate);
+      return true;
+    }
+    showStackedPopup(choices, coordinate);
+    return true;
+  };
+
+  mapElement.addEventListener("click", (event) => {
+    const stepButton = event.target?.closest?.("[data-popup-stack-step]");
+    if (stepButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      activatePopupChoice(activePopupChoiceIndex + Number(stepButton.getAttribute("data-popup-stack-step") || 0));
+      return;
+    }
+
+    const choiceButton = event.target?.closest?.("[data-popup-choice-index]");
+    if (choiceButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      activatePopupChoice(Number(choiceButton.getAttribute("data-popup-choice-index") || 0));
+      return;
+    }
+
+    if (!event.target?.closest?.(".mapboxgl-canvas")) return;
+    const rect = mapElement.getBoundingClientRect();
+    const point = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    const lngLat = map.unproject(point);
+    const handled = handleInteractiveMapClick(
+      {
+        point,
+        lngLat,
+      },
+      { markHandled: true },
+    );
+    if (handled) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
 
   const routeFeatureKey = (feature) =>
     `${feature.properties?.slug || ""}:${Number(feature.properties?.segmentIndex ?? -1)}`;
@@ -1299,9 +1617,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
     for (const layerId of ["trip-routes-flight", "trip-routes-drive", "trip-routes-sail", "trip-routes-train", "trip-route-nodes", "trip-route-highlight", "trip-route-highlight-casing"]) {
       map.on("click", layerId, (event) => {
-        const slug = event.features?.[0]?.properties?.slug;
-        const clickedCoordinate = event.lngLat ? [event.lngLat.lng, event.lngLat.lat] : null;
-        if (slug) selectItem(slug, false, clickedCoordinate);
+        handleInteractiveMapClick(event);
       });
       bindPointerLayer(layerId);
     }
@@ -1315,7 +1631,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     const details = [properties.activityGroup, distance, String(properties.startDate || "").slice(0, 10)]
       .filter(Boolean)
       .join(" / ");
-    return `<strong>${escapeHtml(properties.name || "Strava route")}</strong><span>${escapeHtml(details)}</span>`;
+    const href = stravaActivityUrl(properties.id);
+    return `<strong>${linkedTitleHtml(properties.name || "Strava route", href)}</strong><span>${escapeHtml(details)}</span>`;
   };
 
   const loadStravaRoutes = async () => {
@@ -1387,16 +1704,43 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       },
       "map-points",
     );
+    map.addLayer(
+      {
+        id: "strava-route-highlight-casing",
+        type: "line",
+        source: "strava-routes",
+        filter: ["==", ["get", "id"], ""],
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": "#060504",
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 2.2, 8, 5.8, 12, 8.2],
+          "line-opacity": 0.72,
+          "line-blur": 0.25,
+        },
+      },
+      "map-points",
+    );
+    map.addLayer(
+      {
+        id: "strava-route-highlight",
+        type: "line",
+        source: "strava-routes",
+        filter: ["==", ["get", "id"], ""],
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": "#f7f2e7",
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 1.2, 8, 3.1, 12, 4.4],
+          "line-opacity": 0.94,
+        },
+      },
+      "map-points",
+    );
 
     map.on("click", "strava-routes", (event) => {
-      const feature = event.features?.[0];
-      if (!feature) return;
-      clearScheduledPopup();
-      popup.remove();
-      popup = createPopup();
-      popup.setLngLat(event.lngLat).setHTML(stravaPopupHtml(feature.properties || {})).addTo(map);
+      handleInteractiveMapClick(event);
     });
     bindPointerLayer("strava-routes");
+    bindPointerLayer("strava-route-highlight");
     updateLayerVisibility();
   };
 
@@ -1462,9 +1806,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
     for (const layerId of ["race-route-highlight-casing", "race-route-highlight"]) {
       map.on("click", layerId, (event) => {
-        const slug = event.features?.[0]?.properties?.raceSlug;
-        const clickedCoordinate = event.lngLat ? [event.lngLat.lng, event.lngLat.lat] : null;
-        if (slug) selectItem(slug, false, clickedCoordinate);
+        handleInteractiveMapClick(event);
       });
       bindPointerLayer(layerId);
     }
@@ -1590,9 +1932,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   });
 
   map.on("click", "map-points", (event) => {
-    const feature = event.features?.[0];
-    const slug = feature?.properties?.slug;
-    if (slug) selectItem(slug, false);
+    handleInteractiveMapClick(event);
   });
 
   map.on("mouseenter", "map-points", () => {
@@ -1604,29 +1944,13 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   });
 
   map.on("click", (event) => {
-    const interactiveLayers = [
-      "map-points",
-      "map-point-highlight",
-      "trip-routes-flight",
-      "trip-routes-drive",
-      "trip-routes-sail",
-      "trip-routes-train",
-      "trip-route-nodes",
-      "trip-route-highlight",
-      "trip-route-highlight-casing",
-      "trip-route-node-highlight",
-      "race-route-highlight",
-      "race-route-highlight-casing",
-      "strava-routes",
-      "route-progress-marker",
-      "route-progress-marker-halo",
-    ].filter((layerId) => map.getLayer(layerId));
+    if (handledInteractiveClick) {
+      handledInteractiveClick = false;
+      return;
+    }
 
-    const clickedInteractiveFeature = interactiveLayers.length
-      ? map.queryRenderedFeatures(event.point, { layers: interactiveLayers }).length > 0
-      : false;
-
-    if (!clickedInteractiveFeature) clearSelection();
+    if (handleInteractiveMapClick(event, { markHandled: false })) return;
+    clearSelection();
   });
 
   const editorAvailable =
@@ -1743,7 +2067,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
           const option = document.createElement("option");
           option.value = value;
           option.textContent =
-            value === "flight" ? "Flight" : value === "sail" ? "Sail" : value === "train" ? "Train" : "Drive";
+            value === "flight" ? "Plane" : value === "sail" ? "Boat" : value === "train" ? "Train" : "Car";
           mode.append(option);
         }
         mode.value = ["flight", "sail", "train"].includes(trip.routeSegments[index - 1]?.mode)
@@ -2067,8 +2391,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     renderEditorStops();
     setEditorStatus(
       failed
-        ? `Recalculated ${routed} drive leg(s), ${flights} flight leg(s), ${sails} sail leg(s), ${trains} train leg(s); ${failed} failed`
-        : `Recalculated ${routed} drive leg(s), ${flights} flight leg(s), ${sails} sail leg(s), ${trains} train leg(s)`,
+        ? `Recalculated ${routed} car leg(s), ${flights} plane leg(s), ${sails} boat leg(s), ${trains} train leg(s); ${failed} failed`
+        : `Recalculated ${routed} car leg(s), ${flights} plane leg(s), ${sails} boat leg(s), ${trains} train leg(s)`,
       failed ? "error" : "dirty",
     );
     setEditorBusy(false);

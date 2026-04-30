@@ -4446,6 +4446,241 @@
     },
     {
       "type": "trip",
+      "slug": "jul-2014-japan-ancient-capitals",
+      "title": "Japan Ancient Capitals",
+      "detail": "Tokyo, Kyoto, and Diamond Princess Ancient Capitals cruise",
+      "date": "Jul 2014",
+      "lat": 35.6762,
+      "lon": 139.6503,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Tokyo / Haneda Airport",
+          "lat": 35.5494,
+          "lon": 139.7798
+        },
+        {
+          "title": "Tokyo",
+          "lat": 35.6762,
+          "lon": 139.6503
+        },
+        {
+          "title": "Kyoto",
+          "lat": 35.0116,
+          "lon": 135.7681
+        },
+        {
+          "title": "Return to Tokyo",
+          "lat": 35.6762,
+          "lon": 139.6503,
+          "showOnMap": false
+        },
+        {
+          "title": "Yokohama Cruise Terminal",
+          "lat": 35.4513,
+          "lon": 139.6455
+        },
+        {
+          "title": "Tokyo Bay Exit",
+          "lat": 35.052,
+          "lon": 139.828,
+          "showOnMap": false
+        },
+        {
+          "title": "Pacific off Sendai",
+          "lat": 38.1,
+          "lon": 141.5,
+          "showOnMap": false
+        },
+        {
+          "title": "Tsugaru Strait",
+          "lat": 41.45,
+          "lon": 140.45,
+          "showOnMap": false
+        },
+        {
+          "title": "Sea of Japan off Niigata",
+          "lat": 38.1,
+          "lon": 138.5,
+          "showOnMap": false
+        },
+        {
+          "title": "Kanazawa Port",
+          "lat": 36.6126,
+          "lon": 136.6055
+        },
+        {
+          "title": "Fukui Coast Offshore",
+          "lat": 36.05,
+          "lon": 135.8,
+          "showOnMap": false
+        },
+        {
+          "title": "Maizuru Port",
+          "lat": 35.4768,
+          "lon": 135.3861
+        },
+        {
+          "title": "Tottori Coast Offshore",
+          "lat": 35.7,
+          "lon": 134.2,
+          "showOnMap": false
+        },
+        {
+          "title": "Sakaiminato",
+          "lat": 35.5396,
+          "lon": 133.2315
+        },
+        {
+          "title": "Tsushima Strait",
+          "lat": 34.7,
+          "lon": 129.2,
+          "showOnMap": false
+        },
+        {
+          "title": "Busan, South Korea",
+          "lat": 35.1796,
+          "lon": 129.0756
+        },
+        {
+          "title": "Korea Strait",
+          "lat": 34.2,
+          "lon": 129.3,
+          "showOnMap": false
+        },
+        {
+          "title": "Nagasaki",
+          "lat": 32.7503,
+          "lon": 129.8779
+        },
+        {
+          "title": "Kyushu South Coast",
+          "lat": 31.5,
+          "lon": 130.6,
+          "showOnMap": false
+        },
+        {
+          "title": "Shikoku Offshore",
+          "lat": 33,
+          "lon": 134,
+          "showOnMap": false
+        },
+        {
+          "title": "Kii Peninsula Offshore",
+          "lat": 33.5,
+          "lon": 136.6,
+          "showOnMap": false
+        },
+        {
+          "title": "Izu Islands Offshore",
+          "lat": 34.2,
+          "lon": 139,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Yokohama Cruise Terminal",
+          "lat": 35.4513,
+          "lon": 139.6455,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Tokyo / Haneda Airport",
+          "lat": 35.5494,
+          "lon": 139.7798,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "train"
+        },
+        {
+          "mode": "train"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
       "slug": "dec-2014-miami",
       "title": "Miami",
       "detail": "SFO out and back",
