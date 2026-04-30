@@ -58,6 +58,12 @@ const timelineFocusStart = Date.UTC(2020, 0, 1);
 const timelineFocusSpan = Math.max(1, timelineEnd - timelineFocusStart);
 const timelineWidth = Math.max(100, Math.min(720, (timelineSpan / timelineFocusSpan) * 180));
 const timelineScrollStart = ((timelineFocusStart - timelineStart) / timelineSpan) * timelineWidth;
+const firstFocusedTimelineIndex = mapItems.findIndex((item) => sortDate(item.date) >= timelineFocusStart);
+const initialScrubberIndex =
+  firstFocusedTimelineIndex >= 0 ? firstFocusedTimelineIndex : Math.max(0, mapItems.length - 1);
+const scrubberUnit = 100;
+const initialScrubberValue = initialScrubberIndex * scrubberUnit;
+const scrubberMax = Math.max(1, mapItems.length * scrubberUnit);
 const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 ---
 
@@ -120,13 +126,21 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
               }
             </div>
           </div>
-          <article class="map-timeline__active" data-map-active-card aria-live="polite">
-            <div>
-              <p data-map-active-title>{activeTimelineItem?.title}</p>
-              <small data-map-active-detail>{activeTimelineItem?.detail}</small>
-            </div>
-            <span data-map-active-date>{activeTimelineItem?.date}</span>
-          </article>
+          <div class="travel-scrubber" data-travel-scrubber-shell>
+            <input
+              class="travel-scrubber__range"
+              type="range"
+              min="0"
+              max={scrubberMax}
+              value={initialScrubberValue}
+              step="1"
+              data-travel-scrubber
+              aria-label="Scrub through the travel timeline"
+            />
+            <output class="sr-only" data-travel-scrubber-title aria-live="polite">
+              {activeTimelineItem?.title}, {activeTimelineItem?.date}
+            </output>
+          </div>
         </section>
       </div>
 
@@ -187,9 +201,9 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const mapElement = document.getElementById("travel-map");
   const timelineRail = document.querySelector("[data-travel-timeline-rail]");
   const timelineDots = Array.from(document.querySelectorAll("[data-map-timeline-item]"));
-  const activeTitleElement = document.querySelector("[data-map-active-title]");
-  const activeDetailElement = document.querySelector("[data-map-active-detail]");
-  const activeDateElement = document.querySelector("[data-map-active-date]");
+  const scrubberShell = document.querySelector("[data-travel-scrubber-shell]");
+  const scrubberInput = document.querySelector("[data-travel-scrubber]");
+  const scrubberTitleElement = document.querySelector("[data-travel-scrubber-title]");
   const routeEditorToggle = document.querySelector("[data-route-editor-toggle]");
   const routeEditor = document.getElementById("route-editor");
   const routeEditorTrip = document.getElementById("route-editor-trip");
@@ -539,9 +553,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
   const updateActiveSummary = (item) => {
     if (!item) return;
-    if (activeTitleElement) activeTitleElement.textContent = item.title || "";
-    if (activeDetailElement) activeDetailElement.textContent = item.detail || item.result || "";
-    if (activeDateElement) activeDateElement.textContent = item.date || "";
+    if (scrubberTitleElement) scrubberTitleElement.textContent = `${item.title || "Timeline item"}, ${item.date || ""}`;
   };
 
   const popupHtml = (item) => {
@@ -705,6 +717,237 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     return [item.lon, item.lat];
   };
 
+  const emptyProgressMarkerData = { type: "FeatureCollection", features: [] };
+  const scrubberUnitsPerItem = 100;
+  const scrubberRoutePortion = 0.82;
+  let currentScrubState = null;
+
+  const sameLngLat = (first, second) =>
+    Array.isArray(first) &&
+    Array.isArray(second) &&
+    Math.abs(Number(first[0]) - Number(second[0])) < 0.00001 &&
+    Math.abs(Number(first[1]) - Number(second[1])) < 0.00001;
+
+  const routeCoordinatesForTrip = (slug) => {
+    const features = (tripRouteCollections.routes.features || [])
+      .filter((feature) => feature.properties?.slug === slug)
+      .sort((first, second) => Number(first.properties?.segmentIndex ?? 0) - Number(second.properties?.segmentIndex ?? 0));
+
+    const coordinates = [];
+    features.forEach((feature) => {
+      const segment = sanitizedCoordinates(feature.geometry?.coordinates);
+      if (!segment.length) return;
+      const nextSegment = coordinates.length && sameLngLat(coordinates[coordinates.length - 1], segment[0])
+        ? segment.slice(1)
+        : segment;
+      coordinates.push(...nextSegment);
+    });
+    return coordinates;
+  };
+
+  const routeCoordinatesForItem = (item) => {
+    if (!item) return [];
+    if (item.type === "trip") {
+      const coordinates = routeCoordinatesForTrip(item.slug);
+      if (coordinates.length) return coordinates;
+    }
+    if (item.type === "race") {
+      const coordinates = raceRouteCoordinates(item.slug);
+      if (coordinates.length) return coordinates;
+    }
+    return Number.isFinite(Number(item.lon)) && Number.isFinite(Number(item.lat)) ? [[item.lon, item.lat]] : [];
+  };
+
+  const haversineDistance = (first, second) => {
+    const radiusKm = 6371;
+    const lat1 = toRadians(Number(first[1]));
+    const lat2 = toRadians(Number(second[1]));
+    const deltaLat = toRadians(Number(second[1]) - Number(first[1]));
+    const deltaLon = toRadians(Number(second[0]) - Number(first[0]));
+    const a =
+      Math.sin(deltaLat / 2) ** 2 +
+      Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLon / 2) ** 2;
+    return radiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
+
+  const interpolateLngLat = (first, second, progress) => {
+    const clampedProgress = Math.min(1, Math.max(0, Number(progress) || 0));
+    const startLon = Number(first[0]);
+    const startLat = Number(first[1]);
+    let deltaLon = Number(second[0]) - startLon;
+    while (deltaLon > 180) deltaLon -= 360;
+    while (deltaLon < -180) deltaLon += 360;
+    let lon = startLon + deltaLon * clampedProgress;
+    while (lon > 180) lon -= 360;
+    while (lon < -180) lon += 360;
+    return [Number(lon.toFixed(5)), Number((startLat + (Number(second[1]) - startLat) * clampedProgress).toFixed(5))];
+  };
+
+  const pathDistance = (coordinates) => {
+    let distance = 0;
+    for (let index = 1; index < coordinates.length; index += 1) {
+      distance += haversineDistance(coordinates[index - 1], coordinates[index]);
+    }
+    return distance;
+  };
+
+  const coordinateAtProgress = (coordinates, progress) => {
+    if (!coordinates.length) return null;
+    if (coordinates.length === 1) return coordinates[0];
+
+    const totalDistance = pathDistance(coordinates);
+    if (!Number.isFinite(totalDistance) || totalDistance <= 0) return coordinates[0];
+
+    const targetDistance = totalDistance * Math.min(1, Math.max(0, Number(progress) || 0));
+    let traversedDistance = 0;
+    for (let index = 1; index < coordinates.length; index += 1) {
+      const start = coordinates[index - 1];
+      const end = coordinates[index];
+      const segmentDistance = haversineDistance(start, end);
+      if (!Number.isFinite(segmentDistance) || segmentDistance <= 0) continue;
+      if (traversedDistance + segmentDistance >= targetDistance) {
+        return interpolateLngLat(start, end, (targetDistance - traversedDistance) / segmentDistance);
+      }
+      traversedDistance += segmentDistance;
+    }
+    return coordinates[coordinates.length - 1];
+  };
+
+  const scrubberStateFromValue = (value) => {
+    if (!timelineSequence.length) return null;
+    const clampedValue = Math.min(Math.max(Number(value) || 0, 0), timelineSequence.length * scrubberUnitsPerItem);
+    const rawIndex = clampedValue / scrubberUnitsPerItem;
+    const itemIndex = Math.min(Math.floor(rawIndex), timelineSequence.length - 1);
+    const item = timelineSequence[itemIndex];
+    const phase = itemIndex === timelineSequence.length - 1 ? Math.min(1, rawIndex - itemIndex) : rawIndex - itemIndex;
+    const coordinates = routeCoordinatesForItem(item);
+    const nextItem = timelineSequence[itemIndex + 1];
+    const routeProgress =
+      itemIndex === timelineSequence.length - 1
+        ? phase
+        : Math.min(1, phase / scrubberRoutePortion);
+    const routeCoordinate = coordinateAtProgress(coordinates, routeProgress);
+
+    if (nextItem && phase > scrubberRoutePortion) {
+      const nextCoordinates = routeCoordinatesForItem(nextItem);
+      const start = coordinates[coordinates.length - 1] || routeCoordinate;
+      const end = nextCoordinates[0] || [nextItem.lon, nextItem.lat];
+      return {
+        item,
+        coordinate: start && end ? interpolateLngLat(start, end, (phase - scrubberRoutePortion) / (1 - scrubberRoutePortion)) : routeCoordinate,
+        routeProgress: 1,
+        inGap: true,
+        pathDistance: pathDistance(coordinates),
+      };
+    }
+
+    return {
+      item,
+      coordinate: routeCoordinate,
+      routeProgress,
+      inGap: false,
+      pathDistance: pathDistance(coordinates),
+    };
+  };
+
+  const progressMarkerData = (state) => {
+    if (!state?.coordinate) return emptyProgressMarkerData;
+    return {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: { type: "Point", coordinates: state.coordinate },
+          properties: {
+            slug: state.item.slug,
+            type: state.item.type,
+            progress: state.routeProgress,
+          },
+        },
+      ],
+    };
+  };
+
+  const updateRouteProgressMarker = (state) => {
+    currentScrubState = state;
+    const source = map.getSource("route-progress-marker");
+    if (source && "setData" in source) source.setData(progressMarkerData(state));
+  };
+
+  const scrubberValueForSlug = (slug) => {
+    const index = timelineSequence.findIndex((item) => item.slug === slug);
+    return index >= 0 ? index * scrubberUnitsPerItem : 0;
+  };
+
+  const syncScrubberToItem = (item, coordinate = null) => {
+    if (!item) return;
+    if (scrubberInput) scrubberInput.value = String(scrubberValueForSlug(item.slug));
+    updateRouteProgressMarker({
+      item,
+      coordinate: coordinate || coordinateAtProgress(routeCoordinatesForItem(item), 0) || [item.lon, item.lat],
+      routeProgress: 0,
+      inGap: false,
+      pathDistance: pathDistance(routeCoordinatesForItem(item)),
+    });
+  };
+
+  const keepTimelineDotVisible = (slug) => {
+    if (!timelineRail) return;
+    const dot = timelineDots.find((item) => item.getAttribute("data-map-timeline-item") === slug);
+    if (!dot) return;
+    const targetLeft = dot.offsetLeft - timelineRail.clientWidth / 2;
+    timelineRail.scrollTo({ left: Math.max(0, targetLeft), behavior: "smooth" });
+  };
+
+  const applyScrubFocus = (item) => {
+    if (!item) return false;
+    const itemChanged = activeTimelineSlug !== item.slug;
+    activeTimelineSlug = item.slug;
+    updateActiveSummary(item);
+    timelineDots.forEach((dot) =>
+      dot.classList.toggle("is-active", dot.getAttribute("data-map-timeline-item") === item.slug),
+    );
+    if (map.getLayer("map-point-highlight")) {
+      map.setFilter("map-point-highlight", ["==", ["get", "slug"], item.slug]);
+    }
+    clearScheduledPopup();
+    popup.remove();
+    updateLayerVisibility();
+    keepTimelineDotVisible(item.slug);
+    return itemChanged;
+  };
+
+  const scrubZoomForState = (state) => {
+    if (!state?.item) return map.getZoom();
+    if (state.inGap) return mapElement.clientWidth < 680 ? 3.3 : 4.2;
+    if (state.item.type === "race") return mapElement.clientWidth < 680 ? 8.8 : 9.6;
+    if (state.item.travelMode === "flight") return mapElement.clientWidth < 680 ? 2.5 : 3.1;
+    if (state.pathDistance > 1200) return mapElement.clientWidth < 680 ? 4.4 : 5.1;
+    return mapElement.clientWidth < 680 ? 5.9 : 6.7;
+  };
+
+  const trackScrubCamera = (state, itemChanged) => {
+    if (!state?.coordinate) return;
+    map.easeTo({
+      center: state.coordinate,
+      zoom: scrubZoomForState(state),
+      pitch: state.item?.type === "race" ? (mapElement.clientWidth < 680 ? 34 : 42) : mapElement.clientWidth < 680 ? 28 : 36,
+      duration: itemChanged ? 320 : 120,
+      essential: true,
+    });
+  };
+
+  const setScrubberProgress = (value, { trackCamera = false } = {}) => {
+    if (!scrubberInput) return;
+    const clampedValue = Math.min(Math.max(Number(value) || 0, 0), Number(scrubberInput.max) || 1);
+    scrubberInput.value = String(clampedValue);
+    const state = scrubberStateFromValue(clampedValue);
+    if (!state?.item) return;
+    const itemChanged = applyScrubFocus(state.item);
+    updateRouteProgressMarker(state);
+    if (trackCamera) trackScrubCamera(state, itemChanged);
+  };
+
   const fitOverview = () => {
     map.easeTo({
       center: mapElement.clientWidth < 680 ? [-90, 28] : [-54, 28],
@@ -739,6 +982,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       map.flyTo({ center: [item.lon, item.lat], zoom: item.type === "race" ? 4.2 : 4.8, duration: 850 });
     }
     showPopup(item, popupCoordinate, popupPlacement.anchor, true);
+    syncScrubberToItem(item, popupCoordinate);
   };
 
   const clearSelection = () => {
@@ -751,6 +995,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     setRaceRouteHighlight("");
     clearScheduledPopup();
     popup.remove();
+    updateRouteProgressMarker(null);
     updateLayerVisibility();
   };
 
@@ -1244,6 +1489,31 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       // Labels are optional; routes and interaction should not depend on glyph availability.
     }
 
+    map.addSource("route-progress-marker", { type: "geojson", data: emptyProgressMarkerData });
+    map.addLayer({
+      id: "route-progress-marker-halo",
+      type: "circle",
+      source: "route-progress-marker",
+      paint: {
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 0, 5, 6, 9, 10, 13],
+        "circle-color": "rgba(255, 250, 240, 0.18)",
+        "circle-stroke-color": "rgba(255, 250, 240, 0.78)",
+        "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 0, 1, 8, 2],
+      },
+    });
+    map.addLayer({
+      id: "route-progress-marker",
+      type: "circle",
+      source: "route-progress-marker",
+      paint: {
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 0, 2.8, 6, 4.5, 10, 6],
+        "circle-color": "#fffaf0",
+        "circle-stroke-color": ["case", ["==", ["get", "type"], "race"], "#a97835", "#5f7f49"],
+        "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 0, 1.4, 8, 2.2],
+      },
+    });
+    if (currentScrubState) updateRouteProgressMarker(currentScrubState);
+
     loadTripRoutes();
     loadRaceRoutes();
     loadStravaRoutes();
@@ -1289,6 +1559,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       "race-route-highlight",
       "race-route-highlight-casing",
       "strava-routes",
+      "route-progress-marker",
+      "route-progress-marker-halo",
     ].filter((layerId) => map.getLayer(layerId));
 
     const clickedInteractiveFeature = interactiveLayers.length
@@ -1896,6 +2168,35 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   timelineDots.forEach((dot) => {
     dot.addEventListener("click", () => selectItem(dot.getAttribute("data-map-timeline-item"), false));
   });
+
+  if (scrubberInput) {
+    scrubberInput.max = String(Math.max(1, timelineSequence.length * scrubberUnitsPerItem));
+    updateActiveSummary(
+      timelineSequence[Math.min(Math.floor(Number(scrubberInput.value || 0) / scrubberUnitsPerItem), timelineSequence.length - 1)] ||
+        timelineSequence[0],
+    );
+
+    scrubberInput.addEventListener("input", () => {
+      setScrubberProgress(scrubberInput.value, { trackCamera: true });
+    });
+
+    scrubberInput.addEventListener("change", () => {
+      setScrubberProgress(scrubberInput.value, { trackCamera: true });
+    });
+  }
+
+  const handleScrubberWheel = (event) => {
+    if (!scrubberInput) return;
+    event.preventDefault();
+    const dominantDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (!dominantDelta) return;
+    const max = Number(scrubberInput.max) || 1;
+    const step = Math.max(3, Math.round(max / 280));
+    setScrubberProgress(Number(scrubberInput.value || 0) + Math.sign(dominantDelta) * step, { trackCamera: true });
+  };
+
+  scrubberShell?.addEventListener("wheel", handleScrubberWheel, { passive: false });
+  scrubberInput?.addEventListener("wheel", handleScrubberWheel, { passive: false });
 
   if (timelineRail) {
     const scrollStart = Number.parseFloat(

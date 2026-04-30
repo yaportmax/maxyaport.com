@@ -1595,13 +1595,20 @@ body.travel-app .map-timeline {
 }
 
 body.travel-app .travel-timeline-rail {
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   padding-top: 12px;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+body.travel-app .travel-timeline-rail::-webkit-scrollbar {
+  display: none;
 }
 
 body.travel-app .travel-timeline-rail__axis {
-  width: 100%;
-  min-width: 0;
+  width: max(var(--timeline-width, 100%), 100%);
+  min-width: 100%;
 }
 
 body.travel-app .map-timeline__active p,
@@ -1628,13 +1635,12 @@ body.travel-app .map-timeline__active small {
   }
 
   body.travel-app .travel-timeline-rail__axis {
-    height: 46px;
+    height: 42px;
   }
 
-  body.travel-app .map-timeline__active {
-    min-height: 0;
-    padding-top: 6px;
-    padding-bottom: 1px;
+  body.travel-app .travel-scrubber {
+    padding-top: 4px;
+    padding-bottom: 3px;
   }
 }
 
@@ -1724,6 +1730,140 @@ body.travel-app .map-timeline__active small {
 
 .map-timeline__list {
   display: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.travel-scrubber {
+  position: relative;
+  padding: 7px 20px 14px;
+  isolation: isolate;
+}
+
+.travel-scrubber::before {
+  content: "";
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  top: 50%;
+  height: 18px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(95, 127, 73, 0.22), rgba(169, 120, 53, 0.2)),
+    color-mix(in srgb, var(--panel) 54%, transparent);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 250, 240, 0.08);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.travel-scrubber::after {
+  content: "";
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  top: 50%;
+  height: 1px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--muted) 50%, transparent) 0 1px,
+    transparent 1px 18px
+  );
+  opacity: 0.52;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.travel-scrubber__range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 38px;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: ew-resize;
+}
+
+.travel-scrubber__range:focus {
+  outline: none;
+}
+
+.travel-scrubber__range:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--accent) 24%, transparent),
+    0 10px 22px rgba(0, 0, 0, 0.36);
+}
+
+.travel-scrubber__range:focus-visible::-moz-range-thumb {
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--accent) 24%, transparent),
+    0 10px 22px rgba(0, 0, 0, 0.36);
+}
+
+.travel-scrubber__range::-webkit-slider-runnable-track {
+  height: 18px;
+  border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+  border-radius: 999px;
+  background: transparent;
+}
+
+.travel-scrubber__range::-moz-range-track {
+  height: 18px;
+  border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+  border-radius: 999px;
+  background: transparent;
+}
+
+.travel-scrubber__range::-webkit-slider-thumb {
+  appearance: none;
+  width: 34px;
+  height: 34px;
+  margin-top: -9px;
+  border: 1px solid color-mix(in srgb, #fffaf0 72%, transparent);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 42%, #fffaf0 0 3px, transparent 4px),
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 74%, #fffaf0), #8ea96d);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 10px 22px rgba(0, 0, 0, 0.36);
+  cursor: grab;
+}
+
+.travel-scrubber__range::-moz-range-thumb {
+  width: 34px;
+  height: 34px;
+  border: 1px solid color-mix(in srgb, #fffaf0 72%, transparent);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 42%, #fffaf0 0 3px, transparent 4px),
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 74%, #fffaf0), #8ea96d);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 10px 22px rgba(0, 0, 0, 0.36);
+  cursor: grab;
+}
+
+.travel-scrubber__range:active::-webkit-slider-thumb {
+  cursor: grabbing;
+  transform: scale(1.04);
+}
+
+.travel-scrubber__range:active::-moz-range-thumb {
+  cursor: grabbing;
 }
 
 .map-timeline__active {
@@ -1913,7 +2053,7 @@ body.travel-app .map-timeline__active small {
   }
 
   body.travel-app .travel-timeline-rail__axis {
-    height: 48px;
+    height: 42px;
   }
 
   body.travel-app .travel-timeline-rail__year {
@@ -1929,24 +2069,39 @@ body.travel-app .map-timeline__active small {
     height: 5px;
   }
 
-  body.travel-app .map-timeline__active {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 4px;
-    min-height: 0;
-    padding: 7px 8px 2px;
+  body.travel-app .travel-scrubber {
+    padding: 4px 8px 8px;
   }
 
-  body.travel-app .map-timeline__active p {
-    font-size: 0.9rem;
+  body.travel-app .travel-scrubber::before {
+    left: 14px;
+    right: 14px;
+    height: 16px;
   }
 
-  body.travel-app .map-timeline__active small,
-  body.travel-app .map-timeline__active > span:last-child {
-    font-size: 0.72rem;
+  body.travel-app .travel-scrubber::after {
+    left: 22px;
+    right: 22px;
   }
 
-  body.travel-app .map-timeline__active > span:last-child {
-    grid-column: 1;
+  body.travel-app .travel-scrubber__range {
+    height: 32px;
+  }
+
+  body.travel-app .travel-scrubber__range::-webkit-slider-runnable-track,
+  body.travel-app .travel-scrubber__range::-moz-range-track {
+    height: 16px;
+  }
+
+  body.travel-app .travel-scrubber__range::-webkit-slider-thumb {
+    width: 30px;
+    height: 30px;
+    margin-top: -8px;
+  }
+
+  body.travel-app .travel-scrubber__range::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
   }
 
   body.travel-app .map-popup .mapboxgl-popup-content {
