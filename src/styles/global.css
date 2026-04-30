@@ -1947,6 +1947,12 @@ body.travel-app .map-timeline__active small {
     grid-column: 1;
   }
 
+  body.travel-app .map-popup .mapboxgl-popup-content {
+    width: min(210px, calc(100vw - 34px));
+    min-width: 0;
+    padding: 10px 11px;
+  }
+
   .prose figure {
     max-width: 100%;
   }

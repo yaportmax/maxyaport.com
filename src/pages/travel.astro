@@ -505,12 +505,29 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
   map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), "top-right");
 
-  const popup = new mapboxgl.Popup({
-    closeButton: false,
-    closeOnClick: true,
-    offset: 16,
-    className: "map-popup",
-  });
+  const popupOffset = {
+    top: [0, 18],
+    bottom: [0, -18],
+    left: [18, 0],
+    right: [-18, 0],
+    "top-left": [14, 14],
+    "top-right": [-14, 14],
+    "bottom-left": [14, -14],
+    "bottom-right": [-14, -14],
+  };
+
+  const createPopup = (anchor = undefined) =>
+    new mapboxgl.Popup({
+      anchor,
+      closeButton: false,
+      closeOnClick: true,
+      offset: popupOffset,
+      className: "map-popup",
+    });
+
+  let popup = createPopup();
+  let popupTimer = 0;
+  let popupSequence = 0;
 
   const escapeHtml = (value) =>
     String(value ?? "")
@@ -569,7 +586,67 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     return coordinates.length ? coordinates[Math.floor(coordinates.length / 2)] : null;
   };
 
-  const fitTripRoute = (item) => {
+  const routePopupPlacement = (coordinate = null) => {
+    const compact = mapElement.clientWidth < 680;
+    const longitude = Array.isArray(coordinate) && Number.isFinite(Number(coordinate[0])) ? Number(coordinate[0]) : 0;
+    const panelSide = longitude < -30 ? "left" : "right";
+    const sidePadding = Math.round(Math.min(mapElement.clientWidth * (compact ? 0.62 : 0.3), compact ? 236 : 340));
+    const baseX = compact ? 30 : 82;
+    const top = compact ? 56 : 92;
+    const bottom = compact ? 48 : 76;
+
+    return {
+      anchor: panelSide === "left" ? "right" : "left",
+      padding:
+        panelSide === "left"
+          ? { top, bottom, left: Math.max(baseX, sidePadding), right: baseX }
+          : { top, bottom, left: baseX, right: Math.max(baseX, sidePadding) },
+    };
+  };
+
+  const clearScheduledPopup = () => {
+    popupSequence += 1;
+    if (popupTimer) window.clearTimeout(popupTimer);
+    popupTimer = 0;
+  };
+
+  const showPopup = (item, coordinate, anchor = undefined, waitForMove = false) => {
+    clearScheduledPopup();
+    popup.remove();
+    const sequence = popupSequence;
+
+    const renderPopup = () => {
+      if (sequence !== popupSequence) return;
+      popup.remove();
+      popup = createPopup(anchor);
+      popup.setLngLat(coordinate).setHTML(popupHtml(item)).addTo(map);
+    };
+
+    if (!waitForMove) {
+      renderPopup();
+      return;
+    }
+
+    let rendered = false;
+    let timerId = 0;
+    const renderOnce = () => {
+      if (rendered) return;
+      rendered = true;
+      map.off("moveend", renderOnce);
+      if (sequence !== popupSequence) return;
+      if (popupTimer === timerId) {
+        window.clearTimeout(popupTimer);
+        popupTimer = 0;
+      }
+      renderPopup();
+    };
+
+    map.once("moveend", renderOnce);
+    timerId = window.setTimeout(renderOnce, 980);
+    popupTimer = timerId;
+  };
+
+  const fitTripRoute = (item, placement = null) => {
     const nodes = tripNodesBySlug.get(item.slug) || [];
     if (nodes.length < 2) return false;
 
@@ -579,7 +656,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
     const isCompact = mapElement.clientWidth < 680;
     map.fitBounds(bounds, {
-      padding: isCompact ? 58 : { top: 104, bottom: 74, left: 86, right: 86 },
+      padding: placement?.padding || (isCompact ? 58 : { top: 104, bottom: 74, left: 86, right: 86 }),
       maxZoom: item.travelMode === "flight" ? 4.7 : 7,
       pitch: item.travelMode === "flight" ? 0 : isCompact ? 30 : 38,
       duration: 850,
@@ -587,7 +664,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     return true;
   };
 
-  const fitRaceRoute = (item) => {
+  const fitRaceRoute = (item, placement = null) => {
     const coordinates = raceRouteCoordinates(item.slug);
     if (coordinates.length < 2) return false;
 
@@ -596,7 +673,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (bounds.isEmpty()) return false;
 
     map.fitBounds(bounds, {
-      padding: mapElement.clientWidth < 680 ? 48 : { top: 92, bottom: 76, left: 82, right: 82 },
+      padding: placement?.padding || (mapElement.clientWidth < 680 ? 48 : { top: 92, bottom: 76, left: 82, right: 82 }),
       maxZoom: 11,
       pitch: mapElement.clientWidth < 680 ? 34 : 42,
       duration: 850,
@@ -654,11 +731,14 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     setRaceRouteHighlight(item.type === "race" ? slug : "");
     updateLayerVisibility();
 
-    const routeFit = item.type === "race" ? fitRaceRoute(item) : fitTripRoute(item);
+    const popupCoordinate = popupCoordinateForItem(item, preferredCoordinate);
+    const popupPlacement = routePopupPlacement(popupCoordinate);
+    const routeFit =
+      item.type === "race" ? fitRaceRoute(item, popupPlacement) : fitTripRoute(item, popupPlacement);
     if (!routeFit) {
       map.flyTo({ center: [item.lon, item.lat], zoom: item.type === "race" ? 4.2 : 4.8, duration: 850 });
     }
-    popup.setLngLat(popupCoordinateForItem(item, preferredCoordinate)).setHTML(popupHtml(item)).addTo(map);
+    showPopup(item, popupCoordinate, popupPlacement.anchor, true);
   };
 
   const clearSelection = () => {
@@ -669,6 +749,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     }
     setRouteHighlight("");
     setRaceRouteHighlight("");
+    clearScheduledPopup();
     popup.remove();
     updateLayerVisibility();
   };
@@ -846,7 +927,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": "#15110c",
-          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 4.1, 7, 9.2],
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 3.6, 7, 7.4],
           "line-opacity": 0.84,
           "line-blur": 0.25,
         },
@@ -861,8 +942,20 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         filter: ["==", ["get", "slug"], ""],
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
-          "line-color": "#ff7a1a",
-          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 3.1, 7, 7.2],
+          "line-color": [
+            "match",
+            ["get", "mode"],
+            "flight",
+            "#9fb77d",
+            "drive",
+            "#f0a23a",
+            "sail",
+            "#36a5b6",
+            "train",
+            "#b4a77c",
+            "#f0a23a",
+          ],
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 2.3, 7, 5.4],
           "line-opacity": 0.98,
           "line-blur": 0,
         },
@@ -961,6 +1054,9 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     map.on("click", "strava-routes", (event) => {
       const feature = event.features?.[0];
       if (!feature) return;
+      clearScheduledPopup();
+      popup.remove();
+      popup = createPopup();
       popup.setLngLat(event.lngLat).setHTML(stravaPopupHtml(feature.properties || {})).addTo(map);
     });
     bindPointerLayer("strava-routes");
@@ -1007,8 +1103,20 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         filter: ["==", ["get", "raceSlug"], ""],
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
-          "line-color": "#ff7a1a",
-          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 3, 8, 7.4],
+          "line-color": [
+            "match",
+            ["get", "sportType"],
+            "Swim",
+            "#2f9bc1",
+            "Ride",
+            "#d1882e",
+            "Run",
+            "#ff7a1a",
+            "Workout",
+            "#b4a77c",
+            "#ff7a1a",
+          ],
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 2.4, 8, 5.6],
           "line-opacity": 0.98,
         },
       },
