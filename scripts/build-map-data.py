@@ -10,10 +10,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PHOTO_SCRIPT = ROOT / "scripts/build-photo-review.py"
 OUT = ROOT / "src/data/travel-map.json"
+PRESERVED_TRIP_FIELDS = ("lat", "lon", "travelMode", "routeNodes", "routeSegments")
 
 RACE_COORDS = {
     "Canyons 100K": (39.118, -120.947),
-    "California International Marathon": (38.581, -121.494),
     "IRONMAN 70.3 Santa Cruz Relay": (36.974, -122.03),
     "Tamalpa Headlands 50K": (37.862, -122.581),
     "Broken Arrow Skyrace|Olympic Valley, CA - 23K": (39.197, -120.235),
@@ -28,6 +28,24 @@ RACE_COORDS = {
     "IRONMAN 70.3 Morro Bay": (35.365, -120.849),
     "Napa Valley Marathon": (38.502, -122.265),
     "Santa Cruz Triathlon": (36.974, -122.03),
+}
+
+RACE_DATES = {
+    "Canyons 100K": "Apr 25 2026",
+    "IRONMAN 70.3 Santa Cruz Relay": "Sep 7 2025",
+    "Tamalpa Headlands 50K": "Aug 16 2025",
+    "Broken Arrow Skyrace|Olympic Valley, CA - 23K": "Jun 22 2025",
+    "IRONMAN 70.3 St. George": "May 10 2025",
+    "IRONMAN 70.3 World Championship": "Dec 15 2024",
+    "Golden Gate Trail Classic": "Nov 23 2024",
+    "IRONMAN 70.3 Santa Cruz": "Sep 8 2024",
+    "Hood to Coast": "Aug 23 2024",
+    "Twilight 5000": "Jul 17 2024",
+    "Broken Arrow Skyrace|Olympic Valley, CA - 18K": "Jun 21 2024",
+    "Escape from Alcatraz Triathlon": "Jun 9 2024",
+    "IRONMAN 70.3 Morro Bay": "May 19 2024",
+    "Napa Valley Marathon": "Mar 3 2024",
+    "Santa Cruz Triathlon": "Sep 24 2023",
 }
 
 
@@ -57,6 +75,7 @@ def parse_races(source: str):
         if not coords:
             continue
         lat, lon = coords
+        date = RACE_DATES.get(f"{title}|{detail}") or RACE_DATES.get(title) or result[:4]
         slug = re.sub(r"[^a-z0-9]+", "-", f"{result[:4]} {title} {detail}".lower()).strip("-")
         races.append(
             {
@@ -64,7 +83,7 @@ def parse_races(source: str):
                 "slug": slug,
                 "title": title,
                 "detail": detail,
-                "date": result[:4],
+                "date": date,
                 "result": result,
                 "rank": rank or "",
                 "href": href,
@@ -77,23 +96,34 @@ def parse_races(source: str):
 
 def main() -> None:
     photo = load_photo_script()
+    existing_trips = {}
+    if OUT.exists():
+        try:
+            existing = json.loads(OUT.read_text())
+            existing_trips = {trip.get("slug"): trip for trip in existing.get("trips", []) if trip.get("slug")}
+        except json.JSONDecodeError:
+            existing_trips = {}
+
     trips = []
     for trip in photo.trips_from_component():
         boxes = photo.BOXES.get(trip.title)
         if not boxes:
             continue
         lat, lon = center(boxes)
-        trips.append(
-            {
-                "type": "trip",
-                "slug": trip.slug,
-                "title": trip.title,
-                "detail": trip.detail,
-                "date": trip.month,
-                "lat": lat,
-                "lon": lon,
-            }
-        )
+        item = {
+            "type": "trip",
+            "slug": trip.slug,
+            "title": trip.title,
+            "detail": trip.detail,
+            "date": trip.month,
+            "lat": lat,
+            "lon": lon,
+        }
+        previous = existing_trips.get(trip.slug, {})
+        for field in PRESERVED_TRIP_FIELDS:
+            if field in previous:
+                item[field] = previous[field]
+        trips.append(item)
 
     source = (ROOT / "src/components/HomeContent.astro").read_text()
     data = {"trips": trips, "races": parse_races(source)}

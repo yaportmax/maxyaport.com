@@ -4,91 +4,703 @@
       "type": "trip",
       "slug": "apr-2026-truckee-and-auburn",
       "title": "Truckee and Auburn",
-      "detail": "Altitude training and Canyons 100K",
+      "detail": "Truckee, Dollar Creek, Donner Pass, Colfax, and Auburn",
       "date": "Apr 2026",
-      "lat": 39.1,
-      "lon": -120.7
+      "lat": 39.3279,
+      "lon": -120.1833,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Truckee",
+          "lat": 39.328,
+          "lon": -120.1833
+        },
+        {
+          "title": "Dollar Creek",
+          "lat": 39.188,
+          "lon": -120.0999
+        },
+        {
+          "title": "Return to Truckee",
+          "lat": 39.328,
+          "lon": -120.1833,
+          "showOnMap": false
+        },
+        {
+          "title": "Donner Pass Summit",
+          "lat": 39.339,
+          "lon": -120.349
+        },
+        {
+          "title": "Back to Truckee",
+          "lat": 39.328,
+          "lon": -120.1833,
+          "showOnMap": false
+        },
+        {
+          "title": "Colfax",
+          "lat": 39.1007,
+          "lon": -120.9533
+        },
+        {
+          "title": "Auburn",
+          "lat": 38.8966,
+          "lon": -121.0769
+        },
+        {
+          "title": "Return to Colfax",
+          "lat": 39.1007,
+          "lon": -120.9533,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "mar-2026-sedona",
       "title": "Sedona",
-      "detail": "Trail running",
+      "detail": "Phoenix flight and Sedona trails",
       "date": "Mar 2026",
-      "lat": 34.85,
-      "lon": -111.8
+      "lat": 34.8697,
+      "lon": -111.7609,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Phoenix Sky Harbor International Airport",
+          "lat": 33.4353,
+          "lon": -112.006
+        },
+        {
+          "title": "Sedona",
+          "lat": 34.8697,
+          "lon": -111.7609
+        },
+        {
+          "title": "Return to Phoenix Sky Harbor International Airport",
+          "lat": 33.4353,
+          "lon": -112.006,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "mar-2026-lake-almanor",
       "title": "Lake Almanor",
-      "detail": "Remote work week",
+      "detail": "San Francisco out and back",
       "date": "Mar 2026",
-      "lat": 40.25,
-      "lon": -121.2
+      "lat": 40.2524,
+      "lon": -121.1605,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Lake Almanor",
+          "lat": 40.2524,
+          "lon": -121.1605
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "feb-2026-tahoe",
       "title": "Tahoe",
-      "detail": "Palisades ski weekend",
+      "detail": "Truckee and Palisades ski weekend",
       "date": "Feb 2026",
-      "lat": 39.1,
-      "lon": -120.05
+      "lat": 39.3279,
+      "lon": -120.1833,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Truckee",
+          "lat": 39.328,
+          "lon": -120.1833
+        },
+        {
+          "title": "Palisades Tahoe",
+          "lat": 39.197,
+          "lon": -120.2357
+        },
+        {
+          "title": "Return to Truckee",
+          "lat": 39.328,
+          "lon": -120.1833,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jan-2026-costa-mesa",
       "title": "Costa Mesa",
-      "detail": "Visit",
+      "detail": "Orange County out and back",
       "date": "Jan 2026",
-      "lat": 33.65,
-      "lon": -117.9
+      "lat": 33.6411,
+      "lon": -117.9187,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "John Wayne Airport",
+          "lat": 33.6757,
+          "lon": -117.8682
+        },
+        {
+          "title": "Costa Mesa",
+          "lat": 33.6411,
+          "lon": -117.9187
+        },
+        {
+          "title": "Return to John Wayne Airport",
+          "lat": 33.6757,
+          "lon": -117.8682,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "dec-2025-maui",
       "title": "Maui",
-      "detail": "Trail running",
+      "detail": "Kapalua and Haleakala",
       "date": "Dec 2025",
-      "lat": 20.85,
-      "lon": -156.35
+      "lat": 20.9997,
+      "lon": -156.6583,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Kahului Airport",
+          "lat": 20.8986,
+          "lon": -156.43
+        },
+        {
+          "title": "Kapalua",
+          "lat": 20.9997,
+          "lon": -156.6581
+        },
+        {
+          "title": "Haleakala",
+          "lat": 20.7097,
+          "lon": -156.2533
+        },
+        {
+          "title": "Return to Kapalua",
+          "lat": 20.9997,
+          "lon": -156.6581,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Kahului Airport",
+          "lat": 20.8986,
+          "lon": -156.43,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "nov-2025-paso-robles-and-los-osos",
       "title": "Paso Robles and Los Osos",
-      "detail": "Gravel, trails, wine",
+      "detail": "Paso Robles, Montana de Oro, and Cayucos",
       "date": "Nov 2025",
-      "lat": 35.6,
-      "lon": -120.9
+      "lat": 35.2639,
+      "lon": -120.8632,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Paso Robles",
+          "lat": 35.6266,
+          "lon": -120.691
+        },
+        {
+          "title": "Montana de Oro State Park",
+          "lat": 35.2639,
+          "lon": -120.8632
+        },
+        {
+          "title": "Cayucos",
+          "lat": 35.4428,
+          "lon": -120.8921
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "nov-2025-broomfield",
       "title": "Broomfield",
-      "detail": "Colorado",
+      "detail": "Denver flight and Broomfield",
       "date": "Nov 2025",
-      "lat": 39.95,
-      "lon": -105.0
+      "lat": 39.9205,
+      "lon": -105.0867,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Denver International Airport",
+          "lat": 39.8561,
+          "lon": -104.6737
+        },
+        {
+          "title": "Broomfield",
+          "lat": 39.9205,
+          "lon": -105.087
+        },
+        {
+          "title": "Return to Denver International Airport",
+          "lat": 39.8561,
+          "lon": -104.6737,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "oct-2025-eastern-sierra-and-utah",
       "title": "Eastern Sierra and Utah",
-      "detail": "Road trip: hot springs, cowboy camping, big trails, and 14ers",
+      "detail": "Mammoth, Death Valley, Vegas, Escalante, and big trails",
       "date": "Oct 2025",
-      "lat": 37.4,
-      "lon": -118.25
+      "lat": 37.6485,
+      "lon": -118.9721,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "South Lake Tahoe",
+          "lat": 38.9399,
+          "lon": -119.9772
+        },
+        {
+          "title": "Gardnerville",
+          "lat": 38.9413,
+          "lon": -119.7496
+        },
+        {
+          "title": "Mammoth Lakes",
+          "lat": 37.6485,
+          "lon": -118.9721
+        },
+        {
+          "title": "Wild Willy's Hot Springs",
+          "lat": 37.6611,
+          "lon": -118.7678
+        },
+        {
+          "title": "McGee Creek Trailhead",
+          "lat": 37.5509,
+          "lon": -118.7898
+        },
+        {
+          "title": "Little Lakes Valley Trailhead",
+          "lat": 37.4355,
+          "lon": -118.747
+        },
+        {
+          "title": "Lone Pine",
+          "lat": 36.606,
+          "lon": -118.0629
+        },
+        {
+          "title": "Whitney Portal",
+          "lat": 36.5882,
+          "lon": -118.2406
+        },
+        {
+          "title": "Return to Lone Pine",
+          "lat": 36.606,
+          "lon": -118.0629,
+          "showOnMap": false
+        },
+        {
+          "title": "Mesquite Flat Sand Dunes",
+          "lat": 36.6069,
+          "lon": -117.1152
+        },
+        {
+          "title": "Las Vegas",
+          "lat": 36.1699,
+          "lon": -115.1398
+        },
+        {
+          "title": "Cannonville",
+          "lat": 37.568,
+          "lon": -112.0524
+        },
+        {
+          "title": "Grand Staircase-Escalante National Monument",
+          "lat": 37.4,
+          "lon": -111.68
+        },
+        {
+          "title": "Return to Las Vegas",
+          "lat": 36.1699,
+          "lon": -115.1398,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Lone Pine",
+          "lat": 36.606,
+          "lon": -118.0629,
+          "showOnMap": false
+        },
+        {
+          "title": "Mount Langley / Cottonwood Lakes Trailhead",
+          "lat": 36.4535,
+          "lon": -118.1706
+        },
+        {
+          "title": "Return to Wild Willy's Hot Springs",
+          "lat": 37.6611,
+          "lon": -118.7678,
+          "showOnMap": false
+        },
+        {
+          "title": "Crowley Lake",
+          "lat": 37.5833,
+          "lon": -118.74
+        },
+        {
+          "title": "Return to Mammoth Lakes",
+          "lat": 37.6485,
+          "lon": -118.9721,
+          "showOnMap": false
+        },
+        {
+          "title": "June Lake",
+          "lat": 37.7791,
+          "lon": -119.0754
+        },
+        {
+          "title": "Saddlebag Lake",
+          "lat": 37.9652,
+          "lon": -119.2718
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "sep-2025-arnold",
       "title": "Arnold",
-      "detail": "Mountain biking",
+      "detail": "Mountain biking weekend",
       "date": "Sep 2025",
-      "lat": 38.3,
-      "lon": -120.2
+      "lat": 38.2555,
+      "lon": -120.351,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Arnold",
+          "lat": 38.2555,
+          "lon": -120.351
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
@@ -96,152 +708,1343 @@
       "title": "Santa Cruz",
       "detail": "70.3 relay weekend",
       "date": "Sep 2025",
-      "lat": 36.95,
-      "lon": -122.0
+      "lat": 36.9621,
+      "lon": -122.0244,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Santa Cruz race area",
+          "lat": 36.9621,
+          "lon": -122.0244
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "aug-2025-mammoth",
       "title": "Mammoth",
-      "detail": "Trail running, camping, and Thousand Island Lake",
+      "detail": "Sonora Pass, Reds Meadow, hot springs, June Lake, and Tioga Pass",
       "date": "Aug 2025",
-      "lat": 37.75,
-      "lon": -118.9
+      "lat": 37.6485,
+      "lon": -118.9721,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Sonora Pass",
+          "lat": 38.3266,
+          "lon": -119.6378
+        },
+        {
+          "title": "Mammoth Lakes",
+          "lat": 37.6485,
+          "lon": -118.9721
+        },
+        {
+          "title": "Reds Meadow Road / Devils Postpile",
+          "lat": 37.6304,
+          "lon": -119.0842
+        },
+        {
+          "title": "Wild Willy's Hot Spring",
+          "lat": 37.6611,
+          "lon": -118.7678
+        },
+        {
+          "title": "June Lake",
+          "lat": 37.7791,
+          "lon": -119.0754
+        },
+        {
+          "title": "Tioga Pass Road",
+          "lat": 37.9107,
+          "lon": -119.2573
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jul-2025-yosemite",
       "title": "Yosemite",
-      "detail": "Trail running",
+      "detail": "Pine Mountain Lake and Tuolumne Meadows",
       "date": "Jul 2025",
-      "lat": 37.8,
-      "lon": -119.65
+      "lat": 37.8738,
+      "lon": -119.3505,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Pine Mountain Lake",
+          "lat": 37.857,
+          "lon": -120.193
+        },
+        {
+          "title": "Tuolumne Meadows",
+          "lat": 37.8738,
+          "lon": -119.3505
+        },
+        {
+          "title": "Return to Pine Mountain Lake",
+          "lat": 37.857,
+          "lon": -120.193,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jul-2025-lake-como",
       "title": "Lake Como",
-      "detail": "Cycling and lake vibes",
+      "detail": "Rome, Milan, Lake Como towns, boats, and train",
       "date": "Jul 2025",
-      "lat": 46.0,
-      "lon": 9.2
+      "lat": 45.8806,
+      "lon": 9.1369,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Rome",
+          "lat": 41.9028,
+          "lon": 12.4964
+        },
+        {
+          "title": "Milan",
+          "lat": 45.4642,
+          "lon": 9.19
+        },
+        {
+          "title": "Laglio",
+          "lat": 45.8806,
+          "lon": 9.1369
+        },
+        {
+          "title": "Tremezzo",
+          "lat": 45.984,
+          "lon": 9.2199
+        },
+        {
+          "title": "Back to Laglio",
+          "lat": 45.8806,
+          "lon": 9.1369,
+          "showOnMap": false
+        },
+        {
+          "title": "Brienno",
+          "lat": 45.9115,
+          "lon": 9.1324
+        },
+        {
+          "title": "Return to Laglio",
+          "lat": 45.8806,
+          "lon": 9.1369,
+          "showOnMap": false
+        },
+        {
+          "title": "Back to Tremezzo",
+          "lat": 45.984,
+          "lon": 9.2199,
+          "showOnMap": false
+        },
+        {
+          "title": "Lezzeno",
+          "lat": 45.9444,
+          "lon": 9.1926
+        },
+        {
+          "title": "Nesso",
+          "lat": 45.9125,
+          "lon": 9.1566
+        },
+        {
+          "title": "Return to Lezzeno",
+          "lat": 45.9444,
+          "lon": 9.1926,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Tremezzo",
+          "lat": 45.984,
+          "lon": 9.2199,
+          "showOnMap": false
+        },
+        {
+          "title": "Laglio before Cernobbio",
+          "lat": 45.8806,
+          "lon": 9.1369,
+          "showOnMap": false
+        },
+        {
+          "title": "Cernobbio",
+          "lat": 45.8405,
+          "lon": 9.0712
+        },
+        {
+          "title": "Laglio before Como",
+          "lat": 45.8806,
+          "lon": 9.1369,
+          "showOnMap": false
+        },
+        {
+          "title": "Como",
+          "lat": 45.8081,
+          "lon": 9.0852
+        },
+        {
+          "title": "Return to Milan",
+          "lat": 45.4642,
+          "lon": 9.19,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "train"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jun-2025-tahoe",
       "title": "Tahoe",
-      "detail": "Broken Arrow weekend",
+      "detail": "Dollar Point and Broken Arrow",
       "date": "Jun 2025",
-      "lat": 39.1,
-      "lon": -120.05
+      "lat": 39.1973,
+      "lon": -120.2354,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Dollar Point",
+          "lat": 39.1874,
+          "lon": -120.1002
+        },
+        {
+          "title": "Palisades Tahoe / Broken Arrow",
+          "lat": 39.1973,
+          "lon": -120.2354
+        },
+        {
+          "title": "Return to Dollar Point",
+          "lat": 39.1874,
+          "lon": -120.1002,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jun-2025-kauai",
       "title": "Kauai",
-      "detail": "Trails, poke, and helicopter",
+      "detail": "Oahu, Poipu, Koke'e, Waimea, Lihue, and Haena",
       "date": "Jun 2025",
-      "lat": 22.05,
-      "lon": -159.55
+      "lat": 22.1308,
+      "lon": -159.657,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "O'ahu / Honolulu Airport",
+          "lat": 21.3187,
+          "lon": -157.9225
+        },
+        {
+          "title": "Kauai Airport / Lihue",
+          "lat": 21.976,
+          "lon": -159.3389
+        },
+        {
+          "title": "Po'ipu",
+          "lat": 21.8817,
+          "lon": -159.4618
+        },
+        {
+          "title": "Koke'e State Park",
+          "lat": 22.1308,
+          "lon": -159.657
+        },
+        {
+          "title": "Waimea, Kauai",
+          "lat": 21.9571,
+          "lon": -159.6689
+        },
+        {
+          "title": "Return to Po'ipu",
+          "lat": 21.8817,
+          "lon": -159.4618,
+          "showOnMap": false
+        },
+        {
+          "title": "Lihue",
+          "lat": 21.9811,
+          "lon": -159.3711
+        },
+        {
+          "title": "Ha'ena",
+          "lat": 22.2236,
+          "lon": -159.5607
+        },
+        {
+          "title": "Koloa",
+          "lat": 21.9069,
+          "lon": -159.4692
+        },
+        {
+          "title": "Return to Kauai Airport / Lihue",
+          "lat": 21.976,
+          "lon": -159.3389,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to O'ahu / Honolulu Airport",
+          "lat": 21.3187,
+          "lon": -157.9225,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "may-2025-santa-rosa",
       "title": "Santa Rosa",
-      "detail": "Farm camping and wine tasting",
+      "detail": "Sonoma and Santa Rosa",
       "date": "May 2025",
-      "lat": 38.5,
-      "lon": -122.7
+      "lat": 38.4405,
+      "lon": -122.7144,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Sonoma",
+          "lat": 38.2919,
+          "lon": -122.458
+        },
+        {
+          "title": "Santa Rosa",
+          "lat": 38.4405,
+          "lon": -122.7144
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "may-2025-utah-and-zion",
       "title": "Utah and Zion",
-      "detail": "St. George 70.3, the Narrows, EDC, and Grateful Dead at the Sphere",
+      "detail": "Mammoth, St. George 70.3, Zion, Sphere, and EDC",
       "date": "May 2025",
-      "lat": 36.75,
-      "lon": -114.05
+      "lat": 37.2982,
+      "lon": -113.0263,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Mammoth Lakes",
+          "lat": 37.6485,
+          "lon": -118.9721
+        },
+        {
+          "title": "St. George",
+          "lat": 37.0965,
+          "lon": -113.5684
+        },
+        {
+          "title": "Zion National Park",
+          "lat": 37.2982,
+          "lon": -113.0263
+        },
+        {
+          "title": "Chamberlain's Ranch",
+          "lat": 37.3856,
+          "lon": -112.8397
+        },
+        {
+          "title": "Las Vegas",
+          "lat": 36.1699,
+          "lon": -115.1398
+        },
+        {
+          "title": "Sphere",
+          "lat": 36.1209,
+          "lon": -115.1619
+        },
+        {
+          "title": "Las Vegas Motor Speedway / EDC",
+          "lat": 36.2721,
+          "lon": -115.0103
+        },
+        {
+          "title": "Harry Reid International Airport",
+          "lat": 36.084,
+          "lon": -115.1537
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "apr-2025-humboldt-and-the-redwoods",
       "title": "Humboldt and the Redwoods",
-      "detail": "Fern Canyon road trip",
+      "detail": "Humboldt, Arcata, Prairie Creek, and Trinidad",
       "date": "Apr 2025",
-      "lat": 41.0,
-      "lon": -124.0
+      "lat": 41.36402,
+      "lon": -124.02317,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Humboldt Redwoods State Park",
+          "lat": 40.30845,
+          "lon": -123.90818
+        },
+        {
+          "title": "Arcata",
+          "lat": 40.8665,
+          "lon": -124.0828
+        },
+        {
+          "title": "Prairie Creek Redwoods State Park",
+          "lat": 41.36402,
+          "lon": -124.02317
+        },
+        {
+          "title": "Trinidad",
+          "lat": 41.0593,
+          "lon": -124.1431
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
-      "slug": "mar-2025-arnold",
-      "title": "Arnold",
-      "detail": "Bear Valley skiing",
+      "slug": "mar-2025-bear-valley",
+      "title": "Bear Valley",
+      "detail": "Skiing",
       "date": "Mar 2025",
-      "lat": 38.3,
-      "lon": -120.2
+      "lat": 38.4649,
+      "lon": -120.0396,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Bear Valley",
+          "lat": 38.4649,
+          "lon": -120.0396
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "mar-2025-death-valley",
       "title": "Death Valley",
-      "detail": "Brother's bachelor party and sand dunes",
+      "detail": "Eureka Dunes via Highway 88",
       "date": "Mar 2025",
-      "lat": 36.45,
-      "lon": -117.0
+      "lat": 37.0967,
+      "lon": -117.6819,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Pioneer / Highway 88",
+          "lat": 38.4319,
+          "lon": -120.5716
+        },
+        {
+          "title": "Eureka Dunes",
+          "lat": 37.0967,
+          "lon": -117.6819
+        },
+        {
+          "title": "Return via Pioneer / Highway 88",
+          "lat": 38.4319,
+          "lon": -120.5716,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "mar-2025-big-sur",
       "title": "Big Sur",
-      "detail": "Backpacking",
+      "detail": "Sykes Hot Springs trailhead",
       "date": "Mar 2025",
-      "lat": 36.2,
-      "lon": -121.8
+      "lat": 36.24617,
+      "lon": -121.78011,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Pine Ridge Trailhead / Sykes Hot Springs",
+          "lat": 36.24617,
+          "lon": -121.78011
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "jan-2025-scottsdale",
+      "title": "Scottsdale",
+      "detail": "SFO out and back",
+      "date": "Jan 2025",
+      "lat": 33.4942,
+      "lon": -111.9261,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Phoenix Sky Harbor International Airport",
+          "lat": 33.4353,
+          "lon": -112.0108
+        },
+        {
+          "title": "Scottsdale",
+          "lat": 33.4942,
+          "lon": -111.9261
+        },
+        {
+          "title": "Return to Phoenix Sky Harbor International Airport",
+          "lat": 33.4353,
+          "lon": -112.0108,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "dec-2024-new-zealand",
       "title": "New Zealand",
-      "detail": "North Island, South Island, Queenstown",
+      "detail": "Auckland, Taupo, Queenstown, Milford, and Rees-Dart",
       "date": "Dec 2024",
-      "lat": -40.7,
-      "lon": 172.5
+      "lat": -38.6857,
+      "lon": 176.0702,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Auckland Airport",
+          "lat": -37.0082,
+          "lon": 174.785
+        },
+        {
+          "title": "Auckland",
+          "lat": -36.8485,
+          "lon": 174.7633
+        },
+        {
+          "title": "Mission Bay",
+          "lat": -36.8479,
+          "lon": 174.8317
+        },
+        {
+          "title": "Rangitoto Island",
+          "lat": -36.7863,
+          "lon": 174.8602
+        },
+        {
+          "title": "Return to Mission Bay",
+          "lat": -36.8479,
+          "lon": 174.8317,
+          "showOnMap": false
+        },
+        {
+          "title": "Back to Auckland",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "showOnMap": false
+        },
+        {
+          "title": "Piha Beach",
+          "lat": -36.9544,
+          "lon": 174.4686
+        },
+        {
+          "title": "Return to Auckland",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "showOnMap": false
+        },
+        {
+          "title": "Auckland Ferry Terminal",
+          "lat": -36.8433,
+          "lon": 174.7674
+        },
+        {
+          "title": "Waiheke Island / Matiatia",
+          "lat": -36.7794,
+          "lon": 174.9958
+        },
+        {
+          "title": "Return to Auckland Ferry Terminal",
+          "lat": -36.8433,
+          "lon": 174.7674,
+          "showOnMap": false
+        },
+        {
+          "title": "Auckland before Queenstown",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "showOnMap": false
+        },
+        {
+          "title": "Tongariro National Park / Whakapapa",
+          "lat": -39.199,
+          "lon": 175.538
+        },
+        {
+          "title": "Taupo",
+          "lat": -38.6857,
+          "lon": 176.0702
+        },
+        {
+          "title": "Back to Auckland",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Auckland Airport",
+          "lat": -37.0082,
+          "lon": 174.785,
+          "showOnMap": false
+        },
+        {
+          "title": "Queenstown Airport",
+          "lat": -45.0211,
+          "lon": 168.7391
+        },
+        {
+          "title": "Queenstown",
+          "lat": -45.0312,
+          "lon": 168.6626
+        },
+        {
+          "title": "Milford Sound",
+          "lat": -44.6716,
+          "lon": 167.9256
+        },
+        {
+          "title": "Return to Queenstown",
+          "lat": -45.0312,
+          "lon": 168.6626,
+          "showOnMap": false
+        },
+        {
+          "title": "Rees-Dart Track",
+          "lat": -44.698,
+          "lon": 168.397
+        },
+        {
+          "title": "Back to Queenstown",
+          "lat": -45.0312,
+          "lon": 168.6626,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Queenstown Airport",
+          "lat": -45.0211,
+          "lon": 168.7391,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Auckland Airport",
+          "lat": -37.0082,
+          "lon": 174.785,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "nov-2024-yosemite",
       "title": "Yosemite",
-      "detail": "Camping and North Dome",
+      "detail": "San Francisco out and back",
       "date": "Nov 2024",
-      "lat": 37.8,
-      "lon": -119.65
+      "lat": 37.7485,
+      "lon": -119.587,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Yosemite Valley",
+          "lat": 37.7485,
+          "lon": -119.587
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "sep-2024-mendocino",
       "title": "Mendocino",
-      "detail": "Camping",
+      "detail": "San Francisco out and back",
       "date": "Sep 2024",
-      "lat": 39.35,
-      "lon": -123.65
+      "lat": 39.3077,
+      "lon": -123.7995,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Mendocino",
+          "lat": 39.3077,
+          "lon": -123.7995
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "sep-2024-santa-cruz",
+      "title": "Santa Cruz",
+      "detail": "70.3 weekend",
+      "date": "Sep 2024",
+      "lat": 36.9741,
+      "lon": -122.0308,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Santa Cruz",
+          "lat": 36.9741,
+          "lon": -122.0308
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "aug-2024-oregon",
       "title": "Oregon",
-      "detail": "Hood to Coast",
+      "detail": "Hood to Coast via Mount Hood and Seaside",
       "date": "Aug 2024",
-      "lat": 44.2,
-      "lon": -122.9
+      "lat": 45.9932,
+      "lon": -123.9226,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Portland International Airport",
+          "lat": 45.5898,
+          "lon": -122.5951
+        },
+        {
+          "title": "Mount Hood / Timberline Lodge",
+          "lat": 45.3311,
+          "lon": -121.7113
+        },
+        {
+          "title": "Seaside Beach",
+          "lat": 45.9932,
+          "lon": -123.9226
+        },
+        {
+          "title": "Return to Portland International Airport",
+          "lat": 45.5898,
+          "lon": -122.5951,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jun-2024-tahoe",
       "title": "Tahoe",
-      "detail": "Broken Arrow weekend",
+      "detail": "Prosser Creek, Tahoe City, and Palisades",
       "date": "Jun 2024",
-      "lat": 39.1,
-      "lon": -120.05
+      "lat": 39.1973,
+      "lon": -120.2354,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Prosser Creek Reservoir",
+          "lat": 39.3804,
+          "lon": -120.1604
+        },
+        {
+          "title": "Tahoe City",
+          "lat": 39.1678,
+          "lon": -120.143
+        },
+        {
+          "title": "Palisades Tahoe",
+          "lat": 39.1973,
+          "lon": -120.2354
+        },
+        {
+          "title": "Return to Tahoe City",
+          "lat": 39.1678,
+          "lon": -120.143,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
@@ -249,243 +2052,2614 @@
       "title": "Morro Bay",
       "detail": "Race weekend",
       "date": "May 2024",
-      "lat": 35.35,
-      "lon": -120.85
+      "lat": 35.3658,
+      "lon": -120.8499,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Morro Bay",
+          "lat": 35.3658,
+          "lon": -120.8499
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
-      "slug": "may-2024-occidental",
+      "slug": "mar-2024-occidental",
       "title": "Occidental",
       "detail": "Training weekend",
-      "date": "May 2024",
-      "lat": 38.45,
-      "lon": -122.95
+      "date": "Mar 2024",
+      "lat": 38.4074,
+      "lon": -122.9479,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Occidental",
+          "lat": 38.4074,
+          "lon": -122.9479
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "feb-2024-mexico-city",
       "title": "Mexico City",
-      "detail": "City trip",
+      "detail": "Mexico City and Teotihuacan",
       "date": "Feb 2024",
-      "lat": 19.4,
-      "lon": -99.15
+      "lat": 19.4363,
+      "lon": -99.0721,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Mexico City International Airport",
+          "lat": 19.4363,
+          "lon": -99.0721
+        },
+        {
+          "title": "Teotihuacan",
+          "lat": 19.6925,
+          "lon": -98.8438
+        },
+        {
+          "title": "Return to Mexico City International Airport",
+          "lat": 19.4363,
+          "lon": -99.0721,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jan-2024-joshua-tree",
       "title": "Joshua Tree",
-      "detail": "Camping",
+      "detail": "Jumbo Rocks campground",
       "date": "Jan 2024",
-      "lat": 34.0,
-      "lon": -116.0
+      "lat": 33.9917,
+      "lon": -116.0633,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Jumbo Rocks Campground",
+          "lat": 33.9917,
+          "lon": -116.0633
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "apr-2023-san-luis-obispo",
       "title": "San Luis Obispo",
-      "detail": "Super bloom",
+      "detail": "Shell Creek super bloom",
       "date": "Apr 2023",
-      "lat": 35.25,
-      "lon": -120.6
+      "lat": 35.458,
+      "lon": -120.283,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619
+        },
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Shell Creek Road Super Bloom",
+          "lat": 35.458,
+          "lon": -120.283
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "feb-2023-san-luis-obispo-and-san-simeon",
       "title": "San Luis Obispo and San Simeon",
-      "detail": "First running race",
+      "detail": "SLO, Yosemite, and San Simeon",
       "date": "Feb 2023",
-      "lat": 35.45,
-      "lon": -120.85
+      "lat": 35.6439,
+      "lon": -121.1896,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619
+        },
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Yosemite Valley",
+          "lat": 37.7485,
+          "lon": -119.587
+        },
+        {
+          "title": "Back to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        },
+        {
+          "title": "San Simeon",
+          "lat": 35.6439,
+          "lon": -121.1896
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "feb-2023-yosemite",
       "title": "Yosemite",
-      "detail": "Winter hiking",
+      "detail": "Winter hiking via SLO",
       "date": "Feb 2023",
-      "lat": 37.8,
-      "lon": -119.65
+      "lat": 37.7485,
+      "lon": -119.587,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619
+        },
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Yosemite Valley",
+          "lat": 37.7485,
+          "lon": -119.587
+        },
+        {
+          "title": "Back to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        },
+        {
+          "title": "San Simeon",
+          "lat": 35.6439,
+          "lon": -121.1896
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jan-2023-seattle",
       "title": "Seattle",
-      "detail": "Visit and skiing",
+      "detail": "Seattle and Snoqualmie Pass",
       "date": "Jan 2023",
-      "lat": 47.6,
-      "lon": -121.9
+      "lat": 47.4243,
+      "lon": -121.4119,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Seattle-Tacoma International Airport",
+          "lat": 47.4502,
+          "lon": -122.3088
+        },
+        {
+          "title": "Snoqualmie Pass",
+          "lat": 47.4243,
+          "lon": -121.4119
+        },
+        {
+          "title": "Return to Seattle-Tacoma International Airport",
+          "lat": 47.4502,
+          "lon": -122.3088,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "dec-2022-portland-and-bend",
       "title": "Portland and Bend",
-      "detail": "Mount Bachelor and New Year's",
+      "detail": "Portland, Bend, and New Year's",
       "date": "Dec 2022",
-      "lat": 44.9,
-      "lon": -122.1
+      "lat": 44.0582,
+      "lon": -121.3153,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Portland International Airport",
+          "lat": 45.5898,
+          "lon": -122.5951
+        },
+        {
+          "title": "Bend",
+          "lat": 44.0582,
+          "lon": -121.3153
+        },
+        {
+          "title": "Return to Portland International Airport",
+          "lat": 45.5898,
+          "lon": -122.5951,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "oct-2022-yosemite",
       "title": "Yosemite",
-      "detail": "Solo backpacking",
+      "detail": "Santa Clara out and back",
       "date": "Oct 2022",
-      "lat": 37.8,
-      "lon": -119.65
+      "lat": 37.7485,
+      "lon": -119.587,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619
+        },
+        {
+          "title": "Yosemite Valley",
+          "lat": 37.7485,
+          "lon": -119.587
+        },
+        {
+          "title": "Return to Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "sep-2022-orlando",
+      "title": "Orlando",
+      "detail": "SFO out and back",
+      "date": "Sep 2022",
+      "lat": 28.4312,
+      "lon": -81.3081,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Orlando International Airport",
+          "lat": 28.4312,
+          "lon": -81.3081
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "aug-2022-sequoia-and-kings-canyon",
       "title": "Sequoia and Kings Canyon",
-      "detail": "Family trip",
+      "detail": "Three Rivers, big trees, and Mineral King",
       "date": "Aug 2022",
-      "lat": 36.55,
-      "lon": -118.8
+      "lat": 36.5647,
+      "lon": -118.7727,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619
+        },
+        {
+          "title": "Three Rivers",
+          "lat": 36.43884,
+          "lon": -118.90454
+        },
+        {
+          "title": "Giant Forest / Big Trees",
+          "lat": 36.5647,
+          "lon": -118.7727
+        },
+        {
+          "title": "Back to Three Rivers",
+          "lat": 36.43884,
+          "lon": -118.90454,
+          "showOnMap": false
+        },
+        {
+          "title": "Mineral King",
+          "lat": 36.4533,
+          "lon": -118.5968
+        },
+        {
+          "title": "Return to Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jul-2022-graduation-road-trip",
       "title": "Graduation Road Trip",
-      "detail": "California, Southwest, Rockies, Oregon",
+      "detail": "Southwest, Rockies, PNW, and Decatur Island",
       "date": "Jul 2022",
-      "lat": 40.5,
-      "lon": -114.4
+      "lat": 43.751,
+      "lon": -110.72,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Mojave National Preserve / Kelso Depot",
+          "lat": 35.012,
+          "lon": -115.65424
+        },
+        {
+          "title": "Petrified Forest National Park",
+          "lat": 35.06819,
+          "lon": -109.77982
+        },
+        {
+          "title": "Taos",
+          "lat": 36.40736,
+          "lon": -105.5733
+        },
+        {
+          "title": "Bandelier National Monument",
+          "lat": 35.7788,
+          "lon": -106.2706
+        },
+        {
+          "title": "Santa Fe",
+          "lat": 35.68785,
+          "lon": -105.93885
+        },
+        {
+          "title": "Telluride",
+          "lat": 37.93714,
+          "lon": -107.81077
+        },
+        {
+          "title": "Mount Sneffels / Yankee Boy Basin",
+          "lat": 37.97553,
+          "lon": -107.74766
+        },
+        {
+          "title": "Denver",
+          "lat": 39.74168,
+          "lon": -104.98611
+        },
+        {
+          "title": "Rocky Mountain National Park",
+          "lat": 40.36249,
+          "lon": -105.56329
+        },
+        {
+          "title": "Grand Teton National Park",
+          "lat": 43.751,
+          "lon": -110.72
+        },
+        {
+          "title": "Portland",
+          "lat": 45.5152,
+          "lon": -122.6784
+        },
+        {
+          "title": "Anacortes Ferry Terminal",
+          "lat": 48.5073,
+          "lon": -122.6789
+        },
+        {
+          "title": "Decatur Island",
+          "lat": 48.50137,
+          "lon": -122.81609
+        },
+        {
+          "title": "Return to Anacortes Ferry Terminal",
+          "lat": 48.5073,
+          "lon": -122.6789,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to Portland",
+          "lat": 45.5152,
+          "lon": -122.6784,
+          "showOnMap": false
+        },
+        {
+          "title": "Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jun-2022-reno",
       "title": "Reno",
-      "detail": "Visit",
+      "detail": "SLO out and back",
       "date": "Jun 2022",
-      "lat": 39.55,
-      "lon": -119.8
+      "lat": 39.52963,
+      "lon": -119.8138,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Reno",
+          "lat": 39.52963,
+          "lon": -119.8138
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "may-2022-yosemite",
       "title": "Yosemite",
-      "detail": "Backpacking",
+      "detail": "North Dome backpacking",
       "date": "May 2022",
-      "lat": 37.8,
-      "lon": -119.65
+      "lat": 37.8081,
+      "lon": -119.5435,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "North Dome / Porcupine Creek Trailhead",
+          "lat": 37.8081,
+          "lon": -119.5435
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "mar-2022-northern-california-and-oregon",
       "title": "Northern California and Oregon",
-      "detail": "Humboldt, Mount Hood, Crater Lake",
+      "detail": "Redwoods, Portland, Mount Hood, Crater Lake",
       "date": "Mar 2022",
-      "lat": 42.7,
-      "lon": -122.9
+      "lat": 42.9097,
+      "lon": -122.1393,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Humboldt Redwoods State Park",
+          "lat": 40.352,
+          "lon": -123.924
+        },
+        {
+          "title": "Prairie Creek Redwoods State Park",
+          "lat": 41.363,
+          "lon": -124.022
+        },
+        {
+          "title": "Portland",
+          "lat": 45.5152,
+          "lon": -122.6784
+        },
+        {
+          "title": "Mount Hood / Timberline Lodge",
+          "lat": 45.3311,
+          "lon": -121.7113
+        },
+        {
+          "title": "Back to Portland",
+          "lat": 45.5152,
+          "lon": -122.6784,
+          "showOnMap": false
+        },
+        {
+          "title": "Crater Lake National Park",
+          "lat": 42.9097,
+          "lon": -122.1393
+        },
+        {
+          "title": "Lava Beds National Monument",
+          "lat": 41.7133,
+          "lon": -121.509
+        },
+        {
+          "title": "Weed",
+          "lat": 41.42396,
+          "lon": -122.38449
+        },
+        {
+          "title": "McCloud Falls",
+          "lat": 41.2449,
+          "lon": -122.0243
+        },
+        {
+          "title": "Castle Crags State Park",
+          "lat": 41.159,
+          "lon": -122.306
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "feb-2022-mount-pinos",
       "title": "Mount Pinos",
-      "detail": "Snow backpacking",
+      "detail": "Backpacking",
       "date": "Feb 2022",
-      "lat": 34.75,
-      "lon": -119.1
+      "lat": 34.813,
+      "lon": -119.145,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Mount Pinos",
+          "lat": 34.813,
+          "lon": -119.145
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
-      "slug": "jan-2022-big-sur",
-      "title": "Big Sur",
-      "detail": "Backpacking and camping",
+      "slug": "jan-2022-big-sur-ventana-wilderness",
+      "title": "Big Sur: Ventana Wilderness",
+      "detail": "Ventana Wilderness backpacking",
       "date": "Jan 2022",
-      "lat": 36.2,
-      "lon": -121.8
+      "lat": 36.24617,
+      "lon": -121.78011,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Ventana Wilderness / Pine Ridge Trailhead",
+          "lat": 36.24617,
+          "lon": -121.78011
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "jan-2022-big-sur-pfeiffer-ridge",
+      "title": "Big Sur: Pfeiffer Ridge",
+      "detail": "Pfeiffer Ridge Road backpacking",
+      "date": "Jan 2022",
+      "lat": 36.25268,
+      "lon": -121.79611,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Pfeiffer Ridge Road",
+          "lat": 36.25268,
+          "lon": -121.79611
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "oct-2021-santa-barbara",
       "title": "Santa Barbara",
-      "detail": "Hot springs",
+      "detail": "Water tower camp, hot springs, and downtown Santa Barbara",
       "date": "Oct 2021",
       "lat": 34.45,
-      "lon": -119.75
+      "lon": -119.75,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Goleta water tower camp",
+          "lat": 34.50094,
+          "lon": -119.72419
+        },
+        {
+          "title": "Montecito Hot Springs",
+          "lat": 34.4377,
+          "lon": -119.64186
+        },
+        {
+          "title": "Downtown Santa Barbara",
+          "lat": 34.42335,
+          "lon": -119.70343
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "sep-2021-croatia-andorra-amsterdam",
       "title": "Croatia, Andorra, Amsterdam",
-      "detail": "Regatta, Plitvice, Europe",
+      "detail": "Croatia road trip, sailing, Plitvice, and Amsterdam",
       "date": "Sep 2021",
       "lat": 44.4,
-      "lon": 16.4
+      "lon": 16.4,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Split",
+          "lat": 43.5081,
+          "lon": 16.4402
+        },
+        {
+          "title": "Klis Fortress",
+          "lat": 43.56083,
+          "lon": 16.52204
+        },
+        {
+          "title": "Skradin",
+          "lat": 43.8179,
+          "lon": 15.92315
+        },
+        {
+          "title": "Krka National Park",
+          "lat": 43.804,
+          "lon": 15.9636
+        },
+        {
+          "title": "Visovacko jezero",
+          "lat": 43.86519,
+          "lon": 16.00375
+        },
+        {
+          "title": "Lozovac",
+          "lat": 43.79899,
+          "lon": 15.94564
+        },
+        {
+          "title": "Plitvicki Ljeskovac",
+          "lat": 44.84336,
+          "lon": 15.60072
+        },
+        {
+          "title": "Zagreb",
+          "lat": 45.81378,
+          "lon": 15.97679
+        },
+        {
+          "title": "Trogir",
+          "lat": 43.51691,
+          "lon": 16.25142
+        },
+        {
+          "title": "Marina Hramina",
+          "lat": 43.8236,
+          "lon": 15.5903
+        },
+        {
+          "title": "Prvic",
+          "lat": 43.73,
+          "lon": 15.795
+        },
+        {
+          "title": "Vodice",
+          "lat": 43.75723,
+          "lon": 15.77452
+        },
+        {
+          "title": "Logorun",
+          "lat": 43.738,
+          "lon": 15.763
+        },
+        {
+          "title": "Kukljica",
+          "lat": 44.03636,
+          "lon": 15.24816
+        },
+        {
+          "title": "Zadar",
+          "lat": 44.12186,
+          "lon": 15.2343
+        },
+        {
+          "title": "Return to Marina Hramina",
+          "lat": 43.8236,
+          "lon": 15.5903,
+          "showOnMap": false
+        },
+        {
+          "title": "Split Airport",
+          "lat": 43.54369,
+          "lon": 16.31726
+        },
+        {
+          "title": "Amsterdam Schiphol",
+          "lat": 52.30897,
+          "lon": 4.76269
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "sail"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jun-2021-pinnacles",
       "title": "Pinnacles",
-      "detail": "Camping",
+      "detail": "Santa Clara out and back",
       "date": "Jun 2021",
-      "lat": 36.55,
-      "lon": -121.2
+      "lat": 36.49378,
+      "lon": -121.1464,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619
+        },
+        {
+          "title": "Pinnacles National Park East Entrance",
+          "lat": 36.49378,
+          "lon": -121.1464
+        },
+        {
+          "title": "Return to Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "may-2021-las-vegas",
+      "title": "Las Vegas",
+      "detail": "SLO out and back",
+      "date": "May 2021",
+      "lat": 36.16921,
+      "lon": -115.14062,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Las Vegas",
+          "lat": 36.16921,
+          "lon": -115.14062
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "may-2021-joshua-tree",
       "title": "Joshua Tree",
-      "detail": "Camping",
+      "detail": "Jumbo Rocks campground",
       "date": "May 2021",
-      "lat": 34.0,
-      "lon": -116.0
+      "lat": 33.9917,
+      "lon": -116.0633,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Jumbo Rocks Campground",
+          "lat": 33.9917,
+          "lon": -116.0633
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "may-2021-big-sur",
       "title": "Big Sur",
-      "detail": "First backpacking trip",
+      "detail": "Silver Peak Wilderness backpacking",
       "date": "May 2021",
-      "lat": 36.2,
-      "lon": -121.8
+      "lat": 35.8183,
+      "lon": -121.3592,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Silver Peak Wilderness / Salmon Creek",
+          "lat": 35.8183,
+          "lon": -121.3592
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "sep-2020-arches-and-canyonlands",
       "title": "Arches and Canyonlands",
-      "detail": "Utah",
+      "detail": "Moab from Santa Clara",
       "date": "Sep 2020",
       "lat": 38.65,
-      "lon": -109.75
+      "lon": -109.75,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619
+        },
+        {
+          "title": "Moab",
+          "lat": 38.57327,
+          "lon": -109.55079
+        },
+        {
+          "title": "Arches National Park",
+          "lat": 38.61651,
+          "lon": -109.61789
+        },
+        {
+          "title": "Canyonlands National Park",
+          "lat": 38.155,
+          "lon": -109.75413
+        },
+        {
+          "title": "Return to Santa Clara",
+          "lat": 37.35231,
+          "lon": -121.9619,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "aug-2020-washington-to-california-coast",
       "title": "Washington to California Coast",
-      "detail": "Surf road trip",
+      "detail": "SLO to Seattle, then coastal surf road trip back to SLO",
       "date": "Aug 2020",
       "lat": 42.9,
-      "lon": -123.35
+      "lon": -123.35,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo County Regional Airport",
+          "lat": 35.23948,
+          "lon": -120.6399
+        },
+        {
+          "title": "Seattle-Tacoma International Airport",
+          "lat": 47.4502,
+          "lon": -122.3088
+        },
+        {
+          "title": "Mouth of the Elwha Beach Trailhead",
+          "lat": 48.1457,
+          "lon": -123.5601
+        },
+        {
+          "title": "Cannon Beach",
+          "lat": 45.89831,
+          "lon": -123.9609
+        },
+        {
+          "title": "Indian Beach, Ecola State Park",
+          "lat": 45.9276,
+          "lon": -123.9777
+        },
+        {
+          "title": "Newport coast waypoint",
+          "lat": 44.63445,
+          "lon": -124.05435,
+          "showOnMap": false
+        },
+        {
+          "title": "Florence coast waypoint",
+          "lat": 43.97992,
+          "lon": -124.10121,
+          "showOnMap": false
+        },
+        {
+          "title": "Brookings coast waypoint",
+          "lat": 42.0523,
+          "lon": -124.28344,
+          "showOnMap": false
+        },
+        {
+          "title": "Patrick's Point",
+          "lat": 41.1246,
+          "lon": -124.15637
+        },
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "jul-2020-reno",
+      "title": "Reno",
+      "detail": "Visit",
+      "date": "Jul 2020",
+      "lat": 39.55,
+      "lon": -119.8,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Reno",
+          "lat": 39.52578,
+          "lon": -119.81292
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "aug-2020-eastern-sierra",
       "title": "Eastern Sierra",
-      "detail": "Mammoth",
+      "detail": "Sonora Pass, hot springs, Mammoth, Mono Lake, and bristlecones",
       "date": "Aug 2020",
       "lat": 37.4,
-      "lon": -118.25
+      "lon": -118.25,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Sonora Pass",
+          "lat": 38.31783,
+          "lon": -119.74417
+        },
+        {
+          "title": "Travertine Hot Springs",
+          "lat": 38.2501,
+          "lon": -119.217
+        },
+        {
+          "title": "Wild Willy's Hot Springs",
+          "lat": 37.64574,
+          "lon": -118.91469
+        },
+        {
+          "title": "Devils Postpile",
+          "lat": 37.63041,
+          "lon": -119.08418
+        },
+        {
+          "title": "Panum Crater",
+          "lat": 37.92241,
+          "lon": -119.04718
+        },
+        {
+          "title": "Obsidian Dome",
+          "lat": 37.7689,
+          "lon": -119.0217
+        },
+        {
+          "title": "Ancient Bristlecone Pine Forest",
+          "lat": 37.3853,
+          "lon": -118.1784
+        },
+        {
+          "title": "Return via Sonora Pass",
+          "lat": 38.31783,
+          "lon": -119.74417,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     },
     {
       "type": "trip",
       "slug": "jun-2020-eastern-sierra",
       "title": "Eastern Sierra",
-      "detail": "Bristlecones and Mono Lake",
+      "detail": "Sonora Pass, Mono Lake, and bristlecones",
       "date": "Jun 2020",
       "lat": 37.4,
-      "lon": -118.25
+      "lon": -118.25,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287
+        },
+        {
+          "title": "Sonora Pass",
+          "lat": 38.31783,
+          "lon": -119.74417
+        },
+        {
+          "title": "Panum Crater",
+          "lat": 37.92241,
+          "lon": -119.04718
+        },
+        {
+          "title": "Ancient Bristlecone Pine Forest",
+          "lat": 37.3853,
+          "lon": -118.1784
+        },
+        {
+          "title": "Return via Sonora Pass",
+          "lat": 38.31783,
+          "lon": -119.74417,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.27987,
+          "lon": -120.66287,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "feb-2020-lebec",
+      "title": "Lebec",
+      "detail": "SLO out and back",
+      "date": "Feb 2020",
+      "lat": 34.9,
+      "lon": -118.95,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.2828,
+          "lon": -120.6596
+        },
+        {
+          "title": "Lebec",
+          "lat": 34.8416,
+          "lon": -118.8648
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.2828,
+          "lon": -120.6596,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "aug-2019-lake-arrowhead",
+      "title": "Lake Arrowhead",
+      "detail": "SLO, Beverly Hills, Lake Arrowhead, and San Bernardino",
+      "date": "Aug 2019",
+      "lat": 34.15,
+      "lon": -117.75,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Luis Obispo",
+          "lat": 35.2828,
+          "lon": -120.6596
+        },
+        {
+          "title": "Beverly Hills",
+          "lat": 34.0736,
+          "lon": -118.4004
+        },
+        {
+          "title": "Lake Arrowhead",
+          "lat": 34.2483,
+          "lon": -117.1892
+        },
+        {
+          "title": "San Bernardino",
+          "lat": 34.1083,
+          "lon": -117.2898
+        },
+        {
+          "title": "Return to Lake Arrowhead",
+          "lat": 34.2483,
+          "lon": -117.1892,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Luis Obispo",
+          "lat": 35.2828,
+          "lon": -120.6596,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "dec-2019-san-diego",
+      "title": "San Diego",
+      "detail": "SFO out and back",
+      "date": "Dec 2019",
+      "lat": 32.8,
+      "lon": -117.1,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "San Diego International Airport",
+          "lat": 32.7338,
+          "lon": -117.1933
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "jul-2018-tuscany-and-italy",
+      "title": "Tuscany and Italy",
+      "detail": "Florence, Tuscany, Rome, and Venice",
+      "date": "Jul 2018",
+      "lat": 43.8,
+      "lon": 11.25,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Florence",
+          "lat": 43.7696,
+          "lon": 11.2558
+        },
+        {
+          "title": "Tuscany",
+          "lat": 43.3188,
+          "lon": 11.3308
+        },
+        {
+          "title": "Rome",
+          "lat": 41.9028,
+          "lon": 12.4964
+        },
+        {
+          "title": "Venice",
+          "lat": 45.4408,
+          "lon": 12.3155
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "mar-2018-portland-and-mount-hood",
+      "title": "Portland and Mount Hood",
+      "detail": "Portland and Mount Hood",
+      "date": "Mar 2018",
+      "lat": 45.5,
+      "lon": -122.65,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Portland International Airport",
+          "lat": 45.5898,
+          "lon": -122.5951
+        },
+        {
+          "title": "Mount Hood",
+          "lat": 45.3736,
+          "lon": -121.6959
+        },
+        {
+          "title": "Return to Portland International Airport",
+          "lat": 45.5898,
+          "lon": -122.5951,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "feb-2017-israel",
+      "title": "Israel",
+      "detail": "Jerusalem, Dead Sea, Safed, Haifa, Achziv, and Tel Aviv",
+      "date": "Feb 2017",
+      "lat": 31.4,
+      "lon": 35.05,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Ben Gurion Airport",
+          "lat": 32.0055,
+          "lon": 34.8854
+        },
+        {
+          "title": "Jerusalem",
+          "lat": 31.7683,
+          "lon": 35.2137
+        },
+        {
+          "title": "Dead Sea",
+          "lat": 31.559,
+          "lon": 35.4732
+        },
+        {
+          "title": "Safed",
+          "lat": 32.9658,
+          "lon": 35.4986
+        },
+        {
+          "title": "Haifa",
+          "lat": 32.794,
+          "lon": 34.9896
+        },
+        {
+          "title": "Yam Achziv Sea Reserve",
+          "lat": 33.0476,
+          "lon": 35.1018
+        },
+        {
+          "title": "Tel Aviv",
+          "lat": 32.0853,
+          "lon": 34.7818
+        },
+        {
+          "title": "Return to Ben Gurion Airport",
+          "lat": 32.0055,
+          "lon": 34.8854,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "apr-2017-coachella",
+      "title": "Coachella",
+      "detail": "California desert out and back",
+      "date": "Apr 2017",
+      "lat": 33.7,
+      "lon": -116.25,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "Coachella",
+          "lat": 33.6803,
+          "lon": -116.1739
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "dec-2016-south-lake-tahoe",
+      "title": "South Lake Tahoe",
+      "detail": "Bay Area out and back",
+      "date": "Dec 2016",
+      "lat": 38.9,
+      "lon": -120,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194
+        },
+        {
+          "title": "South Lake Tahoe",
+          "lat": 38.9399,
+          "lon": -119.9772
+        },
+        {
+          "title": "Return to San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "nov-2016-boston-and-new-york",
+      "title": "Boston and New York",
+      "detail": "Boston, train to New York, and flight home",
+      "date": "Nov 2016",
+      "lat": 42.35,
+      "lon": -71.1,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Boston",
+          "lat": 42.3601,
+          "lon": -71.0589
+        },
+        {
+          "title": "New York City",
+          "lat": 40.7128,
+          "lon": -74.006
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "train"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "jul-2016-alaska",
+      "title": "Alaska",
+      "detail": "Anchorage, Matanuska, Denali, and Kenai Fjords",
+      "date": "Jul 2016",
+      "lat": 61.4,
+      "lon": -148.75,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Anchorage",
+          "lat": 61.2181,
+          "lon": -149.9003
+        },
+        {
+          "title": "Matanuska Glacier",
+          "lat": 61.8039,
+          "lon": -147.7456
+        },
+        {
+          "title": "Denali National Park",
+          "lat": 63.1148,
+          "lon": -151.1926
+        },
+        {
+          "title": "Kenai Fjords National Park",
+          "lat": 59.8487,
+          "lon": -150.1879
+        },
+        {
+          "title": "Return to Anchorage",
+          "lat": 61.2181,
+          "lon": -149.9003,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "aug-2015-iceland-ring-road",
+      "title": "Iceland Ring Road",
+      "detail": "Reykjavik and the full Highway 1 loop",
+      "date": "Aug 2015",
+      "lat": 64.1466,
+      "lon": -21.9426,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Reykjavik / Keflavik Airport",
+          "lat": 63.985,
+          "lon": -22.6056
+        },
+        {
+          "title": "Vik",
+          "lat": 63.4186,
+          "lon": -19.006
+        },
+        {
+          "title": "Hofn",
+          "lat": 64.2497,
+          "lon": -15.202
+        },
+        {
+          "title": "Egilsstadir",
+          "lat": 65.2674,
+          "lon": -14.3948
+        },
+        {
+          "title": "Akureyri",
+          "lat": 65.6885,
+          "lon": -18.1262
+        },
+        {
+          "title": "Borgarnes",
+          "lat": 64.5383,
+          "lon": -21.9206
+        },
+        {
+          "title": "Return to Reykjavik / Keflavik Airport",
+          "lat": 63.985,
+          "lon": -22.6056,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "dec-2014-miami",
+      "title": "Miami",
+      "detail": "SFO out and back",
+      "date": "Dec 2014",
+      "lat": 25.7617,
+      "lon": -80.1918,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Miami International Airport",
+          "lat": 25.7959,
+          "lon": -80.287
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "may-2014-death-valley",
+      "title": "Death Valley",
+      "detail": "Panum Crater, Mesquite Dunes, Ubehebe, Golden Canyon, and Red Rock Canyon",
+      "date": "May 2014",
+      "lat": 36.6069,
+      "lon": -117.1152,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "Santa Clara",
+          "lat": 37.3541,
+          "lon": -121.9552
+        },
+        {
+          "title": "Panum Crater",
+          "lat": 37.9308,
+          "lon": -119.0548
+        },
+        {
+          "title": "Mesquite Flat Sand Dunes",
+          "lat": 36.6069,
+          "lon": -117.1152
+        },
+        {
+          "title": "Ubehebe Crater",
+          "lat": 37.0106,
+          "lon": -117.4507
+        },
+        {
+          "title": "Golden Canyon",
+          "lat": 36.4208,
+          "lon": -116.8466
+        },
+        {
+          "title": "Red Rock Canyon State Park",
+          "lat": 35.3683,
+          "lon": -117.9929
+        },
+        {
+          "title": "Return to Santa Clara",
+          "lat": 37.3541,
+          "lon": -121.9552,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "aug-2013-utah-national-parks",
+      "title": "Utah National Parks",
+      "detail": "Zion and Bryce Canyon",
+      "date": "Aug 2013",
+      "lat": 37.2982,
+      "lon": -113.0263,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Salt Lake City International Airport",
+          "lat": 40.7899,
+          "lon": -111.9791
+        },
+        {
+          "title": "Zion National Park",
+          "lat": 37.2982,
+          "lon": -113.0263
+        },
+        {
+          "title": "Bryce Canyon National Park",
+          "lat": 37.593,
+          "lon": -112.1871
+        },
+        {
+          "title": "Return to Salt Lake City International Airport",
+          "lat": 40.7899,
+          "lon": -111.9791,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "jul-2012-barcelona-and-madrid",
+      "title": "Barcelona and Madrid",
+      "detail": "Spain via Barcelona and Madrid",
+      "date": "Jul 2012",
+      "lat": 41.3874,
+      "lon": 2.1686,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Barcelona",
+          "lat": 41.3874,
+          "lon": 2.1686
+        },
+        {
+          "title": "Madrid",
+          "lat": 40.4168,
+          "lon": -3.7038
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
+      "slug": "feb-2012-humboldt-oregon-dunes-and-crater-lake",
+      "title": "Humboldt, Oregon Dunes, and Crater Lake",
+      "detail": "Humboldt Redwoods, Oregon Dunes, and Crater Lake",
+      "date": "Feb 2012",
+      "lat": 40.3083,
+      "lon": -123.9086,
+      "travelMode": "drive",
+      "routeNodes": [
+        {
+          "title": "Santa Clara",
+          "lat": 37.3541,
+          "lon": -121.9552
+        },
+        {
+          "title": "Humboldt Redwoods State Park",
+          "lat": 40.3083,
+          "lon": -123.9086
+        },
+        {
+          "title": "Oregon Dunes National Recreation Area",
+          "lat": 43.7254,
+          "lon": -124.1751
+        },
+        {
+          "title": "Crater Lake National Park",
+          "lat": 42.9446,
+          "lon": -122.109
+        },
+        {
+          "title": "Return to Santa Clara",
+          "lat": 37.3541,
+          "lon": -121.9552,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        }
+      ]
     }
   ],
-  "driveRoutes": [],
   "races": [
     {
       "type": "race",
       "slug": "2026-canyons-100k-auburn-ca-100k",
       "title": "Canyons 100K",
       "detail": "Auburn, CA - 100K",
-      "date": "2026",
+      "date": "Apr 25 2026",
       "result": "2026 - 15:46:47",
       "rank": "OA 256/539 / AG 79/118 20-34M",
       "href": "https://live.utmb.world/canyons/2026/runners/1775",
@@ -494,22 +4668,10 @@
     },
     {
       "type": "race",
-      "slug": "2025-california-international-marathon-sacramento-ca-marathon",
-      "title": "California International Marathon",
-      "detail": "Sacramento, CA - Marathon",
-      "date": "2025",
-      "result": "2025 - DNS",
-      "rank": "",
-      "href": "https://myrace.ai/races/cim-2025/results",
-      "lat": 38.581,
-      "lon": -121.494
-    },
-    {
-      "type": "race",
       "slug": "2025-ironman-70-3-santa-cruz-relay-santa-cruz-ca-relay-bib-4073-t-m-men",
       "title": "IRONMAN 70.3 Santa Cruz Relay",
       "detail": "Santa Cruz, CA - Relay - Bib 4073, T. M. Men",
-      "date": "2025",
+      "date": "Sep 7 2025",
       "result": "2025 - 4:23:37",
       "rank": "Team 2/50 / Run 1:28:40",
       "href": "https://www.ironman.com/races/im703-santa-cruz",
@@ -521,7 +4683,7 @@
       "slug": "2025-tamalpa-headlands-50k-muir-beach-ca-50k",
       "title": "Tamalpa Headlands 50K",
       "detail": "Muir Beach, CA - 50K",
-      "date": "2025",
+      "date": "Aug 16 2025",
       "result": "2025 - 5:25:47",
       "rank": "OA 72/251 / AG 26/58 M23",
       "href": "https://statistik.d-u-v.org/getresultevent.php?event=112347",
@@ -533,7 +4695,7 @@
       "slug": "2025-broken-arrow-skyrace-olympic-valley-ca-23k",
       "title": "Broken Arrow Skyrace",
       "detail": "Olympic Valley, CA - 23K",
-      "date": "2025",
+      "date": "Jun 22 2025",
       "result": "2025 - 3:07:52",
       "rank": "OA 190/603 / AG 26/44 M20-29",
       "href": "https://www.berglaufpur.de/berglauf/documents/BrokenArrowSkyrace23Km.pdf",
@@ -545,7 +4707,7 @@
       "slug": "2025-ironman-70-3-st-george-st-george-ut-70-3",
       "title": "IRONMAN 70.3 St. George",
       "detail": "St. George, UT - 70.3",
-      "date": "2025",
+      "date": "May 10 2025",
       "result": "2025 - 4:55:08",
       "rank": "OA 205/2093 / AG 30/211 M25-29",
       "href": "https://sportstats.one/event/ironman-703-st-george/leaderboard/143338",
@@ -557,7 +4719,7 @@
       "slug": "2024-ironman-70-3-world-championship-taupo-new-zealand-70-3",
       "title": "IRONMAN 70.3 World Championship",
       "detail": "Taupo, New Zealand - 70.3",
-      "date": "2024",
+      "date": "Dec 15 2024",
       "result": "2024 - 4:56:13",
       "rank": "OA 1415/3083 / AG 87/128 M18-24",
       "href": "https://www.btu-info.de/images/stories/2024/Ergebnisse/Ergebnis_2024_12_14_Taupo_703_WC_Ironman_M%C3%A4nner.pdf",
@@ -569,7 +4731,7 @@
       "slug": "2024-golden-gate-trail-classic-san-francisco-ca-50k",
       "title": "Golden Gate Trail Classic",
       "detail": "San Francisco, CA - 50K",
-      "date": "2024",
+      "date": "Nov 23 2024",
       "result": "2024 - 5:21:04",
       "rank": "OA 24/304 / AG 10/63 M20-29",
       "href": "https://www.spartan.com/en/race/past-results/8233",
@@ -581,7 +4743,7 @@
       "slug": "2024-ironman-70-3-santa-cruz-santa-cruz-ca-70-3",
       "title": "IRONMAN 70.3 Santa Cruz",
       "detail": "Santa Cruz, CA - 70.3",
-      "date": "2024",
+      "date": "Sep 8 2024",
       "result": "2024 - 4:45:04",
       "rank": "OA 108/2166 / AG 9/114 M18-24",
       "href": "https://sportstats.one/event/ironman-703-santa-cruz/tracker?pid=140177:1812",
@@ -593,7 +4755,7 @@
       "slug": "2024-hood-to-coast-oregon-relay-run-for-days-mixed-open",
       "title": "Hood to Coast",
       "detail": "Oregon - Relay - Run for Days, Mixed Open",
-      "date": "2024",
+      "date": "Aug 23 2024",
       "result": "2024 - 24:25:55.2",
       "rank": "OA 74/1183 / Div 16/296",
       "href": "https://eclecticedgeracing.overallraceresults.com/individual-results/888/559016",
@@ -605,7 +4767,7 @@
       "slug": "2024-twilight-5000-san-francisco-ca-5k",
       "title": "Twilight 5000",
       "detail": "San Francisco, CA - 5K",
-      "date": "2024",
+      "date": "Jul 17 2024",
       "result": "2024 - 18:20.22",
       "rank": "OA 120/292",
       "href": "https://diablotiming.com/results/2024-07-17/results_39.html",
@@ -617,7 +4779,7 @@
       "slug": "2024-broken-arrow-skyrace-olympic-valley-ca-18k",
       "title": "Broken Arrow Skyrace",
       "detail": "Olympic Valley, CA - 18K",
-      "date": "2024",
+      "date": "Jun 21 2024",
       "result": "2024 - 2:39:17",
       "rank": "OA 68/375 / AG 14/34 M20-29",
       "href": "https://my.raceresult.com/290460/results/pdf?name=Online%20Results%7C18K%20Results&contest=3&lang=en",
@@ -629,7 +4791,7 @@
       "slug": "2024-escape-from-alcatraz-triathlon-san-francisco-ca-triathlon",
       "title": "Escape from Alcatraz Triathlon",
       "detail": "San Francisco, CA - Triathlon",
-      "date": "2024",
+      "date": "Jun 9 2024",
       "result": "2024 - 2:29:38",
       "rank": "OA 65/1628 / AG 10/47 M20-24",
       "href": "https://www.escapealcatraztri.com/results/2024",
@@ -641,7 +4803,7 @@
       "slug": "2024-ironman-70-3-morro-bay-morro-bay-ca-70-3",
       "title": "IRONMAN 70.3 Morro Bay",
       "detail": "Morro Bay, CA - 70.3",
-      "date": "2024",
+      "date": "May 19 2024",
       "result": "2024 - 5:08:46",
       "rank": "OA 115/1107 / AG 12/97 M18-24",
       "href": "https://sportstats.one/event/ironman-703-morro-bay/tracker?pid=140134:669",
@@ -653,7 +4815,7 @@
       "slug": "2024-napa-valley-marathon-napa-ca-marathon",
       "title": "Napa Valley Marathon",
       "detail": "Napa, CA - Marathon",
-      "date": "2024",
+      "date": "Mar 3 2024",
       "result": "2024 - 3:26:38",
       "rank": "OA 219/1699 / AG 16/52 M21-24",
       "href": "https://results.svetiming.com/Napa-Valley-Marathon/events/2024/kaiser-permanente-napa-valley-marathon/1682/entrant",
@@ -665,7 +4827,7 @@
       "slug": "2023-santa-cruz-triathlon-santa-cruz-ca-olympic",
       "title": "Santa Cruz Triathlon",
       "detail": "Santa Cruz, CA - Olympic",
-      "date": "2023",
+      "date": "Sep 24 2023",
       "result": "2023 - 2:34:21",
       "rank": "OA 68/623 / AG 5/18 M20-24",
       "href": "https://results.svetiming.com/Santa-Cruz-Triathlon/events/2023/Santa-Cruz-Triathlon/results",

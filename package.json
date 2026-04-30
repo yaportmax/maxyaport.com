@@ -9,7 +9,8 @@
     "studio:build": "npm run build --prefix studio-maxyaport.com",
     "studio:import-posts": "cd studio-maxyaport.com && npx sanity exec scripts/import-local-posts.mjs --with-user-token",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "travel:routes": "python3 scripts/build-trip-routes.py"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
