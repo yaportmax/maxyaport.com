@@ -1592,14 +1592,14 @@ body.travel-app .map-timeline {
   flex: 0 0 auto;
   margin-top: 0;
   overflow: hidden;
+  padding-bottom: max(0px, env(safe-area-inset-bottom));
 }
 
 body.travel-app .travel-timeline-rail {
   overflow-x: auto;
   overflow-y: hidden;
-  padding-top: 12px;
+  padding: 18px 22px 16px;
   scrollbar-width: none;
-  scroll-snap-type: x proximity;
 }
 
 body.travel-app .travel-timeline-rail::-webkit-scrollbar {
@@ -1609,13 +1609,6 @@ body.travel-app .travel-timeline-rail::-webkit-scrollbar {
 body.travel-app .travel-timeline-rail__axis {
   width: max(var(--timeline-width, 100%), 100%);
   min-width: 100%;
-}
-
-body.travel-app .map-timeline__active p,
-body.travel-app .map-timeline__active small {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 @media (max-height: 700px) {
@@ -1630,35 +1623,73 @@ body.travel-app .map-timeline__active small {
   }
 
   body.travel-app .travel-timeline-rail {
-    padding-top: 7px;
-    padding-bottom: 2px;
+    padding-top: 10px;
+    padding-bottom: 9px;
   }
 
   body.travel-app .travel-timeline-rail__axis {
-    height: 42px;
-  }
-
-  body.travel-app .travel-scrubber {
-    padding-top: 4px;
-    padding-bottom: 3px;
+    height: 58px;
   }
 }
 
 .travel-timeline-rail {
+  position: relative;
   padding: 18px 20px 12px;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-color: color-mix(in srgb, var(--accent) 54%, transparent) transparent;
   scrollbar-width: thin;
   overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  cursor: grab;
   -webkit-overflow-scrolling: touch;
+}
+
+.travel-timeline-rail.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.travel-timeline-rail::before {
+  content: "";
+  position: absolute;
+  right: 18px;
+  bottom: 12px;
+  left: 18px;
+  height: 24px;
+  border: 1px solid color-mix(in srgb, var(--border) 56%, transparent);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(95, 127, 73, 0.2), rgba(169, 120, 53, 0.16)),
+    color-mix(in srgb, var(--panel) 48%, transparent);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.56),
+    0 1px 0 rgba(255, 250, 240, 0.07);
+  pointer-events: none;
+}
+
+.travel-timeline-rail::after {
+  content: "";
+  position: absolute;
+  right: 30px;
+  bottom: 23px;
+  left: 30px;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--muted) 48%, transparent) 0 1px,
+    transparent 1px 18px
+  );
+  opacity: 0.54;
+  pointer-events: none;
 }
 
 .travel-timeline-rail__axis {
   position: relative;
   width: var(--timeline-width, 100%);
   min-width: 100%;
-  height: 62px;
+  height: 74px;
+  z-index: 1;
 }
 
 .travel-timeline-rail__axis::before {
@@ -1666,7 +1697,7 @@ body.travel-app .map-timeline__active small {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 23px;
+  bottom: 26px;
   height: 1px;
   background: color-mix(in srgb, var(--border) 82%, transparent);
 }
@@ -1685,17 +1716,17 @@ body.travel-app .map-timeline__active small {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 22px;
-  height: 10px;
+  bottom: 25px;
+  height: 12px;
   border-left: 1px solid color-mix(in srgb, var(--muted) 54%, transparent);
 }
 
 .travel-timeline-rail__dot {
   position: absolute;
   left: var(--x);
-  bottom: 19px;
-  width: 6px;
-  height: 6px;
+  bottom: 21px;
+  width: 7px;
+  height: 7px;
   padding: 0;
   transform: translateX(-50%);
   border: 1px solid color-mix(in srgb, var(--bg) 92%, transparent);
@@ -1709,12 +1740,12 @@ body.travel-app .map-timeline__active small {
 .travel-timeline-rail__dot::before {
   content: "";
   position: absolute;
-  inset: -4px;
+  inset: -13px;
   border-radius: inherit;
 }
 
 .travel-timeline-rail__dot--race {
-  bottom: 31px;
+  bottom: 35px;
   background: #a97835;
   box-shadow: 0 0 0 1px color-mix(in srgb, #a97835 42%, transparent);
 }
@@ -1741,157 +1772,6 @@ body.travel-app .map-timeline__active small {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-
-.travel-scrubber {
-  position: relative;
-  padding: 7px 20px 14px;
-  isolation: isolate;
-}
-
-.travel-scrubber::before {
-  content: "";
-  position: absolute;
-  left: 26px;
-  right: 26px;
-  top: 50%;
-  height: 18px;
-  transform: translateY(-50%);
-  border-radius: 999px;
-  background:
-    linear-gradient(90deg, rgba(95, 127, 73, 0.22), rgba(169, 120, 53, 0.2)),
-    color-mix(in srgb, var(--panel) 54%, transparent);
-  box-shadow:
-    inset 0 1px 3px rgba(0, 0, 0, 0.55),
-    0 1px 0 rgba(255, 250, 240, 0.08);
-  pointer-events: none;
-  z-index: -1;
-}
-
-.travel-scrubber::after {
-  content: "";
-  position: absolute;
-  left: 34px;
-  right: 34px;
-  top: 50%;
-  height: 1px;
-  transform: translateY(-50%);
-  background: repeating-linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--muted) 50%, transparent) 0 1px,
-    transparent 1px 18px
-  );
-  opacity: 0.52;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.travel-scrubber__range {
-  appearance: none;
-  display: block;
-  width: 100%;
-  height: 38px;
-  margin: 0;
-  border: 0;
-  background: transparent;
-  cursor: ew-resize;
-}
-
-.travel-scrubber__range:focus {
-  outline: none;
-}
-
-.travel-scrubber__range:focus-visible::-webkit-slider-thumb {
-  box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--accent) 24%, transparent),
-    0 10px 22px rgba(0, 0, 0, 0.36);
-}
-
-.travel-scrubber__range:focus-visible::-moz-range-thumb {
-  box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--accent) 24%, transparent),
-    0 10px 22px rgba(0, 0, 0, 0.36);
-}
-
-.travel-scrubber__range::-webkit-slider-runnable-track {
-  height: 18px;
-  border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
-  border-radius: 999px;
-  background: transparent;
-}
-
-.travel-scrubber__range::-moz-range-track {
-  height: 18px;
-  border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
-  border-radius: 999px;
-  background: transparent;
-}
-
-.travel-scrubber__range::-webkit-slider-thumb {
-  appearance: none;
-  width: 34px;
-  height: 34px;
-  margin-top: -9px;
-  border: 1px solid color-mix(in srgb, #fffaf0 72%, transparent);
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at 50% 42%, #fffaf0 0 3px, transparent 4px),
-    linear-gradient(180deg, color-mix(in srgb, var(--accent) 74%, #fffaf0), #8ea96d);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.32),
-    0 10px 22px rgba(0, 0, 0, 0.36);
-  cursor: grab;
-}
-
-.travel-scrubber__range::-moz-range-thumb {
-  width: 34px;
-  height: 34px;
-  border: 1px solid color-mix(in srgb, #fffaf0 72%, transparent);
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at 50% 42%, #fffaf0 0 3px, transparent 4px),
-    linear-gradient(180deg, color-mix(in srgb, var(--accent) 74%, #fffaf0), #8ea96d);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.32),
-    0 10px 22px rgba(0, 0, 0, 0.36);
-  cursor: grab;
-}
-
-.travel-scrubber__range:active::-webkit-slider-thumb {
-  cursor: grabbing;
-  transform: scale(1.04);
-}
-
-.travel-scrubber__range:active::-moz-range-thumb {
-  cursor: grabbing;
-}
-
-.map-timeline__active {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 20px;
-  min-height: 68px;
-  padding: 12px 20px 16px;
-}
-
-.map-timeline__active p {
-  color: var(--text);
-  line-height: 1.45;
-}
-
-.map-timeline__active small {
-  display: block;
-  margin-top: 3px;
-  color: var(--muted);
-  line-height: 1.4;
-}
-
-.map-timeline__active > span:last-child {
-  color: var(--subtle);
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  white-space: nowrap;
 }
 
 .site-footer {
@@ -2018,16 +1898,6 @@ body.travel-app .map-timeline__active small {
     margin-left: 0;
   }
 
-  .map-timeline__active {
-    grid-template-columns: 1fr;
-    gap: 6px;
-    padding: 13px 14px;
-  }
-
-  .map-timeline__active > span:last-child {
-    grid-column: 1;
-  }
-
   .travel-timeline-rail {
     padding-right: 14px;
     padding-left: 14px;
@@ -2049,11 +1919,11 @@ body.travel-app .map-timeline__active small {
   }
 
   body.travel-app .travel-timeline-rail {
-    padding: 8px 8px 4px;
+    padding: 10px 8px 8px;
   }
 
   body.travel-app .travel-timeline-rail__axis {
-    height: 42px;
+    height: 60px;
   }
 
   body.travel-app .travel-timeline-rail__year {
@@ -2067,41 +1937,6 @@ body.travel-app .map-timeline__active small {
   body.travel-app .travel-timeline-rail__dot {
     width: 5px;
     height: 5px;
-  }
-
-  body.travel-app .travel-scrubber {
-    padding: 4px 8px 8px;
-  }
-
-  body.travel-app .travel-scrubber::before {
-    left: 14px;
-    right: 14px;
-    height: 16px;
-  }
-
-  body.travel-app .travel-scrubber::after {
-    left: 22px;
-    right: 22px;
-  }
-
-  body.travel-app .travel-scrubber__range {
-    height: 32px;
-  }
-
-  body.travel-app .travel-scrubber__range::-webkit-slider-runnable-track,
-  body.travel-app .travel-scrubber__range::-moz-range-track {
-    height: 16px;
-  }
-
-  body.travel-app .travel-scrubber__range::-webkit-slider-thumb {
-    width: 30px;
-    height: 30px;
-    margin-top: -8px;
-  }
-
-  body.travel-app .travel-scrubber__range::-moz-range-thumb {
-    width: 30px;
-    height: 30px;
   }
 
   body.travel-app .map-popup .mapboxgl-popup-content {

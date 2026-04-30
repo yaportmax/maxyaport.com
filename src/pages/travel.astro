@@ -42,8 +42,6 @@ const sortDate = (date: string) => {
   return Date.UTC(year, 6, 1);
 };
 const mapItems = [...mapData.trips, ...mapData.races].sort((a, b) => sortDate(a.date) - sortDate(b.date));
-const timelineItems = [...mapItems].reverse();
-const activeTimelineItem = timelineItems[0];
 const timelineStart = mapItems.length ? sortDate(mapItems[0].date) : Date.UTC(2020, 0, 1);
 const timelineEnd = Math.max(
   mapItems.length ? sortDate(mapItems[mapItems.length - 1].date) : Date.UTC(2026, 0, 1),
@@ -59,11 +57,10 @@ const timelineFocusSpan = Math.max(1, timelineEnd - timelineFocusStart);
 const timelineWidth = Math.max(100, Math.min(720, (timelineSpan / timelineFocusSpan) * 180));
 const timelineScrollStart = ((timelineFocusStart - timelineStart) / timelineSpan) * timelineWidth;
 const firstFocusedTimelineIndex = mapItems.findIndex((item) => sortDate(item.date) >= timelineFocusStart);
-const initialScrubberIndex =
+const initialTimelineIndex =
   firstFocusedTimelineIndex >= 0 ? firstFocusedTimelineIndex : Math.max(0, mapItems.length - 1);
-const scrubberUnit = 100;
-const initialScrubberValue = initialScrubberIndex * scrubberUnit;
-const scrubberMax = Math.max(1, mapItems.length * scrubberUnit);
+const timelineUnit = 100;
+const initialTimelineValue = initialTimelineIndex * timelineUnit;
 const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 ---
 
@@ -103,6 +100,10 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
             class="travel-timeline-rail"
             aria-label="Trip and race years"
             data-travel-timeline-rail
+            data-initial-scrub-value={initialTimelineValue}
+            data-timeline-start={timelineStart}
+            data-timeline-end={timelineEnd}
+            data-timeline-focus-start={timelineFocusStart}
             style={`--timeline-width: ${timelineWidth}%; --timeline-scroll-start: ${timelineScrollStart}%;`}
           >
             <div class="travel-timeline-rail__axis">
@@ -120,27 +121,14 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
                     class={`travel-timeline-rail__dot travel-timeline-rail__dot--${item.type}`}
                     style={`--x: ${timelinePosition(item.date)}%`}
                     data-map-timeline-item={item.slug}
+                    data-map-timeline-time={sortDate(item.date)}
                     aria-label={`${item.title}, ${item.date}`}
                   />
                 ))
               }
             </div>
           </div>
-          <div class="travel-scrubber" data-travel-scrubber-shell>
-            <input
-              class="travel-scrubber__range"
-              type="range"
-              min="0"
-              max={scrubberMax}
-              value={initialScrubberValue}
-              step="1"
-              data-travel-scrubber
-              aria-label="Scrub through the travel timeline"
-            />
-            <output class="sr-only" data-travel-scrubber-title aria-live="polite">
-              {activeTimelineItem?.title}, {activeTimelineItem?.date}
-            </output>
-          </div>
+          <output class="sr-only" data-travel-scrubber-title aria-live="polite"></output>
         </section>
       </div>
 
@@ -201,8 +189,6 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const mapElement = document.getElementById("travel-map");
   const timelineRail = document.querySelector("[data-travel-timeline-rail]");
   const timelineDots = Array.from(document.querySelectorAll("[data-map-timeline-item]"));
-  const scrubberShell = document.querySelector("[data-travel-scrubber-shell]");
-  const scrubberInput = document.querySelector("[data-travel-scrubber]");
   const scrubberTitleElement = document.querySelector("[data-travel-scrubber-title]");
   const routeEditorToggle = document.querySelector("[data-route-editor-toggle]");
   const routeEditor = document.getElementById("route-editor");
@@ -239,7 +225,11 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const allPoints = [...mapData.trips, ...mapData.races];
   const allPointsBySlug = new Map(allPoints.map((point) => [point.slug, point]));
   const timelineSequence = timelineDots
-    .map((dot) => allPointsBySlug.get(dot.getAttribute("data-map-timeline-item")))
+    .map((dot) => {
+      const item = allPointsBySlug.get(dot.getAttribute("data-map-timeline-item"));
+      if (item) item.timelineTime = Number(dot.getAttribute("data-map-timeline-time")) || 0;
+      return item;
+    })
     .filter(Boolean);
   let activeTimelineSlug = "";
   let stopLookupTimeout = 0;
@@ -477,6 +467,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         type: "raster",
         tiles: ["https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],
         tileSize: 256,
+        maxzoom: 19,
         attribution: "Satellite imagery © Esri",
       },
       "mapbox-terrain-dem": {
@@ -512,7 +503,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     scrollZoom: true,
     antialias: true,
     minZoom: 0,
-    maxZoom: 12,
+    maxZoom: 18,
   });
 
   map.scrollZoom.enable();
@@ -720,7 +711,14 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const emptyProgressMarkerData = { type: "FeatureCollection", features: [] };
   const scrubberUnitsPerItem = 100;
   const scrubberRoutePortion = 0.82;
+  const scrubberMaxValue = Math.max(1, timelineSequence.length * scrubberUnitsPerItem);
+  let scrubberValue = Number(timelineRail?.getAttribute("data-initial-scrub-value")) || 0;
   let currentScrubState = null;
+  let syncingTimelineScroll = false;
+  const timelineStartTime = Number(timelineRail?.getAttribute("data-timeline-start")) || 0;
+  const timelineEndTime = Number(timelineRail?.getAttribute("data-timeline-end")) || timelineStartTime + 1;
+  const timelineFocusStartTime = Number(timelineRail?.getAttribute("data-timeline-focus-start")) || timelineStartTime;
+  const timelineTimeSpan = Math.max(1, timelineEndTime - timelineStartTime);
 
   const sameLngLat = (first, second) =>
     Array.isArray(first) &&
@@ -879,9 +877,69 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     return index >= 0 ? index * scrubberUnitsPerItem : 0;
   };
 
+  const clampScrubberValue = (value) => Math.min(Math.max(Number(value) || 0, 0), scrubberMaxValue);
+
+  const maxTimelineScroll = () => (timelineRail ? Math.max(1, timelineRail.scrollWidth - timelineRail.clientWidth) : 1);
+
+  const timelineAxisWidth = () =>
+    timelineRail?.querySelector(".travel-timeline-rail__axis")?.scrollWidth || timelineRail?.scrollWidth || 1;
+
+  const scrubberValueFromTimelineTime = (time) => {
+    if (!timelineSequence.length) return 0;
+    const targetTime = Number(time) || timelineStartTime;
+    const firstTime = timelineSequence[0].timelineTime || timelineStartTime;
+    const lastIndex = timelineSequence.length - 1;
+    const lastTime = timelineSequence[lastIndex].timelineTime || timelineEndTime;
+
+    if (targetTime <= firstTime) return 0;
+    if (targetTime >= lastTime) return lastIndex * scrubberUnitsPerItem + scrubberUnitsPerItem;
+
+    for (let index = 0; index < lastIndex; index += 1) {
+      const itemTime = timelineSequence[index].timelineTime || firstTime;
+      const nextTime = timelineSequence[index + 1].timelineTime || itemTime + 1;
+      if (targetTime <= nextTime) {
+        const dateProgress = (targetTime - itemTime) / Math.max(1, nextTime - itemTime);
+        return (index + Math.min(Math.max(dateProgress, 0), 1)) * scrubberUnitsPerItem;
+      }
+    }
+
+    return scrubberMaxValue;
+  };
+
+  const timelineTimeFromScroll = () => {
+    if (!timelineRail) return timelineFocusStartTime;
+    const viewportCenter = timelineRail.scrollLeft + timelineRail.clientWidth / 2;
+    const ratio = Math.min(1, Math.max(0, viewportCenter / Math.max(1, timelineAxisWidth())));
+    return timelineStartTime + ratio * timelineTimeSpan;
+  };
+
+  const timelineValueFromScroll = () => {
+    if (!timelineRail) return scrubberValue;
+    return scrubberValueFromTimelineTime(timelineTimeFromScroll());
+  };
+
+  const scrollTimelineToTime = (time, behavior = "auto") => {
+    if (!timelineRail) return;
+    const ratio = Math.min(1, Math.max(0, ((Number(time) || timelineStartTime) - timelineStartTime) / timelineTimeSpan));
+    const targetLeft = ratio * timelineAxisWidth() - timelineRail.clientWidth / 2;
+    syncingTimelineScroll = true;
+    timelineRail.scrollTo({
+      left: Math.min(Math.max(0, targetLeft), maxTimelineScroll()),
+      behavior,
+    });
+    window.setTimeout(() => {
+      syncingTimelineScroll = false;
+    }, behavior === "smooth" ? 360 : 40);
+  };
+
+  const scrollTimelineToValue = (value, behavior = "auto") => {
+    const state = scrubberStateFromValue(value);
+    scrollTimelineToTime(state?.item?.timelineTime || timelineFocusStartTime, behavior);
+  };
+
   const syncScrubberToItem = (item, coordinate = null) => {
     if (!item) return;
-    if (scrubberInput) scrubberInput.value = String(scrubberValueForSlug(item.slug));
+    scrubberValue = clampScrubberValue(scrubberValueForSlug(item.slug));
     updateRouteProgressMarker({
       item,
       coordinate: coordinate || coordinateAtProgress(routeCoordinatesForItem(item), 0) || [item.lon, item.lat],
@@ -889,17 +947,18 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       inGap: false,
       pathDistance: pathDistance(routeCoordinatesForItem(item)),
     });
+    scrollTimelineToTime(item.timelineTime || timelineFocusStartTime, "smooth");
   };
 
-  const keepTimelineDotVisible = (slug) => {
+  const keepTimelineDotVisible = (slug, behavior = "smooth") => {
     if (!timelineRail) return;
     const dot = timelineDots.find((item) => item.getAttribute("data-map-timeline-item") === slug);
     if (!dot) return;
     const targetLeft = dot.offsetLeft - timelineRail.clientWidth / 2;
-    timelineRail.scrollTo({ left: Math.max(0, targetLeft), behavior: "smooth" });
+    timelineRail.scrollTo({ left: Math.max(0, targetLeft), behavior });
   };
 
-  const applyScrubFocus = (item) => {
+  const applyScrubFocus = (item, { centerDot = true } = {}) => {
     if (!item) return false;
     const itemChanged = activeTimelineSlug !== item.slug;
     activeTimelineSlug = item.slug;
@@ -913,7 +972,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     clearScheduledPopup();
     popup.remove();
     updateLayerVisibility();
-    keepTimelineDotVisible(item.slug);
+    if (centerDot) keepTimelineDotVisible(item.slug);
     return itemChanged;
   };
 
@@ -937,14 +996,14 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     });
   };
 
-  const setScrubberProgress = (value, { trackCamera = false } = {}) => {
-    if (!scrubberInput) return;
-    const clampedValue = Math.min(Math.max(Number(value) || 0, 0), Number(scrubberInput.max) || 1);
-    scrubberInput.value = String(clampedValue);
+  const setScrubberProgress = (value, { trackCamera = false, syncRail = false, centerDot = true } = {}) => {
+    const clampedValue = clampScrubberValue(value);
+    scrubberValue = clampedValue;
     const state = scrubberStateFromValue(clampedValue);
     if (!state?.item) return;
-    const itemChanged = applyScrubFocus(state.item);
+    const itemChanged = applyScrubFocus(state.item, { centerDot });
     updateRouteProgressMarker(state);
+    if (syncRail) scrollTimelineToValue(clampedValue, "auto");
     if (trackCamera) trackScrubCamera(state, itemChanged);
   };
 
@@ -2169,45 +2228,57 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     dot.addEventListener("click", () => selectItem(dot.getAttribute("data-map-timeline-item"), false));
   });
 
-  if (scrubberInput) {
-    scrubberInput.max = String(Math.max(1, timelineSequence.length * scrubberUnitsPerItem));
-    updateActiveSummary(
-      timelineSequence[Math.min(Math.floor(Number(scrubberInput.value || 0) / scrubberUnitsPerItem), timelineSequence.length - 1)] ||
-        timelineSequence[0],
-    );
-
-    scrubberInput.addEventListener("input", () => {
-      setScrubberProgress(scrubberInput.value, { trackCamera: true });
-    });
-
-    scrubberInput.addEventListener("change", () => {
-      setScrubberProgress(scrubberInput.value, { trackCamera: true });
-    });
-  }
-
-  const handleScrubberWheel = (event) => {
-    if (!scrubberInput) return;
+  const handleTimelineWheel = (event) => {
+    if (!timelineRail) return;
     event.preventDefault();
     const dominantDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
     if (!dominantDelta) return;
-    const max = Number(scrubberInput.max) || 1;
-    const step = Math.max(3, Math.round(max / 280));
-    setScrubberProgress(Number(scrubberInput.value || 0) + Math.sign(dominantDelta) * step, { trackCamera: true });
+    const scrollDelta = dominantDelta * (event.deltaMode === 1 ? 18 : 1);
+    timelineRail.scrollLeft += scrollDelta * 0.006;
+    setScrubberProgress(timelineValueFromScroll(), { trackCamera: true, centerDot: false });
   };
 
-  scrubberShell?.addEventListener("wheel", handleScrubberWheel, { passive: false });
-  scrubberInput?.addEventListener("wheel", handleScrubberWheel, { passive: false });
-
   if (timelineRail) {
-    const scrollStart = Number.parseFloat(
-      getComputedStyle(timelineRail).getPropertyValue("--timeline-scroll-start"),
-    );
-    const applyInitialTimelineScroll = () => {
-      if (!Number.isFinite(scrollStart)) return;
-      timelineRail.scrollLeft = Math.max(0, (timelineRail.scrollWidth * scrollStart) / 100 - 18);
+    let dragStartX = 0;
+    let dragStartScrollLeft = 0;
+    let isTimelineDragging = false;
+
+    const applyScrubFromTimeline = () => {
+      if (syncingTimelineScroll) return;
+      setScrubberProgress(timelineValueFromScroll(), { trackCamera: true, centerDot: false });
     };
+
+    const applyInitialTimelineScroll = () => {
+      scrollTimelineToTime(timelineFocusStartTime, "auto");
+      setScrubberProgress(timelineValueFromScroll(), { trackCamera: false, centerDot: false });
+    };
+
     applyInitialTimelineScroll();
     window.addEventListener("resize", applyInitialTimelineScroll);
+    timelineRail.addEventListener("scroll", () => window.requestAnimationFrame(applyScrubFromTimeline), { passive: true });
+    timelineRail.addEventListener("wheel", handleTimelineWheel, { passive: false });
+    timelineRail.addEventListener("pointerdown", (event) => {
+      if (event.target?.closest?.("[data-map-timeline-item]")) return;
+      isTimelineDragging = true;
+      dragStartX = event.clientX;
+      dragStartScrollLeft = timelineRail.scrollLeft;
+      timelineRail.classList.add("is-dragging");
+      timelineRail.setPointerCapture?.(event.pointerId);
+    });
+    timelineRail.addEventListener("pointermove", (event) => {
+      if (!isTimelineDragging) return;
+      event.preventDefault();
+      timelineRail.scrollLeft = dragStartScrollLeft - (event.clientX - dragStartX) * 0.07;
+      setScrubberProgress(timelineValueFromScroll(), { trackCamera: true, centerDot: false });
+    });
+    const stopTimelineDrag = (event) => {
+      if (!isTimelineDragging) return;
+      isTimelineDragging = false;
+      timelineRail.classList.remove("is-dragging");
+      timelineRail.releasePointerCapture?.(event.pointerId);
+    };
+    timelineRail.addEventListener("pointerup", stopTimelineDrag);
+    timelineRail.addEventListener("pointercancel", stopTimelineDrag);
   }
 
   layerToggleButtons.forEach((button) => {
