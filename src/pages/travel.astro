@@ -50,7 +50,7 @@ const timelineEnd = Math.max(
   Date.now(),
 );
 const timelineSpan = Math.max(1, timelineEnd - timelineStart);
-const timelinePosition = (date: string) => Math.min(95, Math.max(5, ((sortDate(date) - timelineStart) / timelineSpan) * 100));
+const timelinePosition = (date: string) => Math.min(98.75, Math.max(1.25, ((sortDate(date) - timelineStart) / timelineSpan) * 100));
 const startYear = new Date(timelineStart).getUTCFullYear();
 const endYear = new Date(timelineEnd).getUTCFullYear();
 const timelineYears = Array.from({ length: endYear - startYear + 1 }, (_, index) => startYear + index);
@@ -927,7 +927,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         source: "strava-routes",
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
-          "line-color": "#f36523",
+          "line-color": "#287fc2",
           "line-width": ["interpolate", ["linear"], ["zoom"], 1, 1.6, 8, 5, 12, 9],
           "line-opacity": ["interpolate", ["linear"], ["zoom"], 1, 0.055, 8, 0.075, 12, 0.1],
           "line-blur": ["interpolate", ["linear"], ["zoom"], 1, 0.35, 9, 1.4],
@@ -942,7 +942,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         source: "strava-routes",
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
-          "line-color": "#f36523",
+          "line-color": "#287fc2",
           "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.42, 8, 1.6, 12, 3],
           "line-opacity": ["interpolate", ["linear"], ["zoom"], 1, 0.16, 8, 0.24, 12, 0.34],
         },
@@ -981,9 +981,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
           "case",
           ["==", ["get", "type"], "race"],
           "#b58246",
-          ["==", ["get", "travelMode"], "flight"],
-          "#476f4b",
-          "#b46d20",
+          "#5f7f49",
         ],
         "circle-stroke-color": "#fffaf0",
         "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 0, 0.8, 6, 1.6],

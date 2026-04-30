@@ -1153,7 +1153,7 @@ main {
 }
 
 .map-key-line--strava {
-  color: #f36523;
+  color: #287fc2;
 }
 
 .map-key-dot {
@@ -1569,29 +1569,38 @@ main {
 .travel-timeline-rail__dot {
   position: absolute;
   left: var(--x);
-  bottom: 18px;
-  width: 10px;
-  height: 10px;
+  bottom: 19px;
+  width: 7px;
+  height: 7px;
   padding: 0;
   transform: translateX(-50%);
-  border: 2px solid var(--bg);
+  border: 1px solid color-mix(in srgb, var(--bg) 92%, transparent);
   border-radius: 999px;
-  background: #b46d20;
-  box-shadow: 0 0 0 1px color-mix(in srgb, #b46d20 60%, transparent);
+  background: #5f7f49;
+  box-shadow: 0 0 0 1px color-mix(in srgb, #5f7f49 38%, transparent);
   cursor: pointer;
+  opacity: 0.74;
+}
+
+.travel-timeline-rail__dot::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: inherit;
 }
 
 .travel-timeline-rail__dot--race {
-  background: #9fb77d;
-  box-shadow: 0 0 0 1px color-mix(in srgb, #9fb77d 65%, transparent);
+  background: #a97835;
+  box-shadow: 0 0 0 1px color-mix(in srgb, #a97835 42%, transparent);
 }
 
 .travel-timeline-rail__dot.is-active,
 .travel-timeline-rail__dot:hover {
   z-index: 1;
+  opacity: 1;
   box-shadow:
-    0 0 0 1px #fffaf0,
-    0 0 0 7px color-mix(in srgb, var(--accent) 24%, transparent);
+    0 0 0 1px color-mix(in srgb, #fffaf0 86%, transparent),
+    0 0 0 5px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
 .map-timeline__list {
