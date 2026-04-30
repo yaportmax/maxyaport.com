@@ -663,6 +663,16 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     }
   };
 
+  const setMapPointLabelFilter = (activeItem = null) => {
+    if (!map.getLayer("map-point-labels")) return;
+    const selectedRaceSlug = activeItem?.type === "race" ? activeItem.slug : "";
+    map.setFilter("map-point-labels", [
+      "any",
+      ["!=", ["get", "type"], "race"],
+      ["==", ["get", "slug"], selectedRaceSlug],
+    ]);
+  };
+
   const setStravaRouteHighlight = (activityId) => {
     const id = Number(activityId);
     const filter = Number.isFinite(id) && id > 0 ? ["==", ["get", "id"], id] : ["==", ["get", "id"], ""];
@@ -1187,6 +1197,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     const activeItem = allPoints.find((point) => point.slug === activeTimelineSlug);
     setRouteHighlight(activeItem?.type === "trip" ? activeTimelineSlug : "");
     setRaceRouteHighlight(activeItem?.type === "race" ? activeTimelineSlug : "");
+    setMapPointLabelFilter(activeItem);
     setStravaRouteHighlight(activeStravaActivityId);
 
     setVisibility(["trip-routes-flight"], layerVisibility.flight);
@@ -1885,6 +1896,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
           id: "map-point-labels",
           type: "symbol",
           source: "map-points",
+          filter: ["!=", ["get", "type"], "race"],
           minzoom: 3,
           layout: {
             "text-field": ["get", "title"],
