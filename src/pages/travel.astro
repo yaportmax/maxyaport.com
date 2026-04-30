@@ -618,6 +618,17 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     popup.setLngLat(popupCoordinateForItem(item, preferredCoordinate)).setHTML(popupHtml(item)).addTo(map);
   };
 
+  const clearSelection = () => {
+    activeTimelineSlug = "";
+    timelineDots.forEach((dot) => dot.classList.remove("is-active"));
+    if (map.getLayer("map-point-highlight")) {
+      map.setFilter("map-point-highlight", ["==", ["get", "slug"], ""]);
+    }
+    setRouteHighlight("");
+    popup.remove();
+    updateLayerVisibility();
+  };
+
   const setVisibility = (layerIds, visible) => {
     layerIds.forEach((layerId) => {
       if (map.getLayer(layerId)) map.setLayoutProperty(layerId, "visibility", visible ? "visible" : "none");
@@ -1008,6 +1019,28 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
   map.on("mouseleave", "map-points", () => {
     map.getCanvas().style.cursor = "";
+  });
+
+  map.on("click", (event) => {
+    const interactiveLayers = [
+      "map-points",
+      "map-point-highlight",
+      "trip-routes-flight",
+      "trip-routes-drive",
+      "trip-routes-sail",
+      "trip-routes-train",
+      "trip-route-nodes",
+      "trip-route-highlight",
+      "trip-route-highlight-casing",
+      "trip-route-node-highlight",
+      "strava-routes",
+    ].filter((layerId) => map.getLayer(layerId));
+
+    const clickedInteractiveFeature = interactiveLayers.length
+      ? map.queryRenderedFeatures(event.point, { layers: interactiveLayers }).length > 0
+      : false;
+
+    if (!clickedInteractiveFeature) clearSelection();
   });
 
   const editorAvailable =
