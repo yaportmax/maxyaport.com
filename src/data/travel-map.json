@@ -4308,6 +4308,59 @@
     },
     {
       "type": "trip",
+      "slug": "aug-2015-boston-and-cape-cod",
+      "title": "Boston and Cape Cod",
+      "detail": "Boston, Cape Cod, and flight home",
+      "date": "Aug 2015",
+      "lat": 42.0,
+      "lon": -70.6,
+      "travelMode": "flight",
+      "routeNodes": [
+        {
+          "title": "San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379
+        },
+        {
+          "title": "Boston",
+          "lat": 42.3601,
+          "lon": -71.0589
+        },
+        {
+          "title": "Cape Cod",
+          "lat": 41.6528,
+          "lon": -70.2839
+        },
+        {
+          "title": "Return to Boston",
+          "lat": 42.3601,
+          "lon": -71.0589,
+          "showOnMap": false
+        },
+        {
+          "title": "Return to San Francisco International Airport",
+          "lat": 37.6213,
+          "lon": -122.379,
+          "showOnMap": false
+        }
+      ],
+      "routeSegments": [
+        {
+          "mode": "flight"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "drive"
+        },
+        {
+          "mode": "flight"
+        }
+      ]
+    },
+    {
+      "type": "trip",
       "slug": "aug-2015-iceland-ring-road",
       "title": "Iceland Ring Road",
       "detail": "Reykjavik and the full Highway 1 loop",

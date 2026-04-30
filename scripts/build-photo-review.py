@@ -93,6 +93,7 @@ BOXES: dict[str, list[tuple[float, float, float, float]]] = {
     "South Lake Tahoe": [(38.7, 39.1, -120.2, -119.8)],
     "Boston and New York": [(42.2, 42.5, -71.3, -70.9), (40.5, 40.9, -74.2, -73.7)],
     "Alaska": [(58.8, 64.0, -151.5, -146.0)],
+    "Boston and Cape Cod": [(41.5, 42.5, -71.3, -69.9)],
     "Iceland Ring Road": [(63.3, 66.7, -24.6, -13.2)],
     "Miami": [(25.6, 26.0, -80.4, -80.0)],
     "Death Valley": [(35.4, 38.4, -119.1, -116.2)],
