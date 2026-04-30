@@ -232,7 +232,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const timelineSequence = timelineDots
     .map((dot) => allPointsBySlug.get(dot.getAttribute("data-map-timeline-item")))
     .filter(Boolean);
-  let activeTimelineSlug = timelineSequence[timelineSequence.length - 1]?.slug || timelineSequence[0]?.slug || "";
+  let activeTimelineSlug = "";
   let stopLookupTimeout = 0;
   let stopLookupRequestId = 0;
   let editorDirty = false;
@@ -495,47 +495,11 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     attributionControl: false,
     scrollZoom: true,
     antialias: true,
+    minZoom: 0,
+    maxZoom: 9,
   });
 
-  let wheelZoomFrame = 0;
-  let pendingWheelDelta = 0;
-  let pendingWheelPoint = null;
-  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-  const wheelDeltaScale = (event) => {
-    if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) return 18;
-    if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) return 360;
-    return 1;
-  };
-  const zoomMapFromWheel = () => {
-    const delta = pendingWheelDelta;
-    const point = pendingWheelPoint;
-    pendingWheelDelta = 0;
-    pendingWheelPoint = null;
-    wheelZoomFrame = 0;
-    if (!point || !Number.isFinite(delta)) return;
-
-    const zoomDelta = clamp(-delta / 360, -1.25, 1.25);
-    if (!zoomDelta) return;
-
-    map.easeTo({
-      zoom: clamp(map.getZoom() + zoomDelta, map.getMinZoom(), map.getMaxZoom()),
-      around: map.unproject(point),
-      duration: 120,
-      essential: true,
-    });
-  };
-  mapElement.addEventListener(
-    "wheel",
-    (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const rect = mapElement.getBoundingClientRect();
-      pendingWheelDelta += event.deltaY * wheelDeltaScale(event);
-      pendingWheelPoint = [event.clientX - rect.left, event.clientY - rect.top];
-      if (!wheelZoomFrame) wheelZoomFrame = window.requestAnimationFrame(zoomMapFromWheel);
-    },
-    { passive: false, capture: true },
-  );
+  map.scrollZoom.enable();
 
   map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), "top-right");
 
@@ -867,10 +831,10 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         source: "trip-route-nodes",
         filter: ["==", ["get", "slug"], ""],
         paint: {
-          "circle-radius": ["interpolate", ["linear"], ["zoom"], 0, 1.8, 3, 3.2, 7, 6],
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 0, 0.75, 2, 1.4, 5, 3.2, 8, 6],
           "circle-color": "rgba(255, 240, 207, 0.18)",
           "circle-stroke-color": "#fff0cf",
-          "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 0, 0.9, 6, 1.6],
+          "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 0, 0.35, 4, 1, 8, 1.6],
         },
       },
       "map-points",
@@ -986,10 +950,10 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       source: "map-points",
       filter: ["==", ["get", "slug"], ""],
       paint: {
-        "circle-radius": 10,
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 0, 2, 2, 3.6, 5, 7, 8, 10],
         "circle-color": "rgba(255, 255, 255, 0.2)",
         "circle-stroke-color": "#fffaf0",
-        "circle-stroke-width": 2,
+        "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 0, 0.45, 4, 1.4, 8, 2],
       },
     });
     try {
