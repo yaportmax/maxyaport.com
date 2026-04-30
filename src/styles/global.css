@@ -1726,6 +1726,75 @@ body.travel-app .map-timeline {
   pointer-events: none;
 }
 
+.map-playback {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 3px;
+  pointer-events: none;
+}
+
+.map-playback__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 7px 13px;
+  border: 1px solid color-mix(in srgb, var(--border) 64%, transparent);
+  border-radius: 999px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--bg) 76%, transparent);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  pointer-events: auto;
+}
+
+.map-playback__button:hover,
+.map-playback__button:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 62%, var(--border));
+  color: var(--accent);
+}
+
+.map-playback__icon {
+  position: relative;
+  display: inline-block;
+  width: 10px;
+  height: 12px;
+}
+
+.map-playback__icon::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid currentColor;
+}
+
+.map-playback__button.is-playing .map-playback__icon::before,
+.map-playback__button.is-playing .map-playback__icon::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  width: 3px;
+  height: 10px;
+  border: 0;
+  background: currentColor;
+}
+
+.map-playback__button.is-playing .map-playback__icon::before {
+  left: 1px;
+}
+
+.map-playback__button.is-playing .map-playback__icon::after {
+  right: 1px;
+}
+
 body.travel-app .travel-timeline-rail {
   overflow-x: auto;
   overflow-y: hidden;
@@ -2054,6 +2123,17 @@ body.travel-app .travel-timeline-rail__axis {
 
   body.travel-app .map-timeline {
     padding: 30px 8px max(8px, env(safe-area-inset-bottom)) 8px;
+  }
+
+  .map-playback {
+    justify-content: flex-start;
+    padding: 0 8px 2px;
+  }
+
+  .map-playback__button {
+    min-height: 31px;
+    padding: 6px 11px;
+    font-size: 0.7rem;
   }
 
   body.travel-app .travel-timeline-rail {

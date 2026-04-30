@@ -96,6 +96,12 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         </section>
 
         <section class="map-timeline" aria-label="Travel timeline">
+          <div class="map-playback">
+            <button type="button" class="map-playback__button" data-timeline-play aria-pressed="false">
+              <span class="map-playback__icon" aria-hidden="true"></span>
+              <span data-timeline-play-label>Play</span>
+            </button>
+          </div>
           <div
             class="travel-timeline-rail"
             aria-label="Trip and race years"
@@ -190,6 +196,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const timelineRail = document.querySelector("[data-travel-timeline-rail]");
   const timelineDots = Array.from(document.querySelectorAll("[data-map-timeline-item]"));
   const scrubberTitleElement = document.querySelector("[data-travel-scrubber-title]");
+  const timelinePlayButton = document.querySelector("[data-timeline-play]");
+  const timelinePlayLabel = document.querySelector("[data-timeline-play-label]");
   const routeEditorToggle = document.querySelector("[data-route-editor-toggle]");
   const routeEditor = document.getElementById("route-editor");
   const routeEditorTrip = document.getElementById("route-editor-trip");
@@ -538,6 +546,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   let activePopupChoiceIndex = 0;
   let activePopupCoordinate = null;
   let handledInteractiveClick = false;
+  let scrubPlaybackPopupSlug = "";
 
   const escapeHtml = (value) =>
     String(value ?? "")
@@ -713,6 +722,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     popupSequence += 1;
     if (popupTimer) window.clearTimeout(popupTimer);
     popupTimer = 0;
+    scrubPlaybackPopupSlug = "";
   };
 
   const showPopup = (item, coordinate, anchor = undefined, waitForMove = false) => {
@@ -749,6 +759,21 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     map.once("moveend", renderOnce);
     timerId = window.setTimeout(renderOnce, 980);
     popupTimer = timerId;
+  };
+
+  const showScrubPlaybackPopup = (state) => {
+    if (!state?.item || !state.coordinate) return;
+    const placement = routePopupPlacement(state.coordinate);
+    const shouldCreate = !popup?.isOpen?.() || scrubPlaybackPopupSlug !== state.item.slug;
+    if (shouldCreate) {
+      clearScheduledPopup();
+      popup.remove();
+      popup = createPopup(placement.anchor);
+      popup.setLngLat(state.coordinate).setHTML(popupHtml(state.item)).addTo(map);
+      scrubPlaybackPopupSlug = state.item.slug;
+      return;
+    }
+    popup.setLngLat(state.coordinate);
   };
 
   const fitTripRoute = (item, placement = null) => {
@@ -1091,7 +1116,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       popup.remove();
     }
     updateLayerVisibility();
-    if (centerDot) keepTimelineDotVisible(item.slug);
+    if (centerDot && itemChanged) keepTimelineDotVisible(item.slug);
     return itemChanged;
   };
 
@@ -1115,15 +1140,73 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     });
   };
 
-  const setScrubberProgress = (value, { trackCamera = false, syncRail = false, centerDot = true } = {}) => {
+  const setScrubberProgress = (value, { trackCamera = false, syncRail = false, centerDot = true, showPopup = false } = {}) => {
     const clampedValue = clampScrubberValue(value);
     scrubberValue = clampedValue;
     const state = scrubberStateFromValue(clampedValue);
     if (!state?.item) return;
     const itemChanged = applyScrubFocus(state.item, { centerDot });
     updateRouteProgressMarker(state);
-    if (syncRail) scrollTimelineToValue(clampedValue, "auto");
+    if (syncRail && itemChanged) scrollTimelineToValue(clampedValue, "smooth");
     if (trackCamera) trackScrubCamera(state, itemChanged);
+    if (showPopup) showScrubPlaybackPopup(state);
+  };
+
+  let timelinePlaybackFrame = 0;
+  let timelinePlaybackLastTime = 0;
+  let timelinePlaybackActive = false;
+  const timelinePlaybackUnitsPerSecond = 8;
+
+  const renderTimelinePlaybackButton = () => {
+    if (!timelinePlayButton) return;
+    timelinePlayButton.classList.toggle("is-playing", timelinePlaybackActive);
+    timelinePlayButton.setAttribute("aria-pressed", String(timelinePlaybackActive));
+    timelinePlayButton.setAttribute("aria-label", timelinePlaybackActive ? "Pause timeline" : "Play timeline");
+    if (timelinePlayLabel) timelinePlayLabel.textContent = timelinePlaybackActive ? "Pause" : "Play";
+  };
+
+  const stopTimelinePlayback = () => {
+    timelinePlaybackActive = false;
+    timelinePlaybackLastTime = 0;
+    if (timelinePlaybackFrame) window.cancelAnimationFrame(timelinePlaybackFrame);
+    timelinePlaybackFrame = 0;
+    renderTimelinePlaybackButton();
+  };
+
+  const runTimelinePlayback = (timestamp) => {
+    if (!timelinePlaybackActive) return;
+    if (!timelinePlaybackLastTime) timelinePlaybackLastTime = timestamp;
+    const elapsedSeconds = Math.min(0.08, Math.max(0, (timestamp - timelinePlaybackLastTime) / 1000));
+    timelinePlaybackLastTime = timestamp;
+    const nextValue = clampScrubberValue(scrubberValue + elapsedSeconds * timelinePlaybackUnitsPerSecond);
+    setScrubberProgress(nextValue, {
+      trackCamera: true,
+      syncRail: true,
+      centerDot: true,
+      showPopup: true,
+    });
+    if (nextValue >= scrubberMaxValue) {
+      stopTimelinePlayback();
+      return;
+    }
+    timelinePlaybackFrame = window.requestAnimationFrame(runTimelinePlayback);
+  };
+
+  const startTimelinePlayback = () => {
+    if (!timelineSequence.length || timelinePlaybackActive) return;
+    if (scrubberValue >= scrubberMaxValue - 0.01) scrubberValue = 0;
+    timelinePlaybackActive = true;
+    timelinePlaybackLastTime = 0;
+    renderTimelinePlaybackButton();
+    timelinePlaybackFrame = window.requestAnimationFrame(runTimelinePlayback);
+  };
+
+  const toggleTimelinePlayback = () => {
+    if (timelinePlaybackActive) {
+      stopTimelinePlayback();
+      return;
+    }
+    startTimelinePlayback();
   };
 
   const fitOverview = () => {
@@ -1421,6 +1504,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (stepButton) {
       event.preventDefault();
       event.stopPropagation();
+      stopTimelinePlayback();
       activatePopupChoice(activePopupChoiceIndex + Number(stepButton.getAttribute("data-popup-stack-step") || 0));
       return;
     }
@@ -1429,11 +1513,13 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (choiceButton) {
       event.preventDefault();
       event.stopPropagation();
+      stopTimelinePlayback();
       activatePopupChoice(Number(choiceButton.getAttribute("data-popup-choice-index") || 0));
       return;
     }
 
     if (!event.target?.closest?.(".mapboxgl-canvas")) return;
+    stopTimelinePlayback();
     const rect = mapElement.getBoundingClientRect();
     const point = { x: event.clientX - rect.left, y: event.clientY - rect.top };
     const lngLat = map.unproject(point);
@@ -2574,12 +2660,19 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     });
   }
 
+  timelinePlayButton?.addEventListener("click", toggleTimelinePlayback);
+  renderTimelinePlaybackButton();
+
   timelineDots.forEach((dot) => {
-    dot.addEventListener("click", () => selectItem(dot.getAttribute("data-map-timeline-item"), true));
+    dot.addEventListener("click", () => {
+      stopTimelinePlayback();
+      selectItem(dot.getAttribute("data-map-timeline-item"), true);
+    });
   });
 
   const handleTimelineWheel = (event) => {
     if (!timelineRail) return;
+    stopTimelinePlayback();
     event.preventDefault();
     const dominantDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
     if (!dominantDelta) return;
@@ -2609,6 +2702,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     timelineRail.addEventListener("wheel", handleTimelineWheel, { passive: false });
     timelineRail.addEventListener("pointerdown", (event) => {
       if (event.target?.closest?.("[data-map-timeline-item]")) return;
+      stopTimelinePlayback();
       isTimelineDragging = true;
       dragStartX = event.clientX;
       dragStartScrollLeft = timelineRail.scrollLeft;
