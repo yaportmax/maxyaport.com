@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "travel:routes": "python3 scripts/build-trip-routes.py",
-    "travel:race-routes": "python3 scripts/build-race-routes.py"
+    "travel:race-routes": "python3 scripts/build-race-routes.py",
+    "travel:strava-heatmap": "python3 scripts/build-strava-line-heatmap.py"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",

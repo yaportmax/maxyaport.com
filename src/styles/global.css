@@ -1152,7 +1152,9 @@ main {
 }
 
 .map-key-line--strava {
-  color: #287fc2;
+  height: 2px;
+  border-top: 0;
+  background: linear-gradient(90deg, #145fc3, #1597d3, #f1b73d, #ef6c2f, #d92828);
 }
 
 .map-key-dot {

@@ -1020,22 +1020,12 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     const routes = await response.json();
     if (!routes.features?.length) return;
 
+    const heatResponse = await fetch("/data/strava-line-heatmap.geojson", { cache: "no-store" }).catch(() => null);
+    const heatRoutes = heatResponse?.ok ? await heatResponse.json().catch(() => null) : null;
+    const heatFeatures = heatRoutes?.features?.length ? heatRoutes : routes;
+
     map.addSource("strava-routes", { type: "geojson", data: routes });
-    map.addLayer(
-      {
-        id: "strava-routes-heat",
-        type: "line",
-        source: "strava-routes",
-        layout: { "line-cap": "round", "line-join": "round" },
-        paint: {
-          "line-color": "#287fc2",
-          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 1.6, 8, 5, 12, 9],
-          "line-opacity": ["interpolate", ["linear"], ["zoom"], 1, 0.055, 8, 0.075, 12, 0.1],
-          "line-blur": ["interpolate", ["linear"], ["zoom"], 1, 0.35, 9, 1.4],
-        },
-      },
-      "map-points",
-    );
+    map.addSource("strava-line-heatmap", { type: "geojson", data: heatFeatures });
     map.addLayer(
       {
         id: "strava-routes",
@@ -1043,9 +1033,52 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         source: "strava-routes",
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
-          "line-color": "#287fc2",
-          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.42, 8, 1.6, 12, 3],
-          "line-opacity": ["interpolate", ["linear"], ["zoom"], 1, 0.16, 8, 0.24, 12, 0.34],
+          "line-color": "#0a4f82",
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.18, 8, 0.72, 12, 1.35],
+          "line-opacity": ["interpolate", ["linear"], ["zoom"], 1, 0.13, 8, 0.2, 12, 0.28],
+        },
+      },
+      "map-points",
+    );
+    map.addLayer(
+      {
+        id: "strava-routes-heat",
+        type: "line",
+        source: "strava-line-heatmap",
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+          "line-sort-key": ["coalesce", ["get", "weight"], 1],
+        },
+        paint: {
+          "line-color": [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "weight"], 1],
+            0.8,
+            "#145fc3",
+            2.2,
+            "#1597d3",
+            3.8,
+            "#f1b73d",
+            5.2,
+            "#ef6c2f",
+            7,
+            "#d92828",
+          ],
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.92, 8, 2.9, 12, 4.55],
+          "line-opacity": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            1,
+            ["interpolate", ["linear"], ["coalesce", ["get", "weight"], 1], 0.8, 0.16, 8.5, 0.36],
+            8,
+            ["interpolate", ["linear"], ["coalesce", ["get", "weight"], 1], 0.8, 0.26, 8.5, 0.56],
+            12,
+            ["interpolate", ["linear"], ["coalesce", ["get", "weight"], 1], 0.8, 0.38, 8.5, 0.7],
+          ],
+          "line-blur": ["interpolate", ["linear"], ["zoom"], 1, 0.12, 9, 0.55],
         },
       },
       "map-points",
