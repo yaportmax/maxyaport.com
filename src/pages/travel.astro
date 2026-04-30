@@ -212,8 +212,13 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const layerToggleButtons = Array.from(document.querySelectorAll("[data-map-layer-toggle]"));
   const mapboxToken = import.meta.env.PUBLIC_MAPBOX_TOKEN || "";
 
-  if (!mapElement || !mapboxToken) {
+  if (!mapElement) {
     if (mapElement) mapElement.setAttribute("data-map-empty", "true");
+    throw new Error("Travel map needs a map container.");
+  }
+
+  if (!mapboxToken) {
+    mapElement.setAttribute("data-map-empty", "true");
     throw new Error("Travel map needs PUBLIC_MAPBOX_TOKEN.");
   }
 
@@ -455,43 +460,26 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   };
 
   let tripRouteCollections = createTripRouteCollections(editorData);
-  const adventureMapStyle = {
+  const satelliteGlobeStyle = {
     version: 8,
-    glyphs: "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
     sources: {
-      "esri-topo": {
+      "esri-satellite": {
         type: "raster",
-        tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"],
+        tiles: ["https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],
         tileSize: 256,
-        attribution: "Tiles © Esri — Sources: Esri, USGS, NOAA",
-      },
-      "esri-hillshade": {
-        type: "raster",
-        tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}"],
-        tileSize: 256,
-        attribution: "Hillshade © Esri",
+        attribution: "Satellite imagery © Esri",
       },
     },
     layers: [
       {
-        id: "esri-topo",
+        id: "satellite",
         type: "raster",
-        source: "esri-topo",
+        source: "esri-satellite",
         paint: {
-          "raster-saturation": -0.18,
-          "raster-contrast": -0.03,
+          "raster-saturation": -0.08,
+          "raster-contrast": 0.05,
           "raster-brightness-min": 0.03,
-          "raster-brightness-max": 0.98,
-        },
-      },
-      {
-        id: "esri-hillshade",
-        type: "raster",
-        source: "esri-hillshade",
-        paint: {
-          "raster-opacity": 0.12,
-          "raster-saturation": -1,
-          "raster-contrast": -0.1,
+          "raster-brightness-max": 0.84,
         },
       },
     ],
@@ -499,13 +487,14 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
   const map = new mapboxgl.Map({
     container: mapElement,
-    style: adventureMapStyle,
-    center: [-42, 28],
-    zoom: mapElement.clientWidth < 680 ? 0.45 : 1.15,
+    style: satelliteGlobeStyle,
+    center: [-54, 28],
+    zoom: mapElement.clientWidth < 680 ? 0.18 : 0.92,
     pitch: 0,
-    projection: "mercator",
+    projection: "globe",
     attributionControl: false,
     scrollZoom: true,
+    antialias: true,
   });
 
   let wheelZoomFrame = 0;
@@ -635,16 +624,11 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   };
 
   const fitOverview = () => {
-    const bounds = new mapboxgl.LngLatBounds();
-    visibleMapPoints.forEach((item) => bounds.extend([item.lon, item.lat]));
-    for (const nodes of tripNodesBySlug.values()) {
-      nodes.forEach((node) => bounds.extend([node.lon, node.lat]));
-    }
-    if (bounds.isEmpty()) return;
-
-    map.fitBounds(bounds, {
-      padding: mapElement.clientWidth < 680 ? 22 : { top: 68, bottom: 44, left: 42, right: 42 },
-      maxZoom: mapElement.clientWidth < 680 ? 1.1 : 1.75,
+    map.easeTo({
+      center: mapElement.clientWidth < 680 ? [-90, 28] : [-54, 28],
+      zoom: mapElement.clientWidth < 680 ? 0.2 : 0.92,
+      bearing: -8,
+      pitch: 0,
       duration: 0,
     });
   };
@@ -960,6 +944,14 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   };
 
   map.on("style.load", () => {
+    map.setFog({
+      color: "rgba(0, 0, 0, 0)",
+      "high-color": "rgba(0, 0, 0, 0)",
+      "horizon-blend": 0.015,
+      "space-color": "rgba(0, 0, 0, 0)",
+      "star-intensity": 0,
+    });
+
     map.addSource("map-points", { type: "geojson", data: featureCollection });
     map.addLayer({
       id: "map-points",
@@ -1028,7 +1020,16 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     loadTripRoutes();
     loadStravaRoutes();
     fitOverview();
-    if (activeTimelineSlug) selectItem(activeTimelineSlug, false);
+    if (activeTimelineSlug) {
+      timelineDots.forEach((dot) =>
+        dot.classList.toggle("is-active", dot.getAttribute("data-map-timeline-item") === activeTimelineSlug),
+      );
+      if (map.getLayer("map-point-highlight")) {
+        map.setFilter("map-point-highlight", ["==", ["get", "slug"], activeTimelineSlug]);
+      }
+      setRouteHighlight("");
+      updateLayerVisibility();
+    }
   });
 
   map.on("click", "map-points", (event) => {
@@ -1060,6 +1061,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     routeEditorClose &&
     routeEditorRecalculate &&
     routeEditorFit &&
+    mapboxToken &&
     ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
 
   const setEditorStatus = (message = "", tone = "") => {
