@@ -465,6 +465,12 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         tileSize: 256,
         attribution: "Satellite imagery © Esri",
       },
+      "mapbox-terrain-dem": {
+        type: "raster-dem",
+        url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+        tileSize: 512,
+        maxzoom: 14,
+      },
     },
     layers: [
       {
@@ -492,7 +498,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     scrollZoom: true,
     antialias: true,
     minZoom: 0,
-    maxZoom: 9,
+    maxZoom: 12,
   });
 
   map.scrollZoom.enable();
@@ -575,6 +581,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     map.fitBounds(bounds, {
       padding: isCompact ? 58 : { top: 104, bottom: 74, left: 86, right: 86 },
       maxZoom: item.travelMode === "flight" ? 4.7 : 7,
+      pitch: item.travelMode === "flight" ? 0 : isCompact ? 30 : 38,
       duration: 850,
     });
     return true;
@@ -591,6 +598,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     map.fitBounds(bounds, {
       padding: mapElement.clientWidth < 680 ? 48 : { top: 92, bottom: 76, left: 82, right: 82 },
       maxZoom: 11,
+      pitch: mapElement.clientWidth < 680 ? 34 : 42,
       duration: 850,
     });
     return true;
@@ -1020,6 +1028,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   };
 
   map.on("style.load", () => {
+    map.setTerrain({ source: "mapbox-terrain-dem", exaggeration: 1.35 });
+
     map.setFog({
       color: "rgba(0, 0, 0, 0)",
       "high-color": "rgba(0, 0, 0, 0)",
