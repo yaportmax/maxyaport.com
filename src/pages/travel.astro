@@ -913,67 +913,24 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     return `<strong>${escapeHtml(properties.name || "Strava route")}</strong><span>${escapeHtml(details)}</span>`;
   };
 
-  const stravaRouteLines = (geometry) => {
-    if (geometry?.type === "LineString") return [sanitizedCoordinates(geometry.coordinates)];
-    if (geometry?.type === "MultiLineString") return geometry.coordinates.map(sanitizedCoordinates);
-    return [];
-  };
-
-  const stravaHeatPointCollection = (routes) => {
-    const features = [];
-    for (const route of routes.features || []) {
-      for (const coordinates of stravaRouteLines(route.geometry)) {
-        if (coordinates.length < 2) continue;
-        const stride = Math.max(1, Math.ceil(coordinates.length / 180));
-        coordinates.forEach((coordinate, index) => {
-          if (index % stride !== 0 && index !== coordinates.length - 1) return;
-          features.push({
-            type: "Feature",
-            geometry: { type: "Point", coordinates: coordinate },
-            properties: { weight: 2 },
-          });
-        });
-      }
-    }
-    return { type: "FeatureCollection", features };
-  };
-
   const loadStravaRoutes = async () => {
     const response = await fetch("/data/strava-routes.geojson", { cache: "no-store" }).catch(() => null);
     if (!response?.ok) return;
     const routes = await response.json();
     if (!routes.features?.length) return;
 
-    map.addSource("strava-heat", { type: "geojson", data: stravaHeatPointCollection(routes) });
     map.addSource("strava-routes", { type: "geojson", data: routes });
     map.addLayer(
       {
         id: "strava-routes-heat",
-        type: "heatmap",
-        source: "strava-heat",
-        maxzoom: 11,
+        type: "line",
+        source: "strava-routes",
+        layout: { "line-cap": "round", "line-join": "round" },
         paint: {
-          "heatmap-weight": ["get", "weight"],
-          "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 1, 3.2, 6, 3.7, 10, 3.2],
-          "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 1, 18, 5, 24, 9, 34, 11, 42],
-          "heatmap-color": [
-            "interpolate",
-            ["linear"],
-            ["heatmap-density"],
-            0,
-            "rgba(243, 101, 35, 0)",
-            0.18,
-            "rgba(243, 101, 35, 0.16)",
-            0.36,
-            "rgba(243, 101, 35, 0.34)",
-            0.62,
-            "rgba(226, 91, 28, 0.56)",
-            0.82,
-            "rgba(198, 72, 18, 0.76)",
-            1,
-            "rgba(112, 34, 5, 0.9)",
-          ],
-          "heatmap-opacity": ["interpolate", ["linear"], ["zoom"], 1, 0.86, 7, 0.78, 11, 0.36],
+          "line-color": "#f36523",
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 1.6, 8, 5, 12, 9],
+          "line-opacity": ["interpolate", ["linear"], ["zoom"], 1, 0.055, 8, 0.075, 12, 0.1],
+          "line-blur": ["interpolate", ["linear"], ["zoom"], 1, 0.35, 9, 1.4],
         },
       },
       "map-points",
@@ -986,8 +943,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": "#f36523",
-          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.28, 8, 0.9, 12, 2.2],
-          "line-opacity": ["interpolate", ["linear"], ["zoom"], 1, 0.08, 8, 0.12, 12, 0.2],
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.42, 8, 1.6, 12, 3],
+          "line-opacity": ["interpolate", ["linear"], ["zoom"], 1, 0.16, 8, 0.24, 12, 0.34],
         },
       },
       "map-points",
