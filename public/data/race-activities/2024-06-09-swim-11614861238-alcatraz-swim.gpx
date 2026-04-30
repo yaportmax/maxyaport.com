@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="maxyaport.com Strava export" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>Alcatraz Swim</name>
+    <time>2024-06-09T14:00:32Z</time>
+  </metadata>
+  <trk>
+    <name>Alcatraz Swim</name>
+    <type>Swim</type>
+    <trkseg>
+      <trkpt lat="37.815110" lon="-122.425620" />
+      <trkpt lat="37.815190" lon="-122.425680" />
+      <trkpt lat="37.815020" lon="-122.426070" />
+      <trkpt lat="37.814670" lon="-122.426700" />
+      <trkpt lat="37.814540" lon="-122.426870" />
+      <trkpt lat="37.814260" lon="-122.427190" />
+      <trkpt lat="37.814140" lon="-122.427360" />
+      <trkpt lat="37.813880" lon="-122.427920" />
+      <trkpt lat="37.813750" lon="-122.428260" />
+      <trkpt lat="37.813200" lon="-122.430140" />
+      <trkpt lat="37.813010" lon="-122.430650" />
+      <trkpt lat="37.812710" lon="-122.431390" />
+      <trkpt lat="37.812490" lon="-122.432180" />
+      <trkpt lat="37.812230" lon="-122.432820" />
+      <trkpt lat="37.811950" lon="-122.433620" />
+      <trkpt lat="37.811650" lon="-122.434540" />
+      <trkpt lat="37.811510" lon="-122.435050" />
+      <trkpt lat="37.811400" lon="-122.435630" />
+      <trkpt lat="37.811230" lon="-122.436270" />
+      <trkpt lat="37.811140" lon="-122.436810" />
+      <trkpt lat="37.811070" lon="-122.437090" />
+      <trkpt lat="37.810850" lon="-122.437770" />
+      <trkpt lat="37.810690" lon="-122.438230" />
+      <trkpt lat="37.810510" lon="-122.438800" />
+      <trkpt lat="37.810100" lon="-122.439700" />
+      <trkpt lat="37.810000" lon="-122.439980" />
+      <trkpt lat="37.809780" lon="-122.440880" />
+      <trkpt lat="37.809710" lon="-122.441350" />
+      <trkpt lat="37.809640" lon="-122.441630" />
+      <trkpt lat="37.809460" lon="-122.442160" />
+      <trkpt lat="37.809250" lon="-122.442810" />
+      <trkpt lat="37.808990" lon="-122.443470" />
+      <trkpt lat="37.808750" lon="-122.444210" />
+      <trkpt lat="37.808450" lon="-122.445000" />
+      <trkpt lat="37.808310" lon="-122.445570" />
+      <trkpt lat="37.808200" lon="-122.446210" />
+      <trkpt lat="37.808050" lon="-122.446770" />
+      <trkpt lat="37.807880" lon="-122.447190" />
+      <trkpt lat="37.807750" lon="-122.447400" />
+      <trkpt lat="37.807770" lon="-122.447410" />
+      <trkpt lat="37.807760" lon="-122.447420" />
+      <trkpt lat="37.807630" lon="-122.447530" />
+      <trkpt lat="37.807560" lon="-122.447470" />
+    </trkseg>
+  </trk>
+</gpx>

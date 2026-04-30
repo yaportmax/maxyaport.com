@@ -4717,7 +4717,12 @@
       "rank": "OA 256/539 / AG 79/118 20-34M",
       "href": "https://live.utmb.world/canyons/2026/runners/1775",
       "lat": 39.118,
-      "lon": -120.947
+      "lon": -120.947,
+      "gpxPaths": [
+        "/routes/canyons-2026.gpx"
+      ],
+      "raceRouteSource": "static-gpx",
+      "stravaActivityIds": []
     },
     {
       "type": "race",
@@ -4729,7 +4734,14 @@
       "rank": "Team 2/50 / Run 1:28:40",
       "href": "https://www.ironman.com/races/im703-santa-cruz",
       "lat": 36.974,
-      "lon": -122.03
+      "lon": -122.03,
+      "stravaActivityIds": [
+        15733788504
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2025-09-07-run-15733788504-santa-cruz-70-3-relay-run.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4741,7 +4753,14 @@
       "rank": "OA 72/251 / AG 26/58 M23",
       "href": "https://statistik.d-u-v.org/getresultevent.php?event=112347",
       "lat": 37.862,
-      "lon": -122.581
+      "lon": -122.581,
+      "stravaActivityIds": [
+        15483221463
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2025-08-16-run-15483221463-tamalpa-headlands-50-47-k.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4753,7 +4772,14 @@
       "rank": "OA 190/603 / AG 26/44 M20-29",
       "href": "https://www.berglaufpur.de/berglauf/documents/BrokenArrowSkyrace23Km.pdf",
       "lat": 39.197,
-      "lon": -120.235
+      "lon": -120.235,
+      "stravaActivityIds": [
+        14884393748
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2025-06-22-run-14884393748-broken-arrow-23k.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4765,7 +4791,22 @@
       "rank": "OA 205/2093 / AG 30/211 M25-29",
       "href": "https://sportstats.one/event/ironman-703-st-george/leaderboard/143338",
       "lat": 37.096,
-      "lon": -113.568
+      "lon": -113.568,
+      "stravaActivityIds": [
+        14439034441,
+        14439034437,
+        14439034476,
+        14439034430,
+        14439034498
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2025-05-10-swim-14439034441-st-george-70-3-swim.gpx",
+        "/data/race-activities/2025-05-10-workout-14439034437-im-70-3-st-george-t1.gpx",
+        "/data/race-activities/2025-05-10-ride-14439034476-st-george-70-3-bike.gpx",
+        "/data/race-activities/2025-05-10-workout-14439034430-im-70-3-st-george-t2.gpx",
+        "/data/race-activities/2025-05-10-run-14439034498-st-george-70-3-run.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4777,7 +4818,18 @@
       "rank": "OA 1415/3083 / AG 87/128 M18-24",
       "href": "https://www.btu-info.de/images/stories/2024/Ergebnisse/Ergebnis_2024_12_14_Taupo_703_WC_Ironman_M%C3%A4nner.pdf",
       "lat": -38.685,
-      "lon": 176.07
+      "lon": 176.07,
+      "stravaActivityIds": [
+        13123181635,
+        13123181653,
+        13123181735
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2024-12-15-swim-13123181635-im-70-3-wc-taupo-swim.gpx",
+        "/data/race-activities/2024-12-15-ride-13123181653-im-70-3-wc-taupo-bike.gpx",
+        "/data/race-activities/2024-12-15-run-13123181735-im-70-3-wc-taupo-run.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4789,7 +4841,14 @@
       "rank": "OA 24/304 / AG 10/63 M20-29",
       "href": "https://www.spartan.com/en/race/past-results/8233",
       "lat": 37.775,
-      "lon": -122.419
+      "lon": -122.419,
+      "stravaActivityIds": [
+        12967767052
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2024-11-23-run-12967767052-golden-gate-trail-classic-50k.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4801,7 +4860,22 @@
       "rank": "OA 108/2166 / AG 9/114 M18-24",
       "href": "https://sportstats.one/event/ironman-703-santa-cruz/tracker?pid=140177:1812",
       "lat": 36.974,
-      "lon": -122.03
+      "lon": -122.03,
+      "stravaActivityIds": [
+        12362277662,
+        12362277606,
+        12362264554,
+        12362277639,
+        12362277778
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2024-09-08-swim-12362277662-im-70-3-santa-cruz-swim.gpx",
+        "/data/race-activities/2024-09-08-workout-12362277606-santa-cruz-70-3-t1.gpx",
+        "/data/race-activities/2024-09-08-ride-12362264554-im-70-3-santa-cruz-bike.gpx",
+        "/data/race-activities/2024-09-08-workout-12362277639-santa-cruz-70-3-t2.gpx",
+        "/data/race-activities/2024-09-08-run-12362277778-im-70-3-santa-cruz-run.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4813,7 +4887,18 @@
       "rank": "OA 74/1183 / Div 16/296",
       "href": "https://eclecticedgeracing.overallraceresults.com/individual-results/888/559016",
       "lat": 45.515,
-      "lon": -122.679
+      "lon": -122.679,
+      "stravaActivityIds": [
+        12224508183,
+        12226486820,
+        12230813715
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2024-08-23-run-12224508183-hood-to-coast-first-leg.gpx",
+        "/data/race-activities/2024-08-23-run-12226486820-hood-to-coast-second-leg-a-battle-with-monke.gpx",
+        "/data/race-activities/2024-08-24-run-12230813715-hood-to-coast-third-leg.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4825,7 +4910,14 @@
       "rank": "OA 120/292",
       "href": "https://diablotiming.com/results/2024-07-17/results_39.html",
       "lat": 37.775,
-      "lon": -122.419
+      "lon": -122.419,
+      "stravaActivityIds": [
+        11915847751
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2024-07-17-run-11915847751-twilight-5k.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4837,7 +4929,14 @@
       "rank": "OA 68/375 / AG 14/34 M20-29",
       "href": "https://my.raceresult.com/290460/results/pdf?name=Online%20Results%7C18K%20Results&contest=3&lang=en",
       "lat": 39.197,
-      "lon": -120.235
+      "lon": -120.235,
+      "stravaActivityIds": [
+        11707457039
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2024-06-21-run-11707457039-broken-arrow-18k.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4849,7 +4948,22 @@
       "rank": "OA 65/1628 / AG 10/47 M20-24",
       "href": "https://www.escapealcatraztri.com/results/2024",
       "lat": 37.807,
-      "lon": -122.426
+      "lon": -122.426,
+      "stravaActivityIds": [
+        11614861238,
+        11614861199,
+        11614861296,
+        11614861262,
+        11614861381
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2024-06-09-swim-11614861238-alcatraz-swim.gpx",
+        "/data/race-activities/2024-06-09-workout-11614861199-alcatraz-t1.gpx",
+        "/data/race-activities/2024-06-09-ride-11614861296-alcatraz-bike.gpx",
+        "/data/race-activities/2024-06-09-workout-11614861262-alcatraz-t2.gpx",
+        "/data/race-activities/2024-06-09-run-11614861381-alcatraz-run.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4861,7 +4975,18 @@
       "rank": "OA 115/1107 / AG 12/97 M18-24",
       "href": "https://sportstats.one/event/ironman-703-morro-bay/tracker?pid=140134:669",
       "lat": 35.365,
-      "lon": -120.849
+      "lon": -120.849,
+      "stravaActivityIds": [
+        11451209964,
+        11451210000,
+        11451210039
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2024-05-19-swim-11451209964-morro-bay-swim.gpx",
+        "/data/race-activities/2024-05-19-ride-11451210000-morro-bay-bike.gpx",
+        "/data/race-activities/2024-05-19-run-11451210039-morro-bay-run.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4873,7 +4998,14 @@
       "rank": "OA 219/1699 / AG 16/52 M21-24",
       "href": "https://results.svetiming.com/Napa-Valley-Marathon/events/2024/kaiser-permanente-napa-valley-marathon/1682/entrant",
       "lat": 38.502,
-      "lon": -122.265
+      "lon": -122.265,
+      "stravaActivityIds": [
+        10885303193
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2024-03-03-run-10885303193-napa-valley-marathon-2024.gpx"
+      ],
+      "raceRouteSource": "strava"
     },
     {
       "type": "race",
@@ -4885,7 +5017,18 @@
       "rank": "OA 68/623 / AG 5/18 M20-24",
       "href": "https://results.svetiming.com/Santa-Cruz-Triathlon/events/2023/Santa-Cruz-Triathlon/results",
       "lat": 36.974,
-      "lon": -122.03
+      "lon": -122.03,
+      "stravaActivityIds": [
+        9913988164,
+        9913988024,
+        9913988113
+      ],
+      "gpxPaths": [
+        "/data/race-activities/2023-09-24-swim-9913988164-santa-cruz-tri-swim.gpx",
+        "/data/race-activities/2023-09-24-ride-9913988024-santa-cruz-tri-ride.gpx",
+        "/data/race-activities/2023-09-24-run-9913988113-santa-cruz-tri-run.gpx"
+      ],
+      "raceRouteSource": "strava"
     }
   ]
 }

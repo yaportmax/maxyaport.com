@@ -56,18 +56,13 @@ const endYear = new Date(timelineEnd).getUTCFullYear();
 const timelineYears = Array.from({ length: endYear - startYear + 1 }, (_, index) => startYear + index);
 const timelineFocusStart = Date.UTC(2020, 0, 1);
 const timelineFocusSpan = Math.max(1, timelineEnd - timelineFocusStart);
-const timelineWidth = Math.max(100, Math.min(360, (timelineSpan / timelineFocusSpan) * 100));
+const timelineWidth = Math.max(100, Math.min(720, (timelineSpan / timelineFocusSpan) * 180));
 const timelineScrollStart = ((timelineFocusStart - timelineStart) / timelineSpan) * timelineWidth;
 const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 ---
 
 <BaseLayout title="Travel">
-  <section class="map-page" aria-labelledby="travel-title">
-    <header class="map-page__header">
-      <p class="eyebrow">travel / races</p>
-      <h1 id="travel-title">Map</h1>
-    </header>
-
+  <section class="map-page" aria-label="Travel and race map">
     <section class="map-stage">
       <div class="map-stage__content">
         <div class="map-legend" aria-label="Map key">
@@ -238,6 +233,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   let editorDirty = false;
   let editorSaving = false;
   let generatedTripRoutes = null;
+  let raceRouteFeaturesBySlug = new Map();
   const layerVisibility = {
     flight: true,
     drive: true,
@@ -547,6 +543,26 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     }
   };
 
+  const setRaceRouteHighlight = (slug) => {
+    const filter =
+      slug && raceRouteFeaturesBySlug.has(slug)
+        ? ["==", ["get", "raceSlug"], slug]
+        : ["==", ["get", "raceSlug"], ""];
+    for (const layerId of ["race-route-highlight-casing", "race-route-highlight"]) {
+      if (map.getLayer(layerId)) map.setFilter(layerId, filter);
+    }
+  };
+
+  const raceRouteCoordinates = (slug) =>
+    (raceRouteFeaturesBySlug.get(slug) || []).flatMap((feature) =>
+      sanitizedCoordinates(feature.geometry?.coordinates),
+    );
+
+  const raceRouteAnchorCoordinate = (slug) => {
+    const coordinates = raceRouteCoordinates(slug);
+    return coordinates.length ? coordinates[Math.floor(coordinates.length / 2)] : null;
+  };
+
   const fitTripRoute = (item) => {
     const nodes = tripNodesBySlug.get(item.slug) || [];
     if (nodes.length < 2) return false;
@@ -559,6 +575,22 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     map.fitBounds(bounds, {
       padding: isCompact ? 58 : { top: 104, bottom: 74, left: 86, right: 86 },
       maxZoom: item.travelMode === "flight" ? 4.7 : 7,
+      duration: 850,
+    });
+    return true;
+  };
+
+  const fitRaceRoute = (item) => {
+    const coordinates = raceRouteCoordinates(item.slug);
+    if (coordinates.length < 2) return false;
+
+    const bounds = new mapboxgl.LngLatBounds();
+    coordinates.forEach((coordinate) => bounds.extend(coordinate));
+    if (bounds.isEmpty()) return false;
+
+    map.fitBounds(bounds, {
+      padding: mapElement.clientWidth < 680 ? 48 : { top: 92, bottom: 76, left: 82, right: 82 },
+      maxZoom: 11,
       duration: 850,
     });
     return true;
@@ -584,6 +616,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const popupCoordinateForItem = (item, preferredCoordinate = null) => {
     if (Array.isArray(preferredCoordinate) && preferredCoordinate.length >= 2) return preferredCoordinate;
     if (item.type === "trip" && hasRoutedTrip(item)) return routeAnchorCoordinate(item.slug) || [item.lon, item.lat];
+    if (item.type === "race") return raceRouteAnchorCoordinate(item.slug) || [item.lon, item.lat];
     return [item.lon, item.lat];
   };
 
@@ -610,9 +643,11 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       map.setFilter("map-point-highlight", ["==", ["get", "slug"], slug]);
     }
     setRouteHighlight(item.type === "trip" ? slug : "");
+    setRaceRouteHighlight(item.type === "race" ? slug : "");
     updateLayerVisibility();
 
-    if (!fitTripRoute(item)) {
+    const routeFit = item.type === "race" ? fitRaceRoute(item) : fitTripRoute(item);
+    if (!routeFit) {
       map.flyTo({ center: [item.lon, item.lat], zoom: item.type === "race" ? 4.2 : 4.8, duration: 850 });
     }
     popup.setLngLat(popupCoordinateForItem(item, preferredCoordinate)).setHTML(popupHtml(item)).addTo(map);
@@ -625,6 +660,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       map.setFilter("map-point-highlight", ["==", ["get", "slug"], ""]);
     }
     setRouteHighlight("");
+    setRaceRouteHighlight("");
     popup.remove();
     updateLayerVisibility();
   };
@@ -643,7 +679,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
   const updateLayerVisibility = () => {
     const activeItem = allPoints.find((point) => point.slug === activeTimelineSlug);
-    if (activeItem?.type === "trip") setRouteHighlight(activeTimelineSlug);
+    setRouteHighlight(activeItem?.type === "trip" ? activeTimelineSlug : "");
+    setRaceRouteHighlight(activeItem?.type === "race" ? activeTimelineSlug : "");
 
     setVisibility(["trip-routes-flight"], layerVisibility.flight);
     setVisibility(["trip-routes-drive"], layerVisibility.drive);
@@ -655,6 +692,10 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     setVisibility(["map-point-highlight"], layerVisibility.race && Boolean(activeTimelineSlug));
     setVisibility(["trip-route-highlight-casing", "trip-route-highlight"], Boolean(activeTimelineSlug) && visibleRouteModesForSlug(activeTimelineSlug));
     setVisibility(["trip-route-node-highlight"], layerVisibility.stop && Boolean(activeTimelineSlug));
+    setVisibility(
+      ["race-route-highlight-casing", "race-route-highlight"],
+      layerVisibility.race && activeItem?.type === "race" && raceRouteFeaturesBySlug.has(activeTimelineSlug),
+    );
 
     layerToggleButtons.forEach((button) => {
       const key = button.getAttribute("data-map-layer-toggle");
@@ -918,6 +959,66 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     updateLayerVisibility();
   };
 
+  const loadRaceRoutes = async () => {
+    const response = await fetch("/data/race-routes.geojson", { cache: "no-store" }).catch(() => null);
+    if (!response?.ok) return;
+    const routes = await response.json().catch(() => null);
+    if (!routes?.features?.length) return;
+
+    raceRouteFeaturesBySlug = new Map();
+    for (const feature of routes.features) {
+      const slug = feature.properties?.raceSlug;
+      if (!slug) continue;
+      const features = raceRouteFeaturesBySlug.get(slug) || [];
+      features.push(feature);
+      raceRouteFeaturesBySlug.set(slug, features);
+    }
+
+    map.addSource("race-routes", { type: "geojson", data: routes, lineMetrics: true });
+    map.addLayer(
+      {
+        id: "race-route-highlight-casing",
+        type: "line",
+        source: "race-routes",
+        filter: ["==", ["get", "raceSlug"], ""],
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": "#080705",
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 4.8, 8, 10],
+          "line-opacity": 0.86,
+          "line-blur": 0.35,
+        },
+      },
+      "map-point-highlight",
+    );
+    map.addLayer(
+      {
+        id: "race-route-highlight",
+        type: "line",
+        source: "race-routes",
+        filter: ["==", ["get", "raceSlug"], ""],
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": "#ff7a1a",
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 3, 8, 7.4],
+          "line-opacity": 0.98,
+        },
+      },
+      "map-point-highlight",
+    );
+
+    for (const layerId of ["race-route-highlight-casing", "race-route-highlight"]) {
+      map.on("click", layerId, (event) => {
+        const slug = event.features?.[0]?.properties?.raceSlug;
+        const clickedCoordinate = event.lngLat ? [event.lngLat.lng, event.lngLat.lat] : null;
+        if (slug) selectItem(slug, false, clickedCoordinate);
+      });
+      bindPointerLayer(layerId);
+    }
+
+    updateLayerVisibility();
+  };
+
   map.on("style.load", () => {
     map.setFog({
       color: "rgba(0, 0, 0, 0)",
@@ -993,6 +1094,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     }
 
     loadTripRoutes();
+    loadRaceRoutes();
     loadStravaRoutes();
     fitOverview();
     if (activeTimelineSlug) {
@@ -1033,6 +1135,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       "trip-route-highlight",
       "trip-route-highlight-casing",
       "trip-route-node-highlight",
+      "race-route-highlight",
+      "race-route-highlight-casing",
       "strava-routes",
     ].filter((layerId) => map.getLayer(layerId));
 

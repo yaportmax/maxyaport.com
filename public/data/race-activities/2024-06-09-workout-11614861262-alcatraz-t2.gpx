@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="maxyaport.com Strava export" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>Alcatraz T2</name>
+    <time>2024-06-09T15:30:35Z</time>
+  </metadata>
+  <trk>
+    <name>Alcatraz T2</name>
+    <type>Workout</type>
+    <trkseg>
+      <trkpt lat="37.806150" lon="-122.442160" />
+      <trkpt lat="37.806170" lon="-122.442060" />
+      <trkpt lat="37.806210" lon="-122.442040" />
+      <trkpt lat="37.806260" lon="-122.442050" />
+      <trkpt lat="37.806310" lon="-122.442000" />
+      <trkpt lat="37.806270" lon="-122.441990" />
+      <trkpt lat="37.806260" lon="-122.441970" />
+      <trkpt lat="37.806260" lon="-122.441990" />
+      <trkpt lat="37.806260" lon="-122.441970" />
+      <trkpt lat="37.806260" lon="-122.441990" />
+      <trkpt lat="37.806200" lon="-122.441970" />
+      <trkpt lat="37.806180" lon="-122.441940" />
+      <trkpt lat="37.806180" lon="-122.441810" />
+      <trkpt lat="37.806200" lon="-122.441570" />
+      <trkpt lat="37.806260" lon="-122.441330" />
+      <trkpt lat="37.806300" lon="-122.440740" />
+      <trkpt lat="37.806360" lon="-122.440580" />
+      <trkpt lat="37.806420" lon="-122.440550" />
+      <trkpt lat="37.806490" lon="-122.440580" />
+    </trkseg>
+  </trk>
+</gpx>

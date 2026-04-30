@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="maxyaport.com Strava export" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>Morro Bay Swim</name>
+    <time>2024-05-19T13:05:41Z</time>
+  </metadata>
+  <trk>
+    <name>Morro Bay Swim</name>
+    <type>Swim</type>
+    <trkseg>
+      <trkpt lat="35.372270" lon="-120.860280" />
+      <trkpt lat="35.372000" lon="-120.860270" />
+      <trkpt lat="35.371770" lon="-120.860290" />
+      <trkpt lat="35.371710" lon="-120.860270" />
+      <trkpt lat="35.371610" lon="-120.860230" />
+      <trkpt lat="35.371510" lon="-120.860160" />
+      <trkpt lat="35.371220" lon="-120.859850" />
+      <trkpt lat="35.371090" lon="-120.859670" />
+      <trkpt lat="35.370570" lon="-120.858850" />
+      <trkpt lat="35.369920" lon="-120.857670" />
+      <trkpt lat="35.369490" lon="-120.856990" />
+      <trkpt lat="35.369050" lon="-120.856170" />
+      <trkpt lat="35.368800" lon="-120.855780" />
+      <trkpt lat="35.368720" lon="-120.855670" />
+      <trkpt lat="35.368610" lon="-120.855590" />
+      <trkpt lat="35.368210" lon="-120.855360" />
+      <trkpt lat="35.367900" lon="-120.855120" />
+      <trkpt lat="35.367600" lon="-120.854950" />
+      <trkpt lat="35.366950" lon="-120.854490" />
+      <trkpt lat="35.366810" lon="-120.854420" />
+      <trkpt lat="35.366740" lon="-120.854610" />
+      <trkpt lat="35.366710" lon="-120.854810" />
+      <trkpt lat="35.366710" lon="-120.855010" />
+      <trkpt lat="35.366750" lon="-120.855100" />
+      <trkpt lat="35.366880" lon="-120.855200" />
+      <trkpt lat="35.367060" lon="-120.855250" />
+      <trkpt lat="35.367190" lon="-120.855300" />
+      <trkpt lat="35.367290" lon="-120.855350" />
+      <trkpt lat="35.367430" lon="-120.855460" />
+      <trkpt lat="35.367700" lon="-120.855560" />
+      <trkpt lat="35.367870" lon="-120.855780" />
+      <trkpt lat="35.367940" lon="-120.855820" />
+      <trkpt lat="35.368000" lon="-120.855910" />
+      <trkpt lat="35.368070" lon="-120.855930" />
+      <trkpt lat="35.368150" lon="-120.856160" />
+      <trkpt lat="35.368270" lon="-120.856350" />
+      <trkpt lat="35.368350" lon="-120.856520" />
+      <trkpt lat="35.368470" lon="-120.856620" />
+      <trkpt lat="35.368630" lon="-120.856860" />
+      <trkpt lat="35.368850" lon="-120.857080" />
+      <trkpt lat="35.368970" lon="-120.857310" />
+      <trkpt lat="35.369090" lon="-120.857470" />
+      <trkpt lat="35.369200" lon="-120.857710" />
+      <trkpt lat="35.369470" lon="-120.858050" />
+      <trkpt lat="35.369700" lon="-120.858380" />
+      <trkpt lat="35.369770" lon="-120.858610" />
+      <trkpt lat="35.369820" lon="-120.858700" />
+      <trkpt lat="35.370030" lon="-120.858900" />
+      <trkpt lat="35.370120" lon="-120.859020" />
+      <trkpt lat="35.370250" lon="-120.859150" />
+      <trkpt lat="35.370320" lon="-120.859250" />
+      <trkpt lat="35.370380" lon="-120.859370" />
+      <trkpt lat="35.370410" lon="-120.859630" />
+      <trkpt lat="35.370570" lon="-120.859720" />
+      <trkpt lat="35.370710" lon="-120.859870" />
+      <trkpt lat="35.370860" lon="-120.859980" />
+      <trkpt lat="35.370880" lon="-120.860010" />
+      <trkpt lat="35.370940" lon="-120.860330" />
+      <trkpt lat="35.370950" lon="-120.860510" />
+      <trkpt lat="35.371150" lon="-120.860870" />
+      <trkpt lat="35.371210" lon="-120.861070" />
+      <trkpt lat="35.371210" lon="-120.861230" />
+      <trkpt lat="35.371160" lon="-120.861410" />
+      <trkpt lat="35.370930" lon="-120.861960" />
+      <trkpt lat="35.370850" lon="-120.862250" />
+      <trkpt lat="35.370620" lon="-120.862860" />
+      <trkpt lat="35.370400" lon="-120.863730" />
+      <trkpt lat="35.370360" lon="-120.864050" />
+      <trkpt lat="35.370330" lon="-120.864150" />
+    </trkseg>
+  </trk>
+</gpx>

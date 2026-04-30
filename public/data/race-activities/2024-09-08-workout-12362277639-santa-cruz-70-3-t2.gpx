@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="maxyaport.com Strava export" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>Santa Cruz 70.3 T2</name>
+    <time>2024-09-08T17:10:50Z</time>
+  </metadata>
+  <trk>
+    <name>Santa Cruz 70.3 T2</name>
+    <type>Workout</type>
+    <trkseg>
+      <trkpt lat="36.965980" lon="-122.027190" />
+      <trkpt lat="36.965690" lon="-122.027020" />
+      <trkpt lat="36.965650" lon="-122.027020" />
+      <trkpt lat="36.965600" lon="-122.027050" />
+      <trkpt lat="36.965560" lon="-122.027110" />
+      <trkpt lat="36.965480" lon="-122.027150" />
+      <trkpt lat="36.965270" lon="-122.027030" />
+      <trkpt lat="36.965170" lon="-122.026980" />
+      <trkpt lat="36.965160" lon="-122.027000" />
+      <trkpt lat="36.965170" lon="-122.026980" />
+      <trkpt lat="36.965110" lon="-122.027000" />
+      <trkpt lat="36.964960" lon="-122.027310" />
+      <trkpt lat="36.964720" lon="-122.027190" />
+      <trkpt lat="36.964580" lon="-122.027090" />
+    </trkseg>
+  </trk>
+</gpx>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="maxyaport.com Strava export" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>St. George 70.3 Swim</name>
+    <time>2025-05-10T13:01:36Z</time>
+  </metadata>
+  <trk>
+    <name>St. George 70.3 Swim</name>
+    <type>Swim</type>
+    <trkseg>
+      <trkpt lat="37.121010" lon="-113.382310" />
+      <trkpt lat="37.121500" lon="-113.381660" />
+      <trkpt lat="37.121600" lon="-113.381510" />
+      <trkpt lat="37.121980" lon="-113.380510" />
+      <trkpt lat="37.122410" lon="-113.379680" />
+      <trkpt lat="37.122600" lon="-113.379230" />
+      <trkpt lat="37.123000" lon="-113.378470" />
+      <trkpt lat="37.123230" lon="-113.378120" />
+      <trkpt lat="37.123460" lon="-113.377680" />
+      <trkpt lat="37.123690" lon="-113.377150" />
+      <trkpt lat="37.123890" lon="-113.376790" />
+      <trkpt lat="37.124060" lon="-113.376400" />
+      <trkpt lat="37.124690" lon="-113.375370" />
+      <trkpt lat="37.124870" lon="-113.374980" />
+      <trkpt lat="37.125130" lon="-113.374490" />
+      <trkpt lat="37.125220" lon="-113.374290" />
+      <trkpt lat="37.125240" lon="-113.374150" />
+      <trkpt lat="37.124970" lon="-113.374010" />
+      <trkpt lat="37.124740" lon="-113.373870" />
+      <trkpt lat="37.124420" lon="-113.373730" />
+      <trkpt lat="37.123850" lon="-113.373430" />
+      <trkpt lat="37.123670" lon="-113.373350" />
+      <trkpt lat="37.123540" lon="-113.373350" />
+      <trkpt lat="37.123440" lon="-113.373910" />
+      <trkpt lat="37.123290" lon="-113.374300" />
+      <trkpt lat="37.122940" lon="-113.375650" />
+      <trkpt lat="37.122750" lon="-113.376160" />
+      <trkpt lat="37.122650" lon="-113.376570" />
+      <trkpt lat="37.122520" lon="-113.376970" />
+      <trkpt lat="37.122350" lon="-113.377510" />
+      <trkpt lat="37.122260" lon="-113.377900" />
+      <trkpt lat="37.121920" lon="-113.378870" />
+      <trkpt lat="37.121690" lon="-113.379950" />
+      <trkpt lat="37.121510" lon="-113.380450" />
+      <trkpt lat="37.121390" lon="-113.380860" />
+      <trkpt lat="37.121220" lon="-113.381330" />
+      <trkpt lat="37.121050" lon="-113.382040" />
+      <trkpt lat="37.121030" lon="-113.382200" />
+      <trkpt lat="37.121020" lon="-113.382210" />
+    </trkseg>
+  </trk>
+</gpx>

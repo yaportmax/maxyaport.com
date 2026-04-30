@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="maxyaport.com Strava export" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>IM 70.3 WC Taupo - Swim</name>
+    <time>2024-12-14T20:12:01Z</time>
+  </metadata>
+  <trk>
+    <name>IM 70.3 WC Taupo - Swim</name>
+    <type>Swim</type>
+    <trkseg>
+      <trkpt lat="-38.688330" lon="176.065640" />
+      <trkpt lat="-38.688810" lon="176.065450" />
+      <trkpt lat="-38.689090" lon="176.065320" />
+      <trkpt lat="-38.690370" lon="176.064620" />
+      <trkpt lat="-38.690750" lon="176.064470" />
+      <trkpt lat="-38.690800" lon="176.064470" />
+      <trkpt lat="-38.690860" lon="176.064500" />
+      <trkpt lat="-38.690950" lon="176.064640" />
+      <trkpt lat="-38.691020" lon="176.064910" />
+      <trkpt lat="-38.691070" lon="176.065030" />
+      <trkpt lat="-38.691160" lon="176.065140" />
+      <trkpt lat="-38.691370" lon="176.065280" />
+      <trkpt lat="-38.691500" lon="176.065430" />
+      <trkpt lat="-38.691590" lon="176.065570" />
+      <trkpt lat="-38.691720" lon="176.065880" />
+      <trkpt lat="-38.692010" lon="176.066290" />
+      <trkpt lat="-38.692280" lon="176.066790" />
+      <trkpt lat="-38.692460" lon="176.067040" />
+      <trkpt lat="-38.692730" lon="176.067500" />
+      <trkpt lat="-38.693010" lon="176.067870" />
+      <trkpt lat="-38.693240" lon="176.068270" />
+      <trkpt lat="-38.693430" lon="176.068510" />
+      <trkpt lat="-38.693620" lon="176.068920" />
+      <trkpt lat="-38.694040" lon="176.069570" />
+      <trkpt lat="-38.694400" lon="176.070280" />
+      <trkpt lat="-38.694640" lon="176.070670" />
+      <trkpt lat="-38.694750" lon="176.070850" />
+      <trkpt lat="-38.695080" lon="176.071290" />
+      <trkpt lat="-38.695460" lon="176.071910" />
+      <trkpt lat="-38.695710" lon="176.072260" />
+      <trkpt lat="-38.696040" lon="176.072850" />
+      <trkpt lat="-38.696290" lon="176.073220" />
+      <trkpt lat="-38.696460" lon="176.073530" />
+      <trkpt lat="-38.696640" lon="176.073800" />
+      <trkpt lat="-38.696770" lon="176.074000" />
+      <trkpt lat="-38.697070" lon="176.074360" />
+      <trkpt lat="-38.697400" lon="176.074950" />
+      <trkpt lat="-38.697510" lon="176.075210" />
+      <trkpt lat="-38.697530" lon="176.075410" />
+      <trkpt lat="-38.697320" lon="176.075500" />
+      <trkpt lat="-38.696940" lon="176.075590" />
+      <trkpt lat="-38.696600" lon="176.075720" />
+      <trkpt lat="-38.696370" lon="176.075750" />
+      <trkpt lat="-38.696090" lon="176.075840" />
+      <trkpt lat="-38.695700" lon="176.075860" />
+      <trkpt lat="-38.695620" lon="176.075880" />
+      <trkpt lat="-38.695300" lon="176.076030" />
+      <trkpt lat="-38.694920" lon="176.076070" />
+      <trkpt lat="-38.694670" lon="176.076110" />
+      <trkpt lat="-38.694240" lon="176.076260" />
+      <trkpt lat="-38.694260" lon="176.076260" />
+      <trkpt lat="-38.694210" lon="176.076280" />
+      <trkpt lat="-38.694170" lon="176.076290" />
+      <trkpt lat="-38.694150" lon="176.076270" />
+      <trkpt lat="-38.694080" lon="176.076310" />
+      <trkpt lat="-38.694030" lon="176.076300" />
+    </trkseg>
+  </trk>
+</gpx>

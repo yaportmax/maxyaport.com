@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="maxyaport.com Strava export" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>IM 70.3 St. George T1</name>
+    <time>2025-05-10T13:36:55Z</time>
+  </metadata>
+  <trk>
+    <name>IM 70.3 St. George T1</name>
+    <type>Workout</type>
+    <trkseg>
+      <trkpt lat="37.121010" lon="-113.382210" />
+      <trkpt lat="37.120910" lon="-113.382380" />
+      <trkpt lat="37.120810" lon="-113.382640" />
+      <trkpt lat="37.120840" lon="-113.382730" />
+      <trkpt lat="37.120900" lon="-113.382850" />
+      <trkpt lat="37.120980" lon="-113.382870" />
+      <trkpt lat="37.121090" lon="-113.382850" />
+      <trkpt lat="37.121280" lon="-113.382800" />
+      <trkpt lat="37.121480" lon="-113.382770" />
+      <trkpt lat="37.121500" lon="-113.382760" />
+      <trkpt lat="37.121830" lon="-113.382690" />
+      <trkpt lat="37.122000" lon="-113.382640" />
+      <trkpt lat="37.122010" lon="-113.382650" />
+      <trkpt lat="37.121980" lon="-113.382690" />
+      <trkpt lat="37.121230" lon="-113.382880" />
+      <trkpt lat="37.121210" lon="-113.382910" />
+      <trkpt lat="37.121240" lon="-113.382980" />
+      <trkpt lat="37.121220" lon="-113.382990" />
+      <trkpt lat="37.121230" lon="-113.383100" />
+      <trkpt lat="37.121300" lon="-113.383390" />
+      <trkpt lat="37.121290" lon="-113.383420" />
+      <trkpt lat="37.121080" lon="-113.383470" />
+      <trkpt lat="37.120970" lon="-113.383480" />
+      <trkpt lat="37.120920" lon="-113.383460" />
+      <trkpt lat="37.120810" lon="-113.383360" />
+      <trkpt lat="37.120720" lon="-113.383270" />
+    </trkseg>
+  </trk>
+</gpx>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="maxyaport.com Strava export" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>Santa Cruz tri swim</name>
+    <time>2023-09-24T15:00:01Z</time>
+  </metadata>
+  <trk>
+    <name>Santa Cruz tri swim</name>
+    <type>Swim</type>
+    <trkseg>
+      <trkpt lat="36.963320" lon="-122.018270" />
+      <trkpt lat="36.963000" lon="-122.018270" />
+      <trkpt lat="36.962740" lon="-122.018240" />
+      <trkpt lat="36.962140" lon="-122.018090" />
+      <trkpt lat="36.961730" lon="-122.017930" />
+      <trkpt lat="36.961240" lon="-122.017800" />
+      <trkpt lat="36.960920" lon="-122.017740" />
+      <trkpt lat="36.960670" lon="-122.017720" />
+      <trkpt lat="36.960560" lon="-122.017700" />
+      <trkpt lat="36.960240" lon="-122.017570" />
+      <trkpt lat="36.959420" lon="-122.017270" />
+      <trkpt lat="36.959180" lon="-122.017120" />
+      <trkpt lat="36.959090" lon="-122.017090" />
+      <trkpt lat="36.959010" lon="-122.017080" />
+      <trkpt lat="36.958730" lon="-122.017100" />
+      <trkpt lat="36.958400" lon="-122.017080" />
+      <trkpt lat="36.957440" lon="-122.016870" />
+      <trkpt lat="36.957230" lon="-122.016780" />
+      <trkpt lat="36.956950" lon="-122.016600" />
+      <trkpt lat="36.956810" lon="-122.016530" />
+      <trkpt lat="36.956710" lon="-122.016550" />
+      <trkpt lat="36.956350" lon="-122.017440" />
+      <trkpt lat="36.956350" lon="-122.017540" />
+      <trkpt lat="36.956400" lon="-122.017620" />
+      <trkpt lat="36.956620" lon="-122.017740" />
+      <trkpt lat="36.956880" lon="-122.017980" />
+      <trkpt lat="36.957740" lon="-122.018570" />
+      <trkpt lat="36.957980" lon="-122.018760" />
+      <trkpt lat="36.958240" lon="-122.018990" />
+      <trkpt lat="36.958530" lon="-122.019320" />
+      <trkpt lat="36.958950" lon="-122.019730" />
+      <trkpt lat="36.959460" lon="-122.020340" />
+      <trkpt lat="36.959740" lon="-122.020630" />
+      <trkpt lat="36.960040" lon="-122.021020" />
+      <trkpt lat="36.960520" lon="-122.021580" />
+      <trkpt lat="36.960750" lon="-122.021810" />
+      <trkpt lat="36.960910" lon="-122.022000" />
+      <trkpt lat="36.961020" lon="-122.022170" />
+      <trkpt lat="36.961130" lon="-122.022400" />
+      <trkpt lat="36.961510" lon="-122.022980" />
+      <trkpt lat="36.961630" lon="-122.023260" />
+      <trkpt lat="36.961660" lon="-122.023290" />
+      <trkpt lat="36.962270" lon="-122.023030" />
+    </trkseg>
+  </trk>
+</gpx>

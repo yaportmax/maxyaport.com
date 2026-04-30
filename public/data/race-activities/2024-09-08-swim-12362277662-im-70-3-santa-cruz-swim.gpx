@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="maxyaport.com Strava export" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>IM 70.3 Santa Cruz - Swim</name>
+    <time>2024-09-08T14:04:01Z</time>
+  </metadata>
+  <trk>
+    <name>IM 70.3 Santa Cruz - Swim</name>
+    <type>Swim</type>
+    <trkseg>
+      <trkpt lat="36.962800" lon="-122.020580" />
+      <trkpt lat="36.962590" lon="-122.020320" />
+      <trkpt lat="36.962450" lon="-122.020230" />
+      <trkpt lat="36.962350" lon="-122.020140" />
+      <trkpt lat="36.962010" lon="-122.019950" />
+      <trkpt lat="36.961820" lon="-122.019770" />
+      <trkpt lat="36.961600" lon="-122.019530" />
+      <trkpt lat="36.961200" lon="-122.019160" />
+      <trkpt lat="36.960980" lon="-122.019000" />
+      <trkpt lat="36.960860" lon="-122.018900" />
+      <trkpt lat="36.960560" lon="-122.018490" />
+      <trkpt lat="36.960260" lon="-122.018200" />
+      <trkpt lat="36.959960" lon="-122.017800" />
+      <trkpt lat="36.959610" lon="-122.017520" />
+      <trkpt lat="36.959270" lon="-122.017060" />
+      <trkpt lat="36.958900" lon="-122.016760" />
+      <trkpt lat="36.958570" lon="-122.016180" />
+      <trkpt lat="36.958160" lon="-122.015690" />
+      <trkpt lat="36.957440" lon="-122.014930" />
+      <trkpt lat="36.957280" lon="-122.014790" />
+      <trkpt lat="36.957190" lon="-122.014750" />
+      <trkpt lat="36.957090" lon="-122.015050" />
+      <trkpt lat="36.957010" lon="-122.015220" />
+      <trkpt lat="36.956780" lon="-122.015500" />
+      <trkpt lat="36.956620" lon="-122.015830" />
+      <trkpt lat="36.956300" lon="-122.016290" />
+      <trkpt lat="36.956140" lon="-122.016570" />
+      <trkpt lat="36.956100" lon="-122.016740" />
+      <trkpt lat="36.956250" lon="-122.016880" />
+      <trkpt lat="36.956670" lon="-122.017440" />
+      <trkpt lat="36.957010" lon="-122.017830" />
+      <trkpt lat="36.957220" lon="-122.018160" />
+      <trkpt lat="36.957550" lon="-122.018400" />
+      <trkpt lat="36.957720" lon="-122.018580" />
+      <trkpt lat="36.958180" lon="-122.019210" />
+      <trkpt lat="36.958440" lon="-122.019500" />
+      <trkpt lat="36.958790" lon="-122.020000" />
+      <trkpt lat="36.959320" lon="-122.020560" />
+      <trkpt lat="36.959570" lon="-122.020800" />
+      <trkpt lat="36.959920" lon="-122.021280" />
+      <trkpt lat="36.960190" lon="-122.021570" />
+      <trkpt lat="36.960530" lon="-122.021980" />
+      <trkpt lat="36.960920" lon="-122.022540" />
+      <trkpt lat="36.961290" lon="-122.022880" />
+      <trkpt lat="36.961420" lon="-122.023030" />
+      <trkpt lat="36.961420" lon="-122.023010" />
+      <trkpt lat="36.961460" lon="-122.023050" />
+      <trkpt lat="36.961490" lon="-122.023120" />
+      <trkpt lat="36.961490" lon="-122.023160" />
+      <trkpt lat="36.961530" lon="-122.023210" />
+    </trkseg>
+  </trk>
+</gpx>

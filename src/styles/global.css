@@ -1481,6 +1481,13 @@ main {
   font-size: 0.95rem;
 }
 
+.map-popup a:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 .map-popup span {
   color: var(--accent);
   font-family: var(--font-mono);
@@ -1522,7 +1529,7 @@ main {
   position: relative;
   width: var(--timeline-width, 100%);
   min-width: 100%;
-  height: 54px;
+  height: 62px;
 }
 
 .travel-timeline-rail__axis::before {
@@ -1558,8 +1565,8 @@ main {
   position: absolute;
   left: var(--x);
   bottom: 19px;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   padding: 0;
   transform: translateX(-50%);
   border: 1px solid color-mix(in srgb, var(--bg) 92%, transparent);
@@ -1573,11 +1580,12 @@ main {
 .travel-timeline-rail__dot::before {
   content: "";
   position: absolute;
-  inset: -7px;
+  inset: -4px;
   border-radius: inherit;
 }
 
 .travel-timeline-rail__dot--race {
+  bottom: 31px;
   background: #a97835;
   box-shadow: 0 0 0 1px color-mix(in srgb, #a97835 42%, transparent);
 }

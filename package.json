@@ -10,7 +10,8 @@
     "studio:import-posts": "cd studio-maxyaport.com && npx sanity exec scripts/import-local-posts.mjs --with-user-token",
     "build": "astro build",
     "preview": "astro preview",
-    "travel:routes": "python3 scripts/build-trip-routes.py"
+    "travel:routes": "python3 scripts/build-trip-routes.py",
+    "travel:race-routes": "python3 scripts/build-race-routes.py"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
