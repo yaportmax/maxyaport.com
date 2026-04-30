@@ -101,6 +101,10 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
               <span class="map-playback__icon" aria-hidden="true"></span>
               <span data-timeline-play-label>Play</span>
             </button>
+            <button type="button" class="map-playback__button map-playback__button--camera" data-timeline-camera aria-pressed="false">
+              <span class="map-playback__camera-icon" aria-hidden="true"></span>
+              <span data-timeline-camera-label>Camera</span>
+            </button>
           </div>
           <div
             class="travel-timeline-rail"
@@ -198,6 +202,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const scrubberTitleElement = document.querySelector("[data-travel-scrubber-title]");
   const timelinePlayButton = document.querySelector("[data-timeline-play]");
   const timelinePlayLabel = document.querySelector("[data-timeline-play-label]");
+  const timelineCameraButton = document.querySelector("[data-timeline-camera]");
+  const timelineCameraLabel = document.querySelector("[data-timeline-camera-label]");
   const routeEditorToggle = document.querySelector("[data-route-editor-toggle]");
   const routeEditor = document.getElementById("route-editor");
   const routeEditorTrip = document.getElementById("route-editor-trip");
@@ -247,6 +253,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   let editorSaving = false;
   let generatedTripRoutes = null;
   let raceRouteFeaturesBySlug = new Map();
+  let stravaRouteFeatureList = [];
+  let tripPlaybackSegmentsCache = new Map();
   const layerVisibility = {
     flight: true,
     drive: true,
@@ -256,6 +264,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     race: true,
     stop: true,
   };
+  let playbackStravaActivityId = "";
+  let playbackRaceSlug = "";
 
   const isFiniteCoordinate = (node) =>
     Number.isFinite(Number(node?.lat)) && Number.isFinite(Number(node?.lon));
@@ -281,6 +291,12 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     isFiniteCoordinate(second) &&
     Math.abs(Number(first.lat) - Number(second.lat)) < 0.00001 &&
     Math.abs(Number(first.lon) - Number(second.lon)) < 0.00001;
+
+  const sameLngLat = (first, second) =>
+    Array.isArray(first) &&
+    Array.isArray(second) &&
+    Math.abs(Number(first[0]) - Number(second[0])) < 0.00001 &&
+    Math.abs(Number(first[1]) - Number(second[1])) < 0.00001;
 
   const returnNodeForStart = (start, existing = {}) => ({
     title: `Return to ${start.title || "start"}`,
@@ -764,13 +780,24 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const showScrubPlaybackPopup = (state) => {
     if (!state?.item || !state.coordinate) return;
     const placement = routePopupPlacement(state.coordinate);
-    const shouldCreate = !popup?.isOpen?.() || scrubPlaybackPopupSlug !== state.item.slug;
+    const segment = state.segment || {};
+    const popupKey =
+      segment.kind === "strava"
+        ? `strava:${segment.properties?.id || ""}`
+        : segment.kind === "race"
+          ? `race:${segment.item?.slug || ""}`
+          : `item:${state.item.slug}`;
+    const html =
+      segment.kind === "strava"
+        ? stravaPopupHtml(segment.properties || {})
+        : popupHtml(segment.kind === "race" && segment.item ? segment.item : state.item);
+    const shouldCreate = !popup?.isOpen?.() || scrubPlaybackPopupSlug !== popupKey;
     if (shouldCreate) {
       clearScheduledPopup();
       popup.remove();
       popup = createPopup(placement.anchor);
-      popup.setLngLat(state.coordinate).setHTML(popupHtml(state.item)).addTo(map);
-      scrubPlaybackPopupSlug = state.item.slug;
+      popup.setLngLat(state.coordinate).setHTML(html).addTo(map);
+      scrubPlaybackPopupSlug = popupKey;
       return;
     }
     popup.setLngLat(state.coordinate);
@@ -847,12 +874,6 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const timelineFocusStartTime = Number(timelineRail?.getAttribute("data-timeline-focus-start")) || timelineStartTime;
   const timelineTimeSpan = Math.max(1, timelineEndTime - timelineStartTime);
 
-  const sameLngLat = (first, second) =>
-    Array.isArray(first) &&
-    Array.isArray(second) &&
-    Math.abs(Number(first[0]) - Number(second[0])) < 0.00001 &&
-    Math.abs(Number(first[1]) - Number(second[1])) < 0.00001;
-
   const routeCoordinatesForTrip = (slug) => {
     const features = (tripRouteCollections.routes.features || [])
       .filter((feature) => feature.properties?.slug === slug)
@@ -870,7 +891,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     return coordinates;
   };
 
-  const routeCoordinatesForItem = (item) => {
+  const baseRouteCoordinatesForItem = (item) => {
     if (!item) return [];
     if (item.type === "trip") {
       const coordinates = routeCoordinatesForTrip(item.slug);
@@ -882,6 +903,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     }
     return Number.isFinite(Number(item.lon)) && Number.isFinite(Number(item.lat)) ? [[item.lon, item.lat]] : [];
   };
+
+  const routeCoordinatesForItem = (item) => flattenPlaybackSegments(playbackSegmentsForItem(item));
 
   const haversineDistance = (first, second) => {
     const radiusKm = 6371;
@@ -938,6 +961,314 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     return coordinates[coordinates.length - 1];
   };
 
+  const flattenPlaybackSegments = (segments) => {
+    const coordinates = [];
+    (segments || []).forEach((segment) => {
+      const segmentCoordinates = sanitizedCoordinates(segment?.coordinates);
+      if (!segmentCoordinates.length) return;
+      const nextSegment = coordinates.length && sameLngLat(coordinates[coordinates.length - 1], segmentCoordinates[0])
+        ? segmentCoordinates.slice(1)
+        : segmentCoordinates;
+      coordinates.push(...nextSegment);
+    });
+    return coordinates;
+  };
+
+  const coordinateAtProgressInSegments = (segments, progress) => {
+    const usableSegments = (segments || [])
+      .map((segment) => ({ ...segment, coordinates: sanitizedCoordinates(segment.coordinates) }))
+      .filter((segment) => segment.coordinates.length);
+    if (!usableSegments.length) return { coordinate: null, segment: null, segmentProgress: 0 };
+
+    const distances = usableSegments.map((segment) => pathDistance(segment.coordinates));
+    const totalDistance = distances.reduce((sum, distance) => sum + Math.max(0, distance), 0);
+    if (!Number.isFinite(totalDistance) || totalDistance <= 0) {
+      return { coordinate: usableSegments[0].coordinates[0], segment: usableSegments[0], segmentProgress: 0 };
+    }
+
+    const targetDistance = totalDistance * Math.min(1, Math.max(0, Number(progress) || 0));
+    let traversedDistance = 0;
+    for (let index = 0; index < usableSegments.length; index += 1) {
+      const segmentDistance = Math.max(0, distances[index]);
+      if (traversedDistance + segmentDistance >= targetDistance || index === usableSegments.length - 1) {
+        const segmentProgress = segmentDistance > 0 ? (targetDistance - traversedDistance) / segmentDistance : 0;
+        return {
+          coordinate: coordinateAtProgress(usableSegments[index].coordinates, segmentProgress),
+          segment: usableSegments[index],
+          segmentProgress: Math.min(1, Math.max(0, segmentProgress)),
+        };
+      }
+      traversedDistance += segmentDistance;
+    }
+
+    const lastSegment = usableSegments[usableSegments.length - 1];
+    return {
+      coordinate: lastSegment.coordinates[lastSegment.coordinates.length - 1],
+      segment: lastSegment,
+      segmentProgress: 1,
+    };
+  };
+
+  const dateMonthLookup = {
+    jan: 0,
+    feb: 1,
+    mar: 2,
+    apr: 3,
+    may: 4,
+    jun: 5,
+    jul: 6,
+    aug: 7,
+    sep: 8,
+    oct: 9,
+    nov: 10,
+    dec: 11,
+  };
+  const dayMs = 24 * 60 * 60 * 1000;
+
+  const dateRangeForItem = (item) => {
+    const normalized = String(item?.date || "").trim();
+    const isoMatch = normalized.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (isoMatch) {
+      const [, year, month, day] = isoMatch;
+      const time = Date.UTC(Number(year), Number(month) - 1, Number(day));
+      return { start: time - 3 * dayMs, end: time + 3 * dayMs };
+    }
+
+    const exactMatch = normalized.match(/^([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})$/);
+    if (exactMatch) {
+      const [, month, day, year] = exactMatch;
+      const time = Date.UTC(Number(year), dateMonthLookup[month.slice(0, 3).toLowerCase()] ?? 0, Number(day));
+      return { start: time - 3 * dayMs, end: time + 3 * dayMs };
+    }
+
+    const monthMatch = normalized.match(/^([A-Za-z]+)\s+(\d{4})$/);
+    if (monthMatch) {
+      const [, month, year] = monthMatch;
+      const monthIndex = dateMonthLookup[month.slice(0, 3).toLowerCase()] ?? 0;
+      const start = Date.UTC(Number(year), monthIndex, 1);
+      const end = Date.UTC(Number(year), monthIndex + 1, 1) - 1;
+      return { start, end };
+    }
+
+    const year = Number(normalized);
+    if (Number.isFinite(year) && year > 1900) {
+      return { start: Date.UTC(year, 0, 1), end: Date.UTC(year, 11, 31, 23, 59, 59) };
+    }
+
+    return { start: 0, end: 0 };
+  };
+
+  const itemDateTime = (item) => {
+    const range = dateRangeForItem(item);
+    return range.start && range.end ? (range.start + range.end) / 2 : 0;
+  };
+
+  const activityStartTime = (feature) => Date.parse(feature?.properties?.startDate || "") || 0;
+
+  const sampleCoordinates = (coordinates, maxSamples = 24) => {
+    const sanitized = sanitizedCoordinates(coordinates);
+    if (sanitized.length <= maxSamples) return sanitized;
+    const step = Math.max(1, Math.floor(sanitized.length / (maxSamples - 1)));
+    const sampled = sanitized.filter((_, index) => index % step === 0);
+    const last = sanitized[sanitized.length - 1];
+    if (!sameLngLat(sampled[sampled.length - 1], last)) sampled.push(last);
+    return sampled;
+  };
+
+  const featureCoordinates = (feature) => sanitizedCoordinates(feature?.geometry?.coordinates);
+
+  const featureSampleCoordinates = (feature, maxSamples = 12) => sampleCoordinates(featureCoordinates(feature), maxSamples);
+
+  const nodeCoordinates = (nodes) =>
+    (nodes || []).filter(isFiniteCoordinate).map((node) => [Number(node.lon), Number(node.lat)]);
+
+  const minDistanceBetween = (firstCoordinates, secondCoordinates) => {
+    if (!firstCoordinates.length || !secondCoordinates.length) return Number.POSITIVE_INFINITY;
+    let bestDistance = Number.POSITIVE_INFINITY;
+    firstCoordinates.forEach((first) => {
+      secondCoordinates.forEach((second) => {
+        bestDistance = Math.min(bestDistance, haversineDistance(first, second));
+      });
+    });
+    return bestDistance;
+  };
+
+  const nearestRoutePlacement = (routeCoordinates, coordinates) => {
+    const routeSamples = sampleCoordinates(routeCoordinates, 160);
+    const targetSamples = sampleCoordinates(coordinates, 10);
+    if (!routeSamples.length || !targetSamples.length) {
+      return { distanceKm: Number.POSITIVE_INFINITY, progress: 0 };
+    }
+
+    let bestDistance = Number.POSITIVE_INFINITY;
+    let bestProgress = 0;
+    targetSamples.forEach((target) => {
+      routeSamples.forEach((routeCoordinate, index) => {
+        const distance = haversineDistance(routeCoordinate, target);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestProgress = routeSamples.length > 1 ? index / (routeSamples.length - 1) : 0;
+        }
+      });
+    });
+    return { distanceKm: bestDistance, progress: bestProgress };
+  };
+
+  const isHomeLikeNode = (node) => {
+    const title = String(node?.title || "").toLowerCase();
+    return (
+      title.startsWith("return to ") ||
+      title.startsWith("back to ") ||
+      /\b(san francisco|sfo|san francisco international|santa clara|san luis obispo|slo)\b/.test(title)
+    );
+  };
+
+  const tripAnchorNodes = (trip) => {
+    const nodes = tripNodesBySlug.get(trip.slug) || [];
+    const interiorNodes = nodes.filter((node, index) => index > 0 && index < nodes.length - 1 && !isHomeLikeNode(node));
+    if (interiorNodes.length) return interiorNodes;
+    return nodes.filter((node, index) => index > 0 && index < nodes.length - 1);
+  };
+
+  const tripDateContains = (trip, time, padDays = 1) => {
+    const range = dateRangeForItem(trip);
+    return Boolean(time && range.start && range.end && time >= range.start - padDays * dayMs && time <= range.end + padDays * dayMs);
+  };
+
+  const associatedRacesForTrip = (trip, baseCoordinates, anchorCoordinates) =>
+    allPoints
+      .filter((item) => item.type === "race")
+      .map((race) => {
+        const raceTime = itemDateTime(race);
+        if (!tripDateContains(trip, raceTime, 2)) return null;
+        const raceCoordinate = Number.isFinite(Number(race.lon)) && Number.isFinite(Number(race.lat)) ? [[race.lon, race.lat]] : [];
+        const anchorDistance = minDistanceBetween(raceCoordinate, anchorCoordinates);
+        const placement = nearestRoutePlacement(baseCoordinates, raceCoordinate);
+        const closeToDestination = anchorDistance <= 45 || (placement.distanceKm <= 24 && placement.progress > 0.06 && placement.progress < 0.94);
+        if (!closeToDestination) return null;
+        const coordinates = raceRouteCoordinates(race.slug);
+        if (coordinates.length < 2) return null;
+        return {
+          kind: "race",
+          item: race,
+          coordinates,
+          progress: placement.distanceKm <= anchorDistance ? placement.progress : 0.5,
+          startTime: raceTime,
+        };
+      })
+      .filter(Boolean);
+
+  const associatedStravaForTrip = (trip, baseCoordinates, anchorCoordinates, excludedActivityIds) =>
+    stravaRouteFeatureList
+      .map((feature) => {
+        const id = String(feature?.properties?.id || "");
+        if (!id || excludedActivityIds.has(id)) return null;
+        const startTime = activityStartTime(feature);
+        if (!tripDateContains(trip, startTime, 0)) return null;
+
+        const coordinates = featureCoordinates(feature);
+        if (coordinates.length < 2) return null;
+        const samples = featureSampleCoordinates(feature, 10);
+        const anchorDistance = minDistanceBetween(samples, anchorCoordinates);
+        const placement = nearestRoutePlacement(baseCoordinates, samples);
+        const activityGroup = String(feature.properties?.activityGroup || feature.properties?.type || "").toLowerCase();
+        const anchorThreshold = activityGroup.includes("ride") ? 85 : activityGroup.includes("swim") ? 24 : 52;
+        const routeThreshold = activityGroup.includes("ride") ? 38 : 22;
+        const closeToTrip =
+          anchorDistance <= anchorThreshold ||
+          (placement.distanceKm <= routeThreshold && placement.progress > 0.06 && placement.progress < 0.94);
+        if (!closeToTrip) return null;
+
+        return {
+          kind: "strava",
+          properties: feature.properties || {},
+          coordinates,
+          progress: placement.distanceKm <= anchorDistance ? placement.progress : 0.5,
+          startTime,
+        };
+      })
+      .filter(Boolean);
+
+  const composeTripPlaybackSegments = (trip, baseCoordinates, associatedSegments) => {
+    if (!baseCoordinates.length) return [];
+    if (!associatedSegments.length) return [{ kind: "trip", item: trip, coordinates: baseCoordinates }];
+
+    const sortedSegments = [...associatedSegments].sort(
+      (first, second) => first.progress - second.progress || first.startTime - second.startTime,
+    );
+    const segments = [];
+    let cursorIndex = 0;
+
+    const pushSegment = (segment) => {
+      const coordinates = sanitizedCoordinates(segment.coordinates);
+      if (coordinates.length >= 2 || (coordinates.length === 1 && !segments.length)) {
+        segments.push({ ...segment, coordinates });
+      }
+    };
+
+    sortedSegments.forEach((associatedSegment) => {
+      const insertIndex = Math.max(
+        cursorIndex,
+        Math.min(baseCoordinates.length - 1, Math.round(associatedSegment.progress * (baseCoordinates.length - 1))),
+      );
+      const tripLeg = baseCoordinates.slice(cursorIndex, insertIndex + 1);
+      pushSegment({ kind: "trip", item: trip, coordinates: tripLeg });
+
+      const routeCoordinate = baseCoordinates[insertIndex];
+      const activityCoordinates = sanitizedCoordinates(associatedSegment.coordinates);
+      if (routeCoordinate && activityCoordinates.length) {
+        if (!sameLngLat(routeCoordinate, activityCoordinates[0])) {
+          pushSegment({ kind: "connector", item: trip, coordinates: [routeCoordinate, activityCoordinates[0]] });
+        }
+        pushSegment({ ...associatedSegment, coordinates: activityCoordinates });
+        const lastActivityCoordinate = activityCoordinates[activityCoordinates.length - 1];
+        if (!sameLngLat(lastActivityCoordinate, routeCoordinate)) {
+          pushSegment({ kind: "connector", item: trip, coordinates: [lastActivityCoordinate, routeCoordinate] });
+        }
+      }
+      cursorIndex = insertIndex;
+    });
+
+    pushSegment({ kind: "trip", item: trip, coordinates: baseCoordinates.slice(cursorIndex) });
+    return segments.length ? segments : [{ kind: "trip", item: trip, coordinates: baseCoordinates }];
+  };
+
+  const playbackSegmentsForItem = (item) => {
+    if (!item) return [];
+    if (item.type !== "trip") {
+      const coordinates = baseRouteCoordinatesForItem(item);
+      return coordinates.length ? [{ kind: item.type || "item", item, coordinates }] : [];
+    }
+
+    const cacheKey = `${item.slug}:${stravaRouteFeatureList.length}:${raceRouteFeaturesBySlug.size}:${tripRouteCollections.routes.features.length}`;
+    const cached = tripPlaybackSegmentsCache.get(cacheKey);
+    if (cached) return cached;
+
+    const baseCoordinates = baseRouteCoordinatesForItem(item);
+    if (baseCoordinates.length < 2) {
+      const fallback = baseCoordinates.length ? [{ kind: "trip", item, coordinates: baseCoordinates }] : [];
+      tripPlaybackSegmentsCache.set(cacheKey, fallback);
+      return fallback;
+    }
+
+    const anchors = tripAnchorNodes(item);
+    const anchorCoordinates = nodeCoordinates(anchors);
+    if (!anchorCoordinates.length) {
+      const fallback = [{ kind: "trip", item, coordinates: baseCoordinates }];
+      tripPlaybackSegmentsCache.set(cacheKey, fallback);
+      return fallback;
+    }
+
+    const raceSegments = associatedRacesForTrip(item, baseCoordinates, anchorCoordinates);
+    const excludedRaceActivityIds = new Set(
+      raceSegments.flatMap((segment) => (segment.item?.stravaActivityIds || []).map((id) => String(id))),
+    );
+    const stravaSegments = associatedStravaForTrip(item, baseCoordinates, anchorCoordinates, excludedRaceActivityIds);
+    const segments = composeTripPlaybackSegments(item, baseCoordinates, [...raceSegments, ...stravaSegments]);
+    tripPlaybackSegmentsCache.set(cacheKey, segments);
+    return segments;
+  };
+
   const scrubberStateFromValue = (value) => {
     if (!timelineSequence.length) return null;
     const clampedValue = Math.min(Math.max(Number(value) || 0, 0), timelineSequence.length * scrubberUnitsPerItem);
@@ -945,13 +1276,15 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     const itemIndex = Math.min(Math.floor(rawIndex), timelineSequence.length - 1);
     const item = timelineSequence[itemIndex];
     const phase = itemIndex === timelineSequence.length - 1 ? Math.min(1, rawIndex - itemIndex) : rawIndex - itemIndex;
-    const coordinates = routeCoordinatesForItem(item);
+    const segments = playbackSegmentsForItem(item);
+    const coordinates = flattenPlaybackSegments(segments);
     const nextItem = timelineSequence[itemIndex + 1];
     const routeProgress =
       itemIndex === timelineSequence.length - 1
         ? phase
         : Math.min(1, phase / scrubberRoutePortion);
-    const routeCoordinate = coordinateAtProgress(coordinates, routeProgress);
+    const routeSample = coordinateAtProgressInSegments(segments, routeProgress);
+    const routeCoordinate = routeSample.coordinate || coordinateAtProgress(coordinates, routeProgress);
 
     if (nextItem && phase > scrubberRoutePortion) {
       const nextCoordinates = routeCoordinatesForItem(nextItem);
@@ -963,6 +1296,9 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
         routeProgress: 1,
         inGap: true,
         pathDistance: pathDistance(coordinates),
+        segment: routeSample.segment || null,
+        segmentProgress: routeSample.segmentProgress || 1,
+        coordinates,
       };
     }
 
@@ -972,6 +1308,9 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       routeProgress,
       inGap: false,
       pathDistance: pathDistance(coordinates),
+      segment: routeSample.segment || null,
+      segmentProgress: routeSample.segmentProgress || routeProgress,
+      coordinates,
     };
   };
 
@@ -985,7 +1324,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
           geometry: { type: "Point", coordinates: state.coordinate },
           properties: {
             slug: state.item.slug,
-            type: state.item.type,
+            type: state.segment?.kind === "race" ? "race" : state.segment?.kind === "strava" ? "strava" : state.item.type,
             progress: state.routeProgress,
           },
         },
@@ -1123,14 +1462,51 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const scrubZoomForState = (state) => {
     if (!state?.item) return map.getZoom();
     if (state.inGap) return mapElement.clientWidth < 680 ? 3.3 : 4.2;
+    if (state.segment?.kind === "strava") return mapElement.clientWidth < 680 ? 9.9 : 10.7;
+    if (state.segment?.kind === "race") return mapElement.clientWidth < 680 ? 9.7 : 10.4;
     if (state.item.type === "race") return mapElement.clientWidth < 680 ? 8.8 : 9.6;
     if (state.item.travelMode === "flight") return mapElement.clientWidth < 680 ? 2.5 : 3.1;
     if (state.pathDistance > 1200) return mapElement.clientWidth < 680 ? 4.4 : 5.1;
     return mapElement.clientWidth < 680 ? 5.9 : 6.7;
   };
 
-  const trackScrubCamera = (state, itemChanged) => {
+  const bearingBetweenCoordinates = (start, end) => {
+    if (!Array.isArray(start) || !Array.isArray(end)) return map.getBearing();
+    const startLat = toRadians(Number(start[1]));
+    const endLat = toRadians(Number(end[1]));
+    const deltaLon = toRadians(Number(end[0]) - Number(start[0]));
+    const y = Math.sin(deltaLon) * Math.cos(endLat);
+    const x = Math.cos(startLat) * Math.sin(endLat) - Math.sin(startLat) * Math.cos(endLat) * Math.cos(deltaLon);
+    const bearing = (toDegrees(Math.atan2(y, x)) + 360) % 360;
+    return Number.isFinite(bearing) ? bearing : map.getBearing();
+  };
+
+  const trackCinematicScrubCamera = (state, itemChanged) => {
     if (!state?.coordinate) return;
+    const coordinates = state.coordinates?.length ? state.coordinates : routeCoordinatesForItem(state.item);
+    const lookAhead = coordinateAtProgress(coordinates, Math.min(1, (state.routeProgress || 0) + 0.045));
+    const routeBearing = lookAhead ? bearingBetweenCoordinates(state.coordinate, lookAhead) : map.getBearing();
+    const compact = mapElement.clientWidth < 680;
+    const segmentBoost = state.segment?.kind === "strava" || state.segment?.kind === "race" ? 0.35 : 0;
+    const zoomPulse = Math.sin(Math.min(1, Math.max(0, state.routeProgress || 0)) * Math.PI * 2) * 0.16;
+    map.easeTo({
+      center: state.coordinate,
+      zoom: scrubZoomForState(state) + segmentBoost + zoomPulse,
+      bearing: routeBearing,
+      pitch: state.inGap ? (compact ? 24 : 32) : state.segment?.kind === "strava" || state.segment?.kind === "race" ? (compact ? 52 : 58) : compact ? 42 : 50,
+      offset: compact ? [0, -16] : [0, -26],
+      duration: itemChanged ? 860 : 360,
+      easing: (time) => 1 - (1 - time) ** 3,
+      essential: true,
+    });
+  };
+
+  const trackScrubCamera = (state, itemChanged, cinematic = false) => {
+    if (!state?.coordinate) return;
+    if (cinematic) {
+      trackCinematicScrubCamera(state, itemChanged);
+      return;
+    }
     map.easeTo({
       center: state.coordinate,
       zoom: scrubZoomForState(state),
@@ -1148,13 +1524,15 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     const itemChanged = applyScrubFocus(state.item, { centerDot });
     updateRouteProgressMarker(state);
     if (syncRail && itemChanged) scrollTimelineToValue(clampedValue, "smooth");
-    if (trackCamera) trackScrubCamera(state, itemChanged);
+    if (showPopup) updatePlaybackSegmentHighlight(state);
+    if (trackCamera) trackScrubCamera(state, itemChanged, showPopup && cinematicPlaybackCameraEnabled);
     if (showPopup) showScrubPlaybackPopup(state);
   };
 
   let timelinePlaybackFrame = 0;
   let timelinePlaybackLastTime = 0;
   let timelinePlaybackActive = false;
+  let cinematicPlaybackCameraEnabled = false;
   const timelinePlaybackUnitsPerSecond = 8;
 
   const renderTimelinePlaybackButton = () => {
@@ -1165,12 +1543,26 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (timelinePlayLabel) timelinePlayLabel.textContent = timelinePlaybackActive ? "Pause" : "Play";
   };
 
+  const renderTimelineCameraButton = () => {
+    if (!timelineCameraButton) return;
+    timelineCameraButton.classList.toggle("is-active", cinematicPlaybackCameraEnabled);
+    timelineCameraButton.setAttribute("aria-pressed", String(cinematicPlaybackCameraEnabled));
+    timelineCameraButton.setAttribute("aria-label", cinematicPlaybackCameraEnabled ? "Disable cinematic camera" : "Enable cinematic camera");
+    if (timelineCameraLabel) timelineCameraLabel.textContent = cinematicPlaybackCameraEnabled ? "Cinematic" : "Camera";
+  };
+
+  const toggleTimelineCamera = () => {
+    cinematicPlaybackCameraEnabled = !cinematicPlaybackCameraEnabled;
+    renderTimelineCameraButton();
+  };
+
   const stopTimelinePlayback = () => {
     timelinePlaybackActive = false;
     timelinePlaybackLastTime = 0;
     if (timelinePlaybackFrame) window.cancelAnimationFrame(timelinePlaybackFrame);
     timelinePlaybackFrame = 0;
     renderTimelinePlaybackButton();
+    updatePlaybackSegmentHighlight(null);
   };
 
   const runTimelinePlayback = (timestamp) => {
@@ -1225,6 +1617,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
     activeTimelineSlug = slug;
     activeStravaActivityId = "";
+    playbackStravaActivityId = "";
+    playbackRaceSlug = "";
     updateActiveSummary(item);
     timelineDots.forEach((dot) =>
       dot.classList.toggle("is-active", dot.getAttribute("data-map-timeline-item") === slug),
@@ -1251,6 +1645,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
   const clearSelection = () => {
     activeTimelineSlug = "";
     activeStravaActivityId = "";
+    playbackStravaActivityId = "";
+    playbackRaceSlug = "";
     timelineDots.forEach((dot) => dot.classList.remove("is-active"));
     if (map.getLayer("map-point-highlight")) {
       map.setFilter("map-point-highlight", ["==", ["get", "slug"], ""]);
@@ -1278,10 +1674,12 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
   const updateLayerVisibility = () => {
     const activeItem = allPoints.find((point) => point.slug === activeTimelineSlug);
+    const highlightedRaceSlug = activeItem?.type === "race" ? activeTimelineSlug : playbackRaceSlug;
+    const highlightedStravaActivityId = activeStravaActivityId || playbackStravaActivityId;
     setRouteHighlight(activeItem?.type === "trip" ? activeTimelineSlug : "");
-    setRaceRouteHighlight(activeItem?.type === "race" ? activeTimelineSlug : "");
+    setRaceRouteHighlight(highlightedRaceSlug);
     setMapPointLabelFilter(activeItem);
-    setStravaRouteHighlight(activeStravaActivityId);
+    setStravaRouteHighlight(highlightedStravaActivityId);
 
     setVisibility(["trip-routes-flight"], layerVisibility.flight);
     setVisibility(["trip-routes-drive"], layerVisibility.drive);
@@ -1295,7 +1693,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     setVisibility(["trip-route-node-highlight"], layerVisibility.stop && Boolean(activeTimelineSlug));
     setVisibility(
       ["race-route-highlight-casing", "race-route-highlight"],
-      layerVisibility.race && activeItem?.type === "race" && raceRouteFeaturesBySlug.has(activeTimelineSlug),
+      layerVisibility.race && Boolean(highlightedRaceSlug) && raceRouteFeaturesBySlug.has(highlightedRaceSlug),
     );
 
     layerToggleButtons.forEach((button) => {
@@ -1304,6 +1702,13 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       button.setAttribute("aria-pressed", String(visible));
       button.classList.toggle("is-muted", !visible);
     });
+  };
+
+  const updatePlaybackSegmentHighlight = (state = null) => {
+    const segment = state?.segment || {};
+    playbackStravaActivityId = segment.kind === "strava" ? String(segment.properties?.id || "") : "";
+    playbackRaceSlug = segment.kind === "race" ? String(segment.item?.slug || "") : "";
+    updateLayerVisibility();
   };
 
   const bindPointerLayer = (layerId) => {
@@ -1399,6 +1804,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (choice.kind === "strava") {
       activeTimelineSlug = "";
       activeStravaActivityId = String(choice.properties.id || "");
+      playbackStravaActivityId = "";
+      playbackRaceSlug = "";
       timelineDots.forEach((dot) => dot.classList.remove("is-active"));
       if (map.getLayer("map-point-highlight")) {
         map.setFilter("map-point-highlight", ["==", ["get", "slug"], ""]);
@@ -1415,6 +1822,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     } else if (choice.item) {
       activeTimelineSlug = choice.item.slug;
       activeStravaActivityId = "";
+      playbackStravaActivityId = "";
+      playbackRaceSlug = "";
       updateActiveSummary(choice.item);
       timelineDots.forEach((dot) =>
         dot.classList.toggle("is-active", dot.getAttribute("data-map-timeline-item") === choice.item.slug),
@@ -1461,6 +1870,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     popup.remove();
     activeTimelineSlug = "";
     activeStravaActivityId = String(properties.id || "");
+    playbackStravaActivityId = "";
+    playbackRaceSlug = "";
     timelineDots.forEach((dot) => dot.classList.remove("is-active"));
     if (map.getLayer("map-point-highlight")) {
       map.setFilter("map-point-highlight", ["==", ["get", "slug"], ""]);
@@ -1556,6 +1967,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
   const refreshRouteSources = (previewSlug = "") => {
     tripNodesBySlug = tripNodeMap(editorData);
+    tripPlaybackSegmentsCache = new Map();
     const fallbackCollections = createTripRouteCollections(editorData);
     tripRouteCollections = {
       routes: renderedRouteCollection(fallbackCollections.routes, previewSlug),
@@ -1751,6 +2163,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
     if (!response?.ok) return;
     const routes = await response.json();
     if (!routes.features?.length) return;
+    stravaRouteFeatureList = routes.features || [];
+    tripPlaybackSegmentsCache = new Map();
 
     const heatResponse = await fetch("/data/strava-line-heatmap.geojson", { cache: "no-store" }).catch(() => null);
     const heatRoutes = heatResponse?.ok ? await heatResponse.json().catch(() => null) : null;
@@ -1869,6 +2283,7 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       features.push(feature);
       raceRouteFeaturesBySlug.set(slug, features);
     }
+    tripPlaybackSegmentsCache = new Map();
 
     map.addSource("race-routes", { type: "geojson", data: routes, lineMetrics: true });
     map.addLayer(
@@ -2021,7 +2436,15 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
       paint: {
         "circle-radius": ["interpolate", ["linear"], ["zoom"], 0, 2.8, 6, 4.5, 10, 6],
         "circle-color": "#fffaf0",
-        "circle-stroke-color": ["case", ["==", ["get", "type"], "race"], "#a97835", "#5f7f49"],
+        "circle-stroke-color": [
+          "match",
+          ["get", "type"],
+          "race",
+          "#a97835",
+          "strava",
+          "#1597d3",
+          "#5f7f49",
+        ],
         "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 0, 1.4, 8, 2.2],
       },
     });
@@ -2662,6 +3085,8 @@ const serializedMapData = JSON.stringify(mapData).replace(/</g, "\\u003c");
 
   timelinePlayButton?.addEventListener("click", toggleTimelinePlayback);
   renderTimelinePlaybackButton();
+  timelineCameraButton?.addEventListener("click", toggleTimelineCamera);
+  renderTimelineCameraButton();
 
   timelineDots.forEach((dot) => {
     dot.addEventListener("click", () => {

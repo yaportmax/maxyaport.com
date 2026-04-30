@@ -1728,6 +1728,7 @@ body.travel-app .map-timeline {
 
 .map-playback {
   display: flex;
+  gap: 8px;
   justify-content: center;
   padding: 0 20px 3px;
   pointer-events: none;
@@ -1793,6 +1794,43 @@ body.travel-app .map-timeline {
 
 .map-playback__button.is-playing .map-playback__icon::after {
   right: 1px;
+}
+
+.map-playback__button.is-active {
+  border-color: color-mix(in srgb, var(--accent) 72%, transparent);
+  color: var(--bg);
+  background: color-mix(in srgb, var(--accent) 86%, #fffaf0);
+}
+
+.map-playback__camera-icon {
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 11px;
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+}
+
+.map-playback__camera-icon::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 2px;
+  width: 5px;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+  background: currentColor;
+}
+
+.map-playback__camera-icon::after {
+  content: "";
+  position: absolute;
+  top: 2.5px;
+  left: 4px;
+  width: 4px;
+  height: 4px;
+  border: 1.4px solid currentColor;
+  border-radius: 50%;
 }
 
 body.travel-app .travel-timeline-rail {
