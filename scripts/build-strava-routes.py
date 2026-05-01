@@ -8,10 +8,21 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 IN = ROOT / ".strava-work/activities.json"
 OUT = ROOT / "public/data/strava-routes.geojson"
+TRAVEL_DATA = ROOT / "src/data/travel-map.json"
 
-RUN_TYPES = {"Run", "TrailRun"}
-RIDE_TYPES = {"Ride", "GravelRide", "MountainBikeRide"}
-ALLOWED_TYPES = RUN_TYPES | RIDE_TYPES
+FOOT_ACTIVITY_TERMS = ("run", "walk", "hike", "foot", "snowshoe")
+BIKE_ACTIVITY_TERMS = (
+    "ride",
+    "bike",
+    "cycling",
+    "ski",
+    "snowboard",
+    "skate",
+    "surf",
+    "wheelchair",
+    "handcycle",
+)
+SWIM_ACTIVITY_TERMS = ("swim",)
 
 
 def decode_polyline(polyline: str) -> list[tuple[float, float]]:
@@ -66,12 +77,36 @@ def public_route_points(points: list[tuple[float, float]], max_points: int) -> l
     return sampled
 
 
-def activity_group(activity_type: str) -> str:
-    return "Ride" if activity_type in RIDE_TYPES else "Run"
+def activity_group(activity_type: str, sport_type: str = "") -> str:
+    normalized = f"{activity_type or ''} {sport_type or ''}".lower()
+    if any(term in normalized for term in SWIM_ACTIVITY_TERMS):
+        return "Swim"
+    if any(term in normalized for term in FOOT_ACTIVITY_TERMS):
+        return "Run"
+    if any(term in normalized for term in BIKE_ACTIVITY_TERMS):
+        return "Ride"
+    return "Other"
+
+
+def race_activity_ids() -> set[str]:
+    if not TRAVEL_DATA.exists():
+        return set()
+    data = json.loads(TRAVEL_DATA.read_text())
+    ids: set[str] = set()
+    for race in data.get("races", []):
+        ids.update(str(activity_id) for activity_id in race.get("stravaActivityIds", []))
+    return ids
+
+
+def is_virtual_or_zwift(activity: dict) -> bool:
+    name = str(activity.get("name") or "").lower()
+    activity_type = str(activity.get("type") or "").lower()
+    sport_type = str(activity.get("sport_type") or "").lower()
+    return "zwift" in name or "virtual" in activity_type or "virtual" in sport_type
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build public Strava run/ride route LineStrings.")
+    parser = argparse.ArgumentParser(description="Build public Strava route LineStrings.")
     parser.add_argument("--out", type=Path, default=OUT)
     parser.add_argument("--max-points", type=int, default=220)
     args = parser.parse_args()
@@ -82,12 +117,22 @@ def main() -> None:
         raise SystemExit("--max-points must be at least 2.")
 
     activities = json.loads(IN.read_text())
+    excluded_race_ids = race_activity_ids()
     features = []
+    skipped_race_activities = 0
+    skipped_virtual_activities = 0
 
     for activity in activities:
-        activity_type = activity.get("type")
-        if activity_type not in ALLOWED_TYPES:
+        activity_id = str(activity.get("id") or "")
+        if activity_id in excluded_race_ids:
+            skipped_race_activities += 1
             continue
+        if is_virtual_or_zwift(activity):
+            skipped_virtual_activities += 1
+            continue
+
+        activity_type = activity.get("type") or "Activity"
+        sport_type = activity.get("sport_type") or activity_type
 
         polyline = (activity.get("map") or {}).get("summary_polyline")
         if not polyline:
@@ -109,9 +154,12 @@ def main() -> None:
                     "id": activity.get("id"),
                     "name": activity.get("name") or "Strava activity",
                     "type": activity_type,
-                    "activityGroup": activity_group(activity_type),
+                    "sportType": sport_type,
+                    "activityGroup": activity_group(activity_type, sport_type),
                     "startDate": activity.get("start_date_local") or activity.get("start_date"),
                     "distanceMeters": round(float(activity.get("distance") or 0), 1),
+                    "movingTimeSeconds": round(float(activity.get("moving_time") or 0), 1),
+                    "elapsedTimeSeconds": round(float(activity.get("elapsed_time") or 0), 1),
                 },
             }
         )
@@ -121,6 +169,8 @@ def main() -> None:
     print(f"Wrote {args.out}")
     print(f"Activities read: {len(activities)}")
     print(f"Routes written: {len(features)}")
+    print(f"Race activities skipped: {skipped_race_activities}")
+    print(f"Zwift/virtual activities skipped: {skipped_virtual_activities}")
 
 
 if __name__ == "__main__":

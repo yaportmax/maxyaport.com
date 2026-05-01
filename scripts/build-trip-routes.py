@@ -195,7 +195,7 @@ def fetch_route(
 
 def segment_mode(trip: dict[str, Any], segment: dict[str, Any]) -> str:
     configured = segment.get("mode") or trip.get("travelMode") or "drive"
-    return configured if configured in {"flight", "sail", "train"} else "drive"
+    return configured if configured in {"flight", "sail"} else "drive"
 
 
 def ensure_segments(trip: dict[str, Any], leg_count: int) -> list[dict[str, Any]]:
@@ -238,6 +238,7 @@ def feature_for_segment(
         "slug": trip.get("slug", ""),
         "title": trip.get("title", ""),
         "mode": mode,
+        "vehicle": segment.get("vehicle", ""),
         "segmentIndex": index,
         "startTitle": start.get("title", ""),
         "endTitle": end.get("title", ""),
@@ -250,7 +251,7 @@ def feature_for_segment(
         properties["distanceMeters"] = round(distance)
     if duration:
         properties["durationSeconds"] = round(duration)
-    if mode in {"sail", "train"}:
+    if mode == "sail":
         properties["routeProvider"] = "great-circle"
         properties["routeProfile"] = mode
 
@@ -319,7 +320,6 @@ def main() -> None:
     inline = 0
     generated_flights = 0
     generated_sails = 0
-    generated_trains = 0
     failed = 0
 
     for trip in data.get("trips", []):
@@ -329,13 +329,35 @@ def main() -> None:
 
         segments = ensure_segments(trip, len(nodes) - 1)
         for index, segment in enumerate(segments):
+            if segment.get("render") is False:
+                continue
             mode = segment_mode(trip, segment)
             start = nodes[index]
             end = nodes[index + 1]
             key = leg_key(mode, args.profile, start, end)
             label = f"{trip.get('title', trip.get('slug'))}: {start.get('title', 'start')} -> {end.get('title', 'end')}"
 
-            if mode in {"flight", "sail", "train"}:
+            coordinates = segment.get("coordinates")
+            if valid_coordinates(coordinates) and not args.refresh:
+                features.append(
+                    feature_for_segment(
+                        trip=trip,
+                        segment=segment,
+                        index=index,
+                        mode=mode,
+                        start=start,
+                        end=end,
+                        coordinates=rounded_coordinates(coordinates, args.max_points),
+                        key=key,
+                        profile=args.profile,
+                        distance=float(segment.get("distanceMeters") or 0),
+                        duration=float(segment.get("durationSeconds") or 0),
+                    )
+                )
+                inline += 1
+                continue
+
+            if mode in {"flight", "sail"}:
                 features.append(
                     feature_for_segment(
                         trip=trip,
@@ -353,31 +375,10 @@ def main() -> None:
                     generated_flights += 1
                 if mode == "sail":
                     generated_sails += 1
-                if mode == "train":
-                    generated_trains += 1
                 continue
 
             distance = float(segment.get("distanceMeters") or 0)
             duration = float(segment.get("durationSeconds") or 0)
-            coordinates = segment.get("coordinates")
-            if valid_coordinates(coordinates) and not args.refresh:
-                features.append(
-                    feature_for_segment(
-                        trip=trip,
-                        segment=segment,
-                        index=index,
-                        mode=mode,
-                        start=start,
-                        end=end,
-                        coordinates=rounded_coordinates(coordinates, args.max_points),
-                        key=key,
-                        profile=args.profile,
-                        distance=distance,
-                        duration=duration,
-                    )
-                )
-                inline += 1
-                continue
 
             cached_feature = cache.get(key)
             if cached_feature and not args.refresh:
@@ -458,7 +459,7 @@ def main() -> None:
         "Wrote "
         f"{OUT_PATH} with {len(features)} segment(s): "
         f"{routed} routed, {cached} cached, {inline} inline, "
-        f"{generated_flights} flight, {generated_sails} sail, {generated_trains} train, {failed} failed."
+        f"{generated_flights} flight, {generated_sails} sail, {failed} failed."
     )
     if stripped:
         print(f"Removed {stripped} generated inline field(s) from {DATA_PATH}.")

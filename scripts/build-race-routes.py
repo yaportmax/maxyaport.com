@@ -105,6 +105,17 @@ def activity_lookup() -> dict[int, dict[str, Any]]:
     return {int(activity["id"]): activity for activity in activities if activity.get("id")}
 
 
+def activity_group(value: str | None, source_path: str = "", slug: str = "") -> str:
+    label = f"{value or ''} {source_path or ''} {slug or ''}".lower()
+    if "swim" in label:
+        return "Swim"
+    if any(term in label for term in ("ride", "bike", "cycling")):
+        return "Ride"
+    if any(term in label for term in ("run", "trail", "marathon", "50k", "100k", "skyrace")):
+        return "Run"
+    return "Race"
+
+
 def main() -> None:
     data = json.loads(DATA_PATH.read_text())
     activities = activity_lookup()
@@ -148,6 +159,8 @@ def main() -> None:
             if public_path.startswith("/data/race-activities/"):
                 activity_id = race["stravaActivityIds"][segment_index]
                 sport_type = activities.get(activity_id, {}).get("sport_type") or activities.get(activity_id, {}).get("type")
+            activity = activities.get(activity_id, {}) if activity_id else {}
+            segment_group = activity_group(sport_type, public_path, slug or "")
 
             route_features.append(
                 {
@@ -157,8 +170,12 @@ def main() -> None:
                         "raceTitle": race.get("title"),
                         "activityId": activity_id,
                         "sportType": sport_type,
+                        "activityGroup": segment_group,
                         "sourcePath": public_path,
                         "segmentIndex": segment_index,
+                        "distanceMeters": round(float(activity.get("distance") or 0), 1) if activity else None,
+                        "movingTimeSeconds": round(float(activity.get("moving_time") or 0), 1) if activity else None,
+                        "elapsedTimeSeconds": round(float(activity.get("elapsed_time") or 0), 1) if activity else None,
                     },
                     "geometry": {
                         "type": "LineString",

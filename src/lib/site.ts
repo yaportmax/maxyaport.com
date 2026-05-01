@@ -8,7 +8,7 @@ export const site = {
 };
 
 export const navItems: { href: string; label: string }[] = [
-  { href: "/travel/", label: "travel" }
+  { href: "/travel/", label: "journey" }
 ];
 
 export async function getWriting() {

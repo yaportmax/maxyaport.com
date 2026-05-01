@@ -8,8 +8,12 @@
         "raceTitle": "Canyons 100K",
         "activityId": null,
         "sportType": null,
+        "activityGroup": "Run",
         "sourcePath": "/routes/canyons-2026.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": null,
+        "movingTimeSeconds": null,
+        "elapsedTimeSeconds": null
       },
       "geometry": {
         "type": "LineString",
@@ -17544,8 +17548,12 @@
         "raceTitle": "IRONMAN 70.3 Santa Cruz Relay",
         "activityId": 15733788504,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2025-09-07-run-15733788504-santa-cruz-70-3-relay-run.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 21140.4,
+        "movingTimeSeconds": 5319.0,
+        "elapsedTimeSeconds": 5319.0
       },
       "geometry": {
         "type": "LineString",
@@ -18916,8 +18924,12 @@
         "raceTitle": "Tamalpa Headlands 50K",
         "activityId": 15483221463,
         "sportType": "TrailRun",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2025-08-16-run-15483221463-tamalpa-headlands-50-47-k.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 47316.2,
+        "movingTimeSeconds": 19249.0,
+        "elapsedTimeSeconds": 19518.0
       },
       "geometry": {
         "type": "LineString",
@@ -20304,8 +20316,12 @@
         "raceTitle": "Broken Arrow Skyrace",
         "activityId": 14884393748,
         "sportType": "TrailRun",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2025-06-22-run-14884393748-broken-arrow-23k.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 23248.4,
+        "movingTimeSeconds": 10923.0,
+        "elapsedTimeSeconds": 11286.0
       },
       "geometry": {
         "type": "LineString",
@@ -21640,8 +21656,12 @@
         "raceTitle": "IRONMAN 70.3 St. George",
         "activityId": 14439034441,
         "sportType": "Swim",
+        "activityGroup": "Swim",
         "sourcePath": "/data/race-activities/2025-05-10-swim-14439034441-st-george-70-3-swim.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 1865.5,
+        "movingTimeSeconds": 2118.0,
+        "elapsedTimeSeconds": 2118.0
       },
       "geometry": {
         "type": "LineString",
@@ -21812,8 +21832,12 @@
         "raceTitle": "IRONMAN 70.3 St. George",
         "activityId": 14439034437,
         "sportType": "Workout",
+        "activityGroup": "Race",
         "sourcePath": "/data/race-activities/2025-05-10-workout-14439034437-im-70-3-st-george-t1.gpx",
-        "segmentIndex": 1
+        "segmentIndex": 1,
+        "distanceMeters": 405.7,
+        "movingTimeSeconds": 162.0,
+        "elapsedTimeSeconds": 237.0
       },
       "geometry": {
         "type": "LineString",
@@ -21932,8 +21956,12 @@
         "raceTitle": "IRONMAN 70.3 St. George",
         "activityId": 14439034476,
         "sportType": "Ride",
+        "activityGroup": "Ride",
         "sourcePath": "/data/race-activities/2025-05-10-ride-14439034476-st-george-70-3-bike.gpx",
-        "segmentIndex": 2
+        "segmentIndex": 2,
+        "distanceMeters": 90265.0,
+        "movingTimeSeconds": 9273.0,
+        "elapsedTimeSeconds": 9273.0
       },
       "geometry": {
         "type": "LineString",
@@ -23268,8 +23296,12 @@
         "raceTitle": "IRONMAN 70.3 St. George",
         "activityId": 14439034430,
         "sportType": "Workout",
+        "activityGroup": "Race",
         "sourcePath": "/data/race-activities/2025-05-10-workout-14439034430-im-70-3-st-george-t2.gpx",
-        "segmentIndex": 3
+        "segmentIndex": 3,
+        "distanceMeters": 192.1,
+        "movingTimeSeconds": 81.0,
+        "elapsedTimeSeconds": 150.0
       },
       "geometry": {
         "type": "LineString",
@@ -23352,8 +23384,12 @@
         "raceTitle": "IRONMAN 70.3 St. George",
         "activityId": 14439034498,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2025-05-10-run-14439034498-st-george-70-3-run.gpx",
-        "segmentIndex": 4
+        "segmentIndex": 4,
+        "distanceMeters": 21027.9,
+        "movingTimeSeconds": 5912.0,
+        "elapsedTimeSeconds": 5935.0
       },
       "geometry": {
         "type": "LineString",
@@ -24808,8 +24844,12 @@
         "raceTitle": "IRONMAN 70.3 World Championship",
         "activityId": 13123181635,
         "sportType": "Swim",
+        "activityGroup": "Swim",
         "sourcePath": "/data/race-activities/2024-12-15-swim-13123181635-im-70-3-wc-taupo-swim.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 1869.4,
+        "movingTimeSeconds": 1912.0,
+        "elapsedTimeSeconds": 1912.0
       },
       "geometry": {
         "type": "LineString",
@@ -25048,8 +25088,12 @@
         "raceTitle": "IRONMAN 70.3 World Championship",
         "activityId": 13123181653,
         "sportType": "Ride",
+        "activityGroup": "Ride",
         "sourcePath": "/data/race-activities/2024-12-15-ride-13123181653-im-70-3-wc-taupo-bike.gpx",
-        "segmentIndex": 1
+        "segmentIndex": 1,
+        "distanceMeters": 89943.1,
+        "movingTimeSeconds": 9197.0,
+        "elapsedTimeSeconds": 9225.0
       },
       "geometry": {
         "type": "LineString",
@@ -26316,8 +26360,12 @@
         "raceTitle": "IRONMAN 70.3 World Championship",
         "activityId": 13123181735,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-12-15-run-13123181735-im-70-3-wc-taupo-run.gpx",
-        "segmentIndex": 2
+        "segmentIndex": 2,
+        "distanceMeters": 21097.7,
+        "movingTimeSeconds": 6272.0,
+        "elapsedTimeSeconds": 6279.0
       },
       "geometry": {
         "type": "LineString",
@@ -27700,8 +27748,12 @@
         "raceTitle": "Golden Gate Trail Classic",
         "activityId": 12967767052,
         "sportType": "TrailRun",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-11-23-run-12967767052-golden-gate-trail-classic-50k.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 52264.4,
+        "movingTimeSeconds": 19189.0,
+        "elapsedTimeSeconds": 19263.0
       },
       "geometry": {
         "type": "LineString",
@@ -29080,8 +29132,12 @@
         "raceTitle": "IRONMAN 70.3 Santa Cruz",
         "activityId": 12362277662,
         "sportType": "Swim",
+        "activityGroup": "Swim",
         "sourcePath": "/data/race-activities/2024-09-08-swim-12362277662-im-70-3-santa-cruz-swim.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 1818.7,
+        "movingTimeSeconds": 2043.0,
+        "elapsedTimeSeconds": 2043.0
       },
       "geometry": {
         "type": "LineString",
@@ -29296,8 +29352,12 @@
         "raceTitle": "IRONMAN 70.3 Santa Cruz",
         "activityId": 12362277606,
         "sportType": "Workout",
+        "activityGroup": "Race",
         "sourcePath": "/data/race-activities/2024-09-08-workout-12362277606-santa-cruz-70-3-t1.gpx",
-        "segmentIndex": 1
+        "segmentIndex": 1,
+        "distanceMeters": 942.8,
+        "movingTimeSeconds": 339.0,
+        "elapsedTimeSeconds": 372.0
       },
       "geometry": {
         "type": "LineString",
@@ -29496,8 +29556,12 @@
         "raceTitle": "IRONMAN 70.3 Santa Cruz",
         "activityId": 12362264554,
         "sportType": "Ride",
+        "activityGroup": "Ride",
         "sourcePath": "/data/race-activities/2024-09-08-ride-12362264554-im-70-3-santa-cruz-bike.gpx",
-        "segmentIndex": 2
+        "segmentIndex": 2,
+        "distanceMeters": 90275.5,
+        "movingTimeSeconds": 8778.0,
+        "elapsedTimeSeconds": 8778.0
       },
       "geometry": {
         "type": "LineString",
@@ -30704,8 +30768,12 @@
         "raceTitle": "IRONMAN 70.3 Santa Cruz",
         "activityId": 12362277639,
         "sportType": "Workout",
+        "activityGroup": "Race",
         "sourcePath": "/data/race-activities/2024-09-08-workout-12362277639-santa-cruz-70-3-t2.gpx",
-        "segmentIndex": 3
+        "segmentIndex": 3,
+        "distanceMeters": 193.5,
+        "movingTimeSeconds": 89.0,
+        "elapsedTimeSeconds": 107.0
       },
       "geometry": {
         "type": "LineString",
@@ -30776,8 +30844,12 @@
         "raceTitle": "IRONMAN 70.3 Santa Cruz",
         "activityId": 12362277778,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-09-08-run-12362277778-im-70-3-santa-cruz-run.gpx",
-        "segmentIndex": 4
+        "segmentIndex": 4,
+        "distanceMeters": 21596.9,
+        "movingTimeSeconds": 5796.0,
+        "elapsedTimeSeconds": 5796.0
       },
       "geometry": {
         "type": "LineString",
@@ -32136,8 +32208,12 @@
         "raceTitle": "Hood to Coast",
         "activityId": 12224508183,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-08-23-run-12224508183-hood-to-coast-first-leg.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 7473.7,
+        "movingTimeSeconds": 1705.0,
+        "elapsedTimeSeconds": 1705.0
       },
       "geometry": {
         "type": "LineString",
@@ -33012,8 +33088,12 @@
         "raceTitle": "Hood to Coast",
         "activityId": 12226486820,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-08-23-run-12226486820-hood-to-coast-second-leg-a-battle-with-monke.gpx",
-        "segmentIndex": 1
+        "segmentIndex": 1,
+        "distanceMeters": 11647.8,
+        "movingTimeSeconds": 2990.0,
+        "elapsedTimeSeconds": 3007.0
       },
       "geometry": {
         "type": "LineString",
@@ -33808,8 +33888,12 @@
         "raceTitle": "Hood to Coast",
         "activityId": 12230813715,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-08-24-run-12230813715-hood-to-coast-third-leg.gpx",
-        "segmentIndex": 2
+        "segmentIndex": 2,
+        "distanceMeters": 10074.6,
+        "movingTimeSeconds": 3380.0,
+        "elapsedTimeSeconds": 3380.0
       },
       "geometry": {
         "type": "LineString",
@@ -34696,8 +34780,12 @@
         "raceTitle": "Twilight 5000",
         "activityId": 11915847751,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-07-17-run-11915847751-twilight-5k.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 5174.0,
+        "movingTimeSeconds": 1103.0,
+        "elapsedTimeSeconds": 1103.0
       },
       "geometry": {
         "type": "LineString",
@@ -35788,8 +35876,12 @@
         "raceTitle": "Broken Arrow Skyrace",
         "activityId": 11707457039,
         "sportType": "TrailRun",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-06-21-run-11707457039-broken-arrow-18k.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 18490.0,
+        "movingTimeSeconds": 9565.0,
+        "elapsedTimeSeconds": 9566.0
       },
       "geometry": {
         "type": "LineString",
@@ -37124,8 +37216,12 @@
         "raceTitle": "Escape from Alcatraz Triathlon",
         "activityId": 11614861238,
         "sportType": "Swim",
+        "activityGroup": "Swim",
         "sourcePath": "/data/race-activities/2024-06-09-swim-11614861238-alcatraz-swim.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 2107.0,
+        "movingTimeSeconds": 1369.0,
+        "elapsedTimeSeconds": 1369.0
       },
       "geometry": {
         "type": "LineString",
@@ -37312,8 +37408,12 @@
         "raceTitle": "Escape from Alcatraz Triathlon",
         "activityId": 11614861199,
         "sportType": "Workout",
+        "activityGroup": "Race",
         "sourcePath": "/data/race-activities/2024-06-09-workout-11614861199-alcatraz-t1.gpx",
-        "segmentIndex": 1
+        "segmentIndex": 1,
+        "distanceMeters": 1156.8,
+        "movingTimeSeconds": 403.0,
+        "elapsedTimeSeconds": 445.0
       },
       "geometry": {
         "type": "LineString",
@@ -37484,8 +37584,12 @@
         "raceTitle": "Escape from Alcatraz Triathlon",
         "activityId": 11614861296,
         "sportType": "Ride",
+        "activityGroup": "Ride",
         "sourcePath": "/data/race-activities/2024-06-09-ride-11614861296-alcatraz-bike.gpx",
-        "segmentIndex": 2
+        "segmentIndex": 2,
+        "distanceMeters": 28562.4,
+        "movingTimeSeconds": 3569.0,
+        "elapsedTimeSeconds": 3587.0
       },
       "geometry": {
         "type": "LineString",
@@ -38844,8 +38948,12 @@
         "raceTitle": "Escape from Alcatraz Triathlon",
         "activityId": 11614861262,
         "sportType": "Workout",
+        "activityGroup": "Race",
         "sourcePath": "/data/race-activities/2024-06-09-workout-11614861262-alcatraz-t2.gpx",
-        "segmentIndex": 3
+        "segmentIndex": 3,
+        "distanceMeters": 184.6,
+        "movingTimeSeconds": 53.0,
+        "elapsedTimeSeconds": 122.0
       },
       "geometry": {
         "type": "LineString",
@@ -38936,8 +39044,12 @@
         "raceTitle": "Escape from Alcatraz Triathlon",
         "activityId": 11614861381,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-06-09-run-11614861381-alcatraz-run.gpx",
-        "segmentIndex": 4
+        "segmentIndex": 4,
+        "distanceMeters": 12470.7,
+        "movingTimeSeconds": 3456.0,
+        "elapsedTimeSeconds": 3456.0
       },
       "geometry": {
         "type": "LineString",
@@ -40624,8 +40736,12 @@
         "raceTitle": "IRONMAN 70.3 Morro Bay",
         "activityId": 11451209964,
         "sportType": "Swim",
+        "activityGroup": "Swim",
         "sourcePath": "/data/race-activities/2024-05-19-swim-11451209964-morro-bay-swim.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 1927.1,
+        "movingTimeSeconds": 2713.0,
+        "elapsedTimeSeconds": 2713.0
       },
       "geometry": {
         "type": "LineString",
@@ -40916,8 +41032,12 @@
         "raceTitle": "IRONMAN 70.3 Morro Bay",
         "activityId": 11451210000,
         "sportType": "Ride",
+        "activityGroup": "Ride",
         "sourcePath": "/data/race-activities/2024-05-19-ride-11451210000-morro-bay-bike.gpx",
-        "segmentIndex": 1
+        "segmentIndex": 1,
+        "distanceMeters": 90348.7,
+        "movingTimeSeconds": 9463.0,
+        "elapsedTimeSeconds": 9480.0
       },
       "geometry": {
         "type": "LineString",
@@ -42252,8 +42372,12 @@
         "raceTitle": "IRONMAN 70.3 Morro Bay",
         "activityId": 11451210039,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-05-19-run-11451210039-morro-bay-run.gpx",
-        "segmentIndex": 2
+        "segmentIndex": 2,
+        "distanceMeters": 21172.4,
+        "movingTimeSeconds": 5892.0,
+        "elapsedTimeSeconds": 5892.0
       },
       "geometry": {
         "type": "LineString",
@@ -43684,8 +43808,12 @@
         "raceTitle": "Napa Valley Marathon",
         "activityId": 10885303193,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2024-03-03-run-10885303193-napa-valley-marathon-2024.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 42501.7,
+        "movingTimeSeconds": 12424.0,
+        "elapsedTimeSeconds": 12428.0
       },
       "geometry": {
         "type": "LineString",
@@ -44984,8 +45112,12 @@
         "raceTitle": "Santa Cruz Triathlon",
         "activityId": 9913988164,
         "sportType": "Swim",
+        "activityGroup": "Swim",
         "sourcePath": "/data/race-activities/2023-09-24-swim-9913988164-santa-cruz-tri-swim.gpx",
-        "segmentIndex": 0
+        "segmentIndex": 0,
+        "distanceMeters": 1625.0,
+        "movingTimeSeconds": 1783.0,
+        "elapsedTimeSeconds": 1783.0
       },
       "geometry": {
         "type": "LineString",
@@ -45172,8 +45304,12 @@
         "raceTitle": "Santa Cruz Triathlon",
         "activityId": 9913988024,
         "sportType": "Ride",
+        "activityGroup": "Ride",
         "sourcePath": "/data/race-activities/2023-09-24-ride-9913988024-santa-cruz-tri-ride.gpx",
-        "segmentIndex": 1
+        "segmentIndex": 1,
+        "distanceMeters": 38348.4,
+        "movingTimeSeconds": 4226.0,
+        "elapsedTimeSeconds": 4226.0
       },
       "geometry": {
         "type": "LineString",
@@ -46364,8 +46500,12 @@
         "raceTitle": "Santa Cruz Triathlon",
         "activityId": 9913988113,
         "sportType": "Run",
+        "activityGroup": "Run",
         "sourcePath": "/data/race-activities/2023-09-24-run-9913988113-santa-cruz-tri-run.gpx",
-        "segmentIndex": 2
+        "segmentIndex": 2,
+        "distanceMeters": 10078.8,
+        "movingTimeSeconds": 2701.0,
+        "elapsedTimeSeconds": 2735.0
       },
       "geometry": {
         "type": "LineString",
