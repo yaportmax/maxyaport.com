@@ -870,20 +870,69 @@ main {
 }
 
 .about-hero {
-  padding-bottom: 30px;
+  padding: clamp(10px, 4vw, 34px) 0 34px;
 }
 
-.about-title {
+.ascii-title {
+  --ascii-main: color-mix(in srgb, var(--text) 78%, var(--accent) 22%);
+  --ascii-hot: color-mix(in srgb, var(--accent-strong) 72%, var(--text) 28%);
+  --ascii-mountain: color-mix(in srgb, var(--accent) 50%, transparent);
+  position: relative;
+  width: 100%;
+  min-height: clamp(280px, 38vw, 430px);
   margin: 0;
-  font-size: clamp(1.8rem, 4.8vw, 2.6rem);
-  font-weight: 610;
-  line-height: 1.05;
+  overflow: hidden;
+  cursor: crosshair;
+  user-select: none;
+  touch-action: pan-y;
+  isolation: isolate;
+}
+
+.ascii-title__mountains {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 0;
+  margin: 0;
+  color: var(--ascii-mountain);
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 1.5vw, 1rem);
+  font-weight: 560;
+  line-height: 0.9;
   letter-spacing: 0;
+  white-space: pre;
+  opacity: 0.46;
+  text-shadow: 0 0 20px color-mix(in srgb, var(--accent) 12%, transparent);
+  transform: translateX(-46%);
+}
+
+.ascii-title__art {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding-top: clamp(14px, 2.5vw, 28px);
+  color: var(--ascii-main);
+  font-family: var(--font-mono);
+  font-size: clamp(0.74rem, 1.6vw, 1.06rem);
+  font-weight: 720;
+  line-height: 0.94;
+  letter-spacing: 0;
+  white-space: pre;
+  text-shadow:
+    0 0 10px color-mix(in srgb, var(--accent) 16%, transparent);
+  transform: translateZ(0);
+  transition: color 180ms ease, text-shadow 180ms ease;
+}
+
+.ascii-title.is-hot .ascii-title__art {
+  color: var(--ascii-hot);
+  text-shadow:
+    0 0 9px color-mix(in srgb, var(--accent-strong) 28%, transparent);
 }
 
 .about-intro {
   max-width: 38rem;
-  margin: 16px 0 0;
+  margin: clamp(18px, 3vw, 28px) 0 0;
   color: var(--muted);
   font-size: clamp(0.98rem, 1.55vw, 1.06rem);
   line-height: 1.55;
@@ -895,6 +944,31 @@ main {
 
 .about-intro p + p {
   margin-top: 2px;
+}
+
+@media (max-width: 560px) {
+  .ascii-title {
+    min-height: 310px;
+  }
+
+  .ascii-title__mountains {
+    left: 50%;
+    bottom: 0;
+    font-size: 0.54rem;
+    opacity: 0.42;
+    transform: translateX(-42%);
+  }
+
+  .ascii-title__art {
+    font-size: clamp(0.48rem, 2.1vw, 0.68rem);
+    line-height: 0.95;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ascii-title__art {
+    transition: none;
+  }
 }
 
 .musings-list,

@@ -503,7 +503,11 @@ const travel = [
 
 <section class="about-page" aria-labelledby="about-title">
   <header class="about-hero">
-    <h1 id="about-title" class="about-title">Max Yaport</h1>
+    <h1 id="about-title" class="sr-only">Max Yaport</h1>
+    <div class="ascii-title" data-ascii-title aria-hidden="true">
+      <pre class="ascii-title__mountains" data-ascii-mountains></pre>
+      <pre class="ascii-title__art" data-ascii-output></pre>
+    </div>
     <div class="about-intro" aria-label="Intro">
       <p>Obsessed with running, biking, and the outdoors.</p>
       <p>Spending too much free time exploring AI.</p>
@@ -641,6 +645,117 @@ const travel = [
 </section>
 
 <script>
+  const asciiRoot = document.querySelector("[data-ascii-title]");
+  const asciiOutput = document.querySelector("[data-ascii-output]");
+  const asciiMountains = document.querySelector("[data-ascii-mountains]");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (asciiRoot && asciiOutput) {
+    const titleArt = [
+      " _____ ______   ________     ___    ___ ",
+      "|\\   _ \\  _   \\|\\   __  \\   |\\  \\  /  /|",
+      "\\ \\  \\\\\\__\\ \\  \\ \\  \\|\\  \\  \\ \\  \\/  / /",
+      " \\ \\  \\\\|__| \\  \\ \\   __  \\  \\ \\    / / ",
+      "  \\ \\  \\    \\ \\  \\ \\  \\ \\  \\  /     \\/  ",
+      "   \\ \\__\\    \\ \\__\\ \\__\\ \\__\\/  /\\   \\  ",
+      "    \\|__|     \\|__|\\|__|\\|__/__/ /\\ __\\ ",
+      "                            |__|/ \\|__|",
+      "",
+      "  ___    ___ ________  ________  ________  ________  _________   ",
+      " |\\  \\  /  /|\\   __  \\|\\   __  \\|\\   __  \\|\\   __  \\|\\___   ___\\ ",
+      " \\ \\  \\/  / | \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\  \\|___ \\  \\_| ",
+      "  \\ \\    / / \\ \\   __  \\ \\   ____\\ \\  \\\\\\  \\ \\   _  _\\   \\ \\  \\  ",
+      "   \\/  /  /   \\ \\  \\ \\  \\ \\  \\___|\\ \\  \\\\\\  \\ \\  \\\\  \\|   \\ \\  \\ ",
+      " __/  / /      \\ \\__\\ \\__\\ \\__\\    \\ \\_______\\ \\__\\\\ _\\    \\ \\__\\",
+      "|\\___/ /        \\|__|\\|__|\\|__|     \\|_______|\\|__|\\|__|    \\|__|",
+      "\\|___|/",
+    ].join("\n");
+    const mountainArt = [
+      "                                      .                  .",
+      "                       .                /\\                /\\",
+      "             /\\        /\\        .     /  \\      /\\      /  \\       .",
+      "        /\\  /  \\      /  \\            / /\\ \\    /  \\    / /\\ \\     /\\",
+      "   /\\  /  \\/ /\\ \\    / /\\ \\      /\\  / /  \\ \\__/ /\\ \\__/ /  \\ \\   /  \\",
+      "__/  \\/ /\\  /  \\ \\__/ /  \\ \\____/  \\/_/    \\____/  \\____/    \\ \\_/ /\\ \\____",
+      "    /  /  \\/    \\____/    \\____/ /\\          /\\        /\\      \\___/  \\____",
+      "___/__/  _/\\_  _/\\_  _/\\_  _/\\__/  \\_  _/\\__/  \\_  _/\\__/\\_  _/\\_  _/\\_____",
+      "      _.-'  '--'  '--'  '--'  '-.    '--'  '--'  '--'  '--'  '-.",
+      "  _.-'    /\\    /\\      /\\        '-.      /\\    /\\      /\\        '-._",
+      "-'___/\\___/\\____/\\___/\\___/\\_______'-.___/\\____/\\____/\\____/\\_______'-._",
+    ].join("\n");
+    const pointer = { col: -999, row: -999, active: false, heat: 0 };
+    let baseLines = [];
+    let cols = 0;
+    let rows = 0;
+    let clickPulse = 0;
+
+    const setBaseArt = () => {
+      baseLines = titleArt.split("\n");
+      cols = Math.max(...baseLines.map((line) => line.length));
+      rows = baseLines.length;
+      asciiOutput.textContent = titleArt;
+      if (asciiMountains) asciiMountains.textContent = mountainArt;
+    };
+
+    const pointerFromEvent = (event) => {
+      const rect = asciiOutput.getBoundingClientRect();
+      pointer.col = ((event.clientX - rect.left) / Math.max(1, rect.width)) * cols;
+      pointer.row = ((event.clientY - rect.top) / Math.max(1, rect.height)) * rows;
+      pointer.active = true;
+      pointer.heat = 1;
+      render();
+    };
+
+    const render = () => {
+      if (!baseLines.length) setBaseArt();
+      const lines = baseLines.map((row, rowIndex) => {
+        let line = "";
+        [...row.padEnd(cols, " ")].forEach((character, colIndex) => {
+          if (character === " ") {
+            line += " ";
+            return;
+          }
+          const dx = colIndex - pointer.col;
+          const dy = (rowIndex - pointer.row) * 1.35;
+          const distance = Math.hypot(dx, dy);
+          if (clickPulse > 0 && distance < clickPulse) line += "*";
+          else if (pointer.active && pointer.heat > 0.04 && distance < 4.2) line += "*";
+          else if (pointer.active && pointer.heat > 0.04 && distance < 7.4) line += character === "_" ? "=" : character;
+          else line += character;
+        });
+        return line.replace(/\s+$/g, "");
+      });
+
+      asciiOutput.textContent = lines.join("\n");
+      asciiRoot.classList.toggle("is-hot", pointer.active && pointer.heat > 0.05);
+    };
+
+    setBaseArt();
+    window.addEventListener("resize", () => {
+      setBaseArt();
+    });
+    asciiRoot.addEventListener("pointermove", (event) => {
+      if (!prefersReducedMotion.matches) pointerFromEvent(event);
+    });
+    asciiRoot.addEventListener("pointerleave", () => {
+      pointer.active = false;
+      pointer.heat = 0;
+      clickPulse = 0;
+      asciiOutput.textContent = baseLines.join("\n");
+      asciiRoot.classList.remove("is-hot");
+    });
+    asciiRoot.addEventListener("pointerdown", (event) => {
+      if (prefersReducedMotion.matches) return;
+      pointerFromEvent(event);
+      clickPulse = 9;
+      render();
+      window.setTimeout(() => {
+        clickPulse = 0;
+        render();
+      }, 180);
+    });
+  }
+
   const tabs = document.querySelectorAll("[data-about-tab]");
   const panels = document.querySelectorAll("[data-about-panel]");
 
