@@ -963,6 +963,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     const raw = String(properties.sportType || properties.type || properties.activityType || properties.activityGroup || "").trim();
     const normalized = humanizeActivityType(raw).toLowerCase();
     if (/trail\s*run/.test(normalized)) return "Trail run";
+    if (/tennis/.test(normalized)) return "Tennis";
     if (/hike/.test(normalized)) return "Hike";
     if (/walk/.test(normalized)) return "Walk";
     if (/kayak/.test(normalized)) return "Kayak";
@@ -1572,6 +1573,122 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     const distance = pathDistance(coordinates);
     coordinateDistanceCache.set(coordinates, distance);
     return distance;
+  };
+
+  const routeMetricsForCoordinates = (coordinates) => {
+    const sanitized = sanitizedCoordinates(coordinates);
+    if (!sanitized.length) {
+      return {
+        center: null,
+        distanceKm: 0,
+        directKm: 0,
+        widthKm: 0,
+        heightKm: 0,
+        diagonalKm: 0,
+        compactness: 0,
+      };
+    }
+
+    let minLon = sanitized[0][0];
+    let maxLon = sanitized[0][0];
+    let minLat = sanitized[0][1];
+    let maxLat = sanitized[0][1];
+    sanitized.forEach(([lon, lat]) => {
+      minLon = Math.min(minLon, lon);
+      maxLon = Math.max(maxLon, lon);
+      minLat = Math.min(minLat, lat);
+      maxLat = Math.max(maxLat, lat);
+    });
+
+    const center = [(minLon + maxLon) / 2, (minLat + maxLat) / 2];
+    const widthKm = haversineDistance([minLon, center[1]], [maxLon, center[1]]);
+    const heightKm = haversineDistance([center[0], minLat], [center[0], maxLat]);
+    const diagonalKm = Math.sqrt(widthKm ** 2 + heightKm ** 2);
+    const distanceKm = cachedPathDistance(sanitized);
+    const directKm = sanitized.length > 1 ? haversineDistance(sanitized[0], sanitized[sanitized.length - 1]) : 0;
+    return {
+      center,
+      distanceKm,
+      directKm,
+      widthKm,
+      heightKm,
+      diagonalKm,
+      compactness: distanceKm / Math.max(diagonalKm, 0.03),
+    };
+  };
+
+  const textForCinematicRouteState = (state) =>
+    [
+      state?.item?.title,
+      state?.item?.detail,
+      state?.item?.activityType,
+      state?.item?.sportType,
+      state?.item?.activityGroup,
+      state?.segment?.properties?.name,
+      state?.segment?.properties?.type,
+      state?.segment?.properties?.sportType,
+      state?.segment?.properties?.activityGroup,
+      state?.segment?.mode,
+      state?.segment?.vehicle,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+  const stableAngleForText = (text) => {
+    let hash = 0;
+    const value = String(text || "");
+    for (let index = 0; index < value.length; index += 1) {
+      hash = (hash * 31 + value.charCodeAt(index)) % 360;
+    }
+    return hash;
+  };
+
+  const cinematicRouteProfileForState = (state, coordinates) => {
+    const metrics = routeMetricsForCoordinates(coordinates);
+    if (!state?.item || state.inGap || playbackModeForState(state) === "plane" || metrics.distanceKm <= 0) {
+      return { kind: "route", metrics };
+    }
+
+    const text = textForCinematicRouteState(state);
+    const isCourtSport = /tennis|pickleball|basketball|spikeball/.test(text);
+    const isNamedTrack = /\btrack\b|track workout|400m|800m|mile repeat|maf test/.test(text);
+    const isWorkout = /workout|interval|repetition|other/.test(text);
+    const isCompactWorkout = isWorkout && metrics.diagonalKm < 0.22 && metrics.distanceKm > 0.35;
+    const isDenseLoop =
+      metrics.distanceKm > 1.2 &&
+      metrics.diagonalKm < 0.85 &&
+      metrics.compactness > 7 &&
+      metrics.directKm < Math.max(0.1, metrics.diagonalKm * 1.8);
+
+    if (isCourtSport || isCompactWorkout) return { kind: "court", metrics };
+    if ((isNamedTrack && metrics.diagonalKm < 1.0) || isDenseLoop) return { kind: "track", metrics };
+    if (metrics.distanceKm > 2 && metrics.diagonalKm < 1.35 && metrics.compactness > 5 && metrics.directKm < metrics.distanceKm * 0.22) {
+      return { kind: "loop", metrics };
+    }
+    return { kind: "route", metrics };
+  };
+
+  const isCompactCinematicProfile = (profile) => ["court", "track", "loop"].includes(profile?.kind);
+
+  const compactRouteCinematicZoom = (profile) => {
+    const compact = mapElement.clientWidth < 680;
+    const diagonalKm = Math.max(0.03, Number(profile?.metrics?.diagonalKm) || 0.03);
+    if (profile?.kind === "court") {
+      if (diagonalKm < 0.08) return compact ? 16.9 : 17.35;
+      if (diagonalKm < 0.18) return compact ? 16.55 : 17.05;
+      return compact ? 16.15 : 16.65;
+    }
+    if (profile?.kind === "track") {
+      if (diagonalKm < 0.35) return compact ? 15.8 : 16.45;
+      if (diagonalKm < 0.7) return compact ? 15.35 : 15.95;
+      return compact ? 14.85 : 15.45;
+    }
+    if (profile?.kind === "loop") {
+      if (diagonalKm < 0.7) return compact ? 14.95 : 15.55;
+      return compact ? 14.35 : 14.95;
+    }
+    return null;
   };
 
   const routeEndpointForItem = (item, endpoint = "end") => {
@@ -2840,6 +2957,15 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     const baseZoom = rawScrubZoomForState(state);
     const mode = state?.item ? playbackModeForState(state) : "";
     if (!state?.item || state.inGap || mode === "plane") return baseZoom;
+    const cinematicCoordinates =
+      sanitizedCoordinates(state.segment?.coordinates).length >= 2
+        ? sanitizedCoordinates(state.segment.coordinates)
+        : state.coordinates?.length
+          ? state.coordinates
+          : routeCoordinatesForItem(state.item);
+    const routeProfile = cinematicRouteProfileForState(state, cinematicCoordinates);
+    const compactZoom = compactRouteCinematicZoom(routeProfile);
+    if (compactZoom !== null) return compactZoom;
     const terrainProfile = cinematicTerrainProfileForState(state);
     if (terrainProfile === "canyon-race") return mapElement.clientWidth < 680 ? 14.0 : 14.55;
     if (terrainProfile === "trail-race") return mapElement.clientWidth < 680 ? 13.55 : 14.1;
@@ -3045,19 +3171,25 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
 
   const trackCinematicScrubCamera = (state, itemChanged) => {
     if (!state?.coordinate) return;
+    const segmentCoordinates = sanitizedCoordinates(state.segment?.coordinates);
     const coordinates =
-      sanitizedCoordinates(state.segment?.coordinates).length >= 2
-        ? sanitizedCoordinates(state.segment.coordinates)
+      segmentCoordinates.length >= 2
+        ? segmentCoordinates
         : state.coordinates?.length
           ? state.coordinates
           : routeCoordinatesForItem(state.item);
     const terrainProfile = cinematicTerrainProfileForState(state);
+    const routeProfile = cinematicRouteProfileForState(state, coordinates);
+    const compactRouteProfile = isCompactCinematicProfile(routeProfile);
     const compact = mapElement.clientWidth < 680;
     const playbackMode = playbackModeForState(state);
     const activityMode = cinematicActivityModeForState(state);
     const isActivity = activityMode === "run" || activityMode === "bike" || activityMode === "race" || activityMode === "swim" || activityMode === "paddle";
-    const terrainAware = Boolean(terrainProfile) || isActivity;
+    const terrainAware = Boolean(terrainProfile) || isActivity || compactRouteProfile;
     setTerrainExaggeration(
+      routeProfile.kind === "court" || routeProfile.kind === "track"
+        ? 1.08
+        :
       terrainProfile === "canyon-race"
         ? 2.35
         : terrainProfile === "trail-race" || isActivity
@@ -3079,12 +3211,30 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     const lookAhead = coordinateAtProgress(coordinates, Math.min(1, segmentProgress + lookAheadAmount));
     const lookBack = coordinateAtProgress(coordinates, Math.max(0, segmentProgress - lookBackAmount));
     const longPlaneRoute = playbackMode === "plane" && zoomDistanceForState(state) > 3000;
-    const shouldFollowRouteBearing = Boolean(lookAhead) && Boolean(lookBack) && !state.inGap && !longPlaneRoute;
-    const routeBearing = shouldFollowRouteBearing
-      ? smoothedCinematicBearing(bearingBetweenCoordinates(lookBack, lookAhead), itemChanged)
+    const shouldFollowRouteBearing = Boolean(lookAhead) && Boolean(lookBack) && !state.inGap && !longPlaneRoute && !compactRouteProfile;
+    const orbitSeed = stableAngleForText(`${state.item?.slug || ""} ${textForCinematicRouteState(state)}`);
+    const orbitSweep =
+      routeProfile.kind === "court"
+        ? 250
+        : routeProfile.kind === "track"
+          ? 180
+          : 120;
+    const targetBearing = compactRouteProfile
+      ? (orbitSeed + segmentProgress * orbitSweep) % 360
+      : shouldFollowRouteBearing
+        ? bearingBetweenCoordinates(lookBack, lookAhead)
+        : 0;
+    const routeBearing = compactRouteProfile || shouldFollowRouteBearing
+      ? smoothedCinematicBearing(targetBearing, itemChanged)
       : 0;
     const basePitch = state.inGap
       ? compact ? 20 : 32
+      : routeProfile.kind === "court"
+        ? compact ? 34 : 42
+      : routeProfile.kind === "track"
+        ? compact ? 40 : 48
+      : routeProfile.kind === "loop"
+        ? compact ? 42 : 52
       : terrainProfile === "canyon-race"
         ? compact ? 54 : 62
       : terrainProfile === "trail-race"
@@ -3099,8 +3249,21 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
       pitch: basePitch,
       zoom: cinematicZoomForState(state),
     });
+    const compactProfileCenter =
+      compactRouteProfile && routeProfile.metrics?.center
+        ? interpolateLngLat(
+            routeProfile.metrics.center,
+            state.coordinate,
+            routeProfile.kind === "court"
+              ? 0.08
+              : routeProfile.kind === "track"
+                ? 0.14
+                : 0.2,
+          )
+        : null;
     const center =
-      shouldFollowRouteBearing && lookAhead
+      compactProfileCenter ||
+      (shouldFollowRouteBearing && lookAhead
         ? interpolateLngLat(
             state.coordinate,
             lookAhead,
@@ -3110,9 +3273,11 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
                 ? (compact ? 0.3 : 0.36)
                 : playbackMode === "car" ? (compact ? 0.22 : 0.3) : compact ? 0.12 : 0.18,
           )
-        : state.coordinate;
+        : state.coordinate);
     const cameraDuration =
-      playbackMode === "plane"
+      compactRouteProfile
+        ? itemChanged ? 960 : 520
+        : playbackMode === "plane"
         ? (itemChanged ? 360 : 70)
         : activityMode === "bike"
         ? itemChanged ? 620 : 220
@@ -3126,7 +3291,11 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
       zoom: camera.zoom,
       bearing: camera.bearing,
       pitch: camera.pitch,
-      offset: shouldFollowRouteBearing
+      offset: compactRouteProfile
+        ? routeProfile.kind === "court"
+          ? compact ? [0, 34] : [0, 54]
+          : compact ? [0, 58] : [0, 88]
+        : shouldFollowRouteBearing
         ? isActivity
           ? activityMode === "bike"
             ? compact ? [0, 82] : [0, 132]
@@ -3238,7 +3407,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     if (/swim/.test(value)) return "swim";
     if (/kayak|canoe|row|paddle/.test(value)) return "paddle";
     if (value.includes("sail") || value.includes("boat") || value.includes("ferry") || value.includes("cruise")) return "boat";
-    if (/run|walk|hike|foot|snowshoe/.test(value)) return "run";
+    if (/run|walk|hike|foot|snowshoe|tennis|pickleball|basketball|spikeball/.test(value)) return "run";
     if (/ride|bike|cycling|ski|snowboard|skate|surf|wheelchair|handcycle/.test(value)) return "bike";
     return "";
   };
@@ -3305,13 +3474,14 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   };
 
   const playbackKilometersPerSecondForState = (state, mode) => {
+    if (state?.segment?.kind === "connector" || state?.segment?.kind === "transition") {
+      const baseSpeed = playbackKilometersPerSecondByMode[mode] || playbackKilometersPerSecondByMode.car;
+      return mode === "car" ? baseSpeed * 2.2 : baseSpeed;
+    }
     if (state?.segment?.kind === "strava" || state?.item?.type === "strava" || state?.segment?.kind === "race") {
       return segmentActualKilometersPerSecond(state, mode) || playbackKilometersPerSecondByMode[mode] || playbackKilometersPerSecondByMode.run;
     }
     const baseSpeed = playbackKilometersPerSecondByMode[mode] || playbackKilometersPerSecondByMode.car;
-    if ((state?.segment?.kind === "connector" || state?.segment?.kind === "transition") && mode === "car") {
-      return baseSpeed * 2.2;
-    }
     return baseSpeed;
   };
 
