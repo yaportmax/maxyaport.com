@@ -1136,6 +1136,30 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     };
   };
 
+  const nudgePopupIntoMapBounds = (targetPopup = popup) => {
+    const popupElement = targetPopup?.getElement?.();
+    if (!popupElement?.isConnected) return;
+
+    const mapRect = mapElement.getBoundingClientRect();
+    const popupRect = popupElement.getBoundingClientRect();
+    const margin = mapElement.clientWidth < 680 ? 10 : 14;
+    let x = 0;
+    let y = 0;
+
+    if (popupRect.left < mapRect.left + margin) x += mapRect.left + margin - popupRect.left;
+    if (popupRect.right > mapRect.right - margin) x -= popupRect.right - (mapRect.right - margin);
+    if (popupRect.top < mapRect.top + margin) y += mapRect.top + margin - popupRect.top;
+    if (popupRect.bottom > mapRect.bottom - margin) y -= popupRect.bottom - (mapRect.bottom - margin);
+
+    if (Math.abs(x) > 0.5 || Math.abs(y) > 0.5) targetPopup.setOffset([x, y]);
+  };
+
+  const requestPopupBoundsCheck = (targetPopup = popup) => {
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => nudgePopupIntoMapBounds(targetPopup));
+    });
+  };
+
   const clearScheduledPopup = () => {
     popupSequence += 1;
     if (popupTimer) window.clearTimeout(popupTimer);
@@ -3903,6 +3927,22 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     popup.remove();
     popup = createPopup(placement.anchor);
     popup.setLngLat(coordinate).setHTML(stackedPopupHtml(activePopupChoices, activePopupChoiceIndex)).addTo(map);
+    requestPopupBoundsCheck(popup);
+  };
+
+  const scheduleStackedPopupReflow = (coordinate = activePopupCoordinate) => {
+    const sequence = popupSequence;
+    const choiceIndex = activePopupChoiceIndex;
+    const refresh = () => {
+      if (sequence !== popupSequence || choiceIndex !== activePopupChoiceIndex || !popup?.isOpen?.()) return;
+      const nextCoordinate = activePopupCoordinate || coordinate;
+      if (!nextCoordinate) return;
+      renderStackedPopup(nextCoordinate, routePopupPlacement(nextCoordinate));
+    };
+
+    map.once("moveend", refresh);
+    window.setTimeout(refresh, 220);
+    window.setTimeout(refresh, 860);
   };
 
   const activatePopupChoice = (index, { render = true } = {}) => {
@@ -3956,6 +3996,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
       const { coordinate, placement } = focusPopupChoiceRoute(choice);
       if (coordinate) activePopupCoordinate = coordinate;
       renderStackedPopup(coordinate || activePopupCoordinate, placement);
+      scheduleStackedPopupReflow(coordinate || activePopupCoordinate);
     }
   };
 
@@ -3970,6 +4011,8 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     activePopupCoordinate = focusedCoordinate || coordinate;
     popup = createPopup(placement.anchor);
     popup.setLngLat(activePopupCoordinate).setHTML(stackedPopupHtml(choices, activePopupChoiceIndex)).addTo(map);
+    requestPopupBoundsCheck(popup);
+    scheduleStackedPopupReflow(activePopupCoordinate);
   };
 
   const showStravaPopup = (properties, lngLat) => {
