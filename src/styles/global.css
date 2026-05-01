@@ -154,6 +154,10 @@ main {
   padding: 70px 0 92px;
 }
 
+main:has(.about-page) {
+  padding-top: clamp(12px, 2.4vw, 26px);
+}
+
 .hero {
   padding: 8px 0 28px;
 }
