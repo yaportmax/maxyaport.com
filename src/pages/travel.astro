@@ -94,9 +94,27 @@ const stravaTimelineItems = (stravaRouteData.features || [])
   })
   .filter(Boolean);
 const tripPhotosPath = path.resolve("public/data/trip-photos/manifest.json");
-const tripPhotoManifest = fs.existsSync(tripPhotosPath)
+const rawTripPhotoManifest = fs.existsSync(tripPhotosPath)
   ? JSON.parse(fs.readFileSync(tripPhotosPath, "utf8"))
   : { trips: {} };
+const publicPhotoExists = (src: unknown) => {
+  const value = String(src || "");
+  return value.startsWith("/") && fs.existsSync(path.resolve("public", value.slice(1)));
+};
+const cleanPhotoGroups = (groups: unknown) =>
+  Object.fromEntries(
+    Object.entries((groups || {}) as Record<string, unknown>)
+      .map(([key, photos]) => [
+        key,
+        Array.isArray(photos) ? photos.filter((photo: any) => publicPhotoExists(photo?.src)) : [],
+      ])
+      .filter(([, photos]) => photos.length),
+  );
+const tripPhotoManifest = {
+  ...rawTripPhotoManifest,
+  trips: cleanPhotoGroups(rawTripPhotoManifest.trips),
+  strava: cleanPhotoGroups(rawTripPhotoManifest.strava || rawTripPhotoManifest.activities),
+};
 const itemTimelineTime = (item: any) => Number.isFinite(item.timelineTime) ? item.timelineTime : sortDate(item.date);
 const mapItems = [...mapData.trips, ...mapData.races, ...stravaTimelineItems].sort((a, b) => itemTimelineTime(a) - itemTimelineTime(b));
 const timelineStart = mapItems.length ? itemTimelineTime(mapItems[0]) : Date.UTC(2020, 0, 1);
@@ -415,6 +433,9 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   let routeCoordinatesCache = new Map();
   let coordinateDistanceCache = new WeakMap();
   let timelineTransitionRouteCache = new Map();
+  let timelinePlaybackActive = false;
+  let playbackRouteCacheClearPending = false;
+  let timelinePlaybackCacheItemIndex = -1;
   const emptyFeatureCollection = { type: "FeatureCollection", features: [] };
   const stravaHeatTileZoom = 4;
   const stravaHeatDetailMinZoom = 3.15;
@@ -435,10 +456,21 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   let playbackStravaActivityId = "";
   let playbackRaceSlug = "";
 
-  const clearPlaybackRouteCaches = () => {
+  const clearPlaybackRouteCaches = ({ deferDuringPlayback = false } = {}) => {
+    if (deferDuringPlayback && timelinePlaybackActive) {
+      playbackRouteCacheClearPending = true;
+      return;
+    }
     tripPlaybackSegmentsCache = new Map();
     routeCoordinatesCache = new Map();
     coordinateDistanceCache = new WeakMap();
+    playbackRouteCacheClearPending = false;
+  };
+
+  const consumeDeferredPlaybackRouteCaches = () => {
+    if (!playbackRouteCacheClearPending) return false;
+    clearPlaybackRouteCaches();
+    return true;
   };
 
   const clearRouteRuntimeCaches = () => {
@@ -679,8 +711,12 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   const sanitizedCoordinates = (coordinates) => {
     if (!Array.isArray(coordinates)) return [];
     return coordinates
-      .filter((coord) => Array.isArray(coord) && Number.isFinite(Number(coord[0])) && Number.isFinite(Number(coord[1])))
-      .map((coord) => [Number(coord[0]), Number(coord[1])]);
+      .filter((coord) => {
+        const lon = Number(coord?.[0]);
+        const lat = Number(coord?.[1]);
+        return Number.isFinite(lon) && Number.isFinite(lat) && lat >= -90 && lat <= 90;
+      })
+      .map((coord) => [normalizeLongitude(coord[0]), Number(coord[1])]);
   };
 
   const toRadians = (degrees) => (degrees * Math.PI) / 180;
@@ -903,6 +939,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   let scrubPlaybackPopupAnchor = "";
   let scrubPlaybackPopupPreferredAnchor = "";
   let activePlaybackNodeKey = "";
+  const brokenPlaybackPhotoSrcs = new Set();
   let activePlaybackPhotoKey = "";
 
   const escapeHtml = (value) =>
@@ -1727,7 +1764,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   const transitionRouteKey = (start, end) =>
     `${Number(start[0]).toFixed(4)},${Number(start[1]).toFixed(4)}>${Number(end[0]).toFixed(4)},${Number(end[1]).toFixed(4)}`;
 
-  const transitionModeForDistance = (distanceKm) => (distanceKm > 2400 ? "plane" : "car");
+  const transitionModeForDistance = (distanceKm) => (distanceKm > 1200 ? "plane" : "car");
 
   const transitionFallbackCoordinates = (start, end, mode) =>
     mode === "plane" ? greatCircleCoordinates(start, end, 96) : [start, end];
@@ -1765,21 +1802,21 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
               durationSeconds: route.durationSeconds,
             },
           });
-          clearPlaybackRouteCaches();
+          clearPlaybackRouteCaches({ deferDuringPlayback: true });
           return;
         }
         timelineTransitionRouteCache.set(key, {
           status: "fallback",
           segment: fallbackTransitionSegment(cached.segment, start, end),
         });
-        clearPlaybackRouteCaches();
+        clearPlaybackRouteCaches({ deferDuringPlayback: true });
       })
       .catch(() => {
         timelineTransitionRouteCache.set(key, {
           status: "fallback",
           segment: fallbackTransitionSegment(cached.segment, start, end),
         });
-        clearPlaybackRouteCaches();
+        clearPlaybackRouteCaches({ deferDuringPlayback: true });
       });
   };
 
@@ -2574,27 +2611,30 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
 
   const photoForPlaybackState = (state) => {
     if (!state?.item || state.inGap || !state.coordinate) return null;
-    const stravaId =
+    const activityPhotoId =
       state.segment?.kind === "strava"
         ? String(state.segment.properties?.id || "")
+        : state.segment?.kind === "race"
+          ? String(state.segment.properties?.activityId || "")
         : state.item.type === "strava"
           ? String(state.item.stravaActivityId || "")
           : "";
-    const photos = stravaId
-      ? stravaPhotosById.get(stravaId) || []
+    const photos = activityPhotoId
+      ? stravaPhotosById.get(activityPhotoId) || []
       : state.item.type === "trip" && (!state.segment?.kind || state.segment.kind === "trip")
         ? tripPhotosBySlug.get(state.item.slug) || []
         : [];
     if (!photos.length) return null;
     const routeProgress = Math.min(
       1,
-      Math.max(0, Number(stravaId ? state.segmentProgress : state.routeProgress) || 0),
+      Math.max(0, Number(activityPhotoId ? state.segmentProgress : state.routeProgress) || 0),
     );
     const windowSize = Math.max(0.014, Math.min(0.05, 0.32 / (photos.length + 1)));
     let best = null;
     let bestDelta = Number.POSITIVE_INFINITY;
 
     photos.forEach((photo, index) => {
+      if (!photo?.src || brokenPlaybackPhotoSrcs.has(photo.src)) return;
       const progress = Math.min(1, Math.max(0, Number(photo.progress) || 0));
       const delta = Math.abs(progress - routeProgress);
       if (delta < bestDelta) {
@@ -2603,7 +2643,16 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
       }
     });
 
-    if (!best || bestDelta > windowSize) return null;
+    const photoRouteDistance = activityPhotoId
+      ? cachedPathDistance(sanitizedCoordinates(state.segment?.coordinates))
+      : Number(state.pathDistance) || cachedPathDistance(state.coordinates || []);
+    const physicalPhotoWindowKm = activityPhotoId ? 1.8 : 22;
+    const physicalWindowSize =
+      photoRouteDistance > 0
+        ? Math.max(activityPhotoId ? 0.004 : 0.0012, Math.min(windowSize, physicalPhotoWindowKm / photoRouteDistance))
+        : windowSize;
+
+    if (!best || bestDelta > physicalWindowSize) return null;
     const coordinate =
       Number.isFinite(Number(best.lon)) && Number.isFinite(Number(best.lat))
         ? [Number(best.lon), Number(best.lat)]
@@ -2627,9 +2676,19 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     if (activePlaybackPhotoKey !== photo.key) {
       const date = String(photo.capturedAt || "").slice(0, 10);
       playbackPhotoElement.innerHTML = `
-        <img src="${escapeHtml(photo.src)}" alt="" loading="eager" />
+        <img src="${escapeHtml(photo.src)}" alt="" loading="eager" decoding="async" />
         ${date ? `<figcaption>${escapeHtml(date)}</figcaption>` : ""}
       `;
+      const image = playbackPhotoElement.querySelector("img");
+      image?.addEventListener("error", () => {
+        brokenPlaybackPhotoSrcs.add(photo.src);
+        if (activePlaybackPhotoKey === photo.key) {
+          activePlaybackPhotoKey = "";
+          playbackPhotoMarker.remove();
+          playbackPhotoPinMarker.remove();
+        }
+      }, { once: true });
+      image?.addEventListener("load", () => updatePlaybackPhotoCallout(state), { once: true });
       activePlaybackPhotoKey = photo.key;
     }
 
@@ -3397,6 +3456,10 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     scrubberValue = clampedValue;
     const state = scrubberStateFromValue(clampedValue);
     if (!state?.item) return;
+    if (timelinePlaybackActive && activeTripRouteSegment) {
+      activeTripRouteSegment = null;
+      updateLayerVisibility();
+    }
     const itemChanged = applyScrubFocus(state.item, { centerDot });
     prefetchUpcomingTimelineTransition(state);
     updateRouteProgressMarker(state);
@@ -3411,7 +3474,6 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
 
   let timelinePlaybackFrame = 0;
   let timelinePlaybackLastTime = 0;
-  let timelinePlaybackActive = false;
   let cinematicPlaybackCameraEnabled = false;
   let includeStravaInPlayback = true;
   let timelinePlaybackStartSlug = "";
@@ -3432,6 +3494,12 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     helicopter: 7.2,
     plane: 1215,
   };
+  const playbackTransferSpeedMultiplierByMode = {
+    car: 3.1,
+    boat: 2.4,
+    helicopter: 1.25,
+    plane: 1,
+  };
   const activityPaceScaleLimitsByMode = {
     race: [0.3, 2.4],
     swim: [0.12, 1.05],
@@ -3440,6 +3508,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     paddle: [0.12, 1.5],
   };
   const playbackGapUnitsPerSecond = 5;
+  const playbackBoundaryEpsilon = 0.00001;
 
   const formatPlaybackSpeed = (speed) => `${Number.isInteger(speed) ? speed.toFixed(0) : speed}x`;
 
@@ -3504,6 +3573,25 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     return normalizePlaybackMode(`${segment.vehicle || ""} ${segment.properties?.vehicle || ""} ${segment.mode || ""}`) || dominantTripPlaybackMode(state?.item);
   };
 
+  const isActivityPlaybackSegment = (segment) => segment?.kind === "strava" || segment?.kind === "race";
+
+  const isTransferPlaybackState = (state) => {
+    const segment = state?.segment;
+    if (!segment) return false;
+    if (segment.kind === "connector" || segment.kind === "transition" || state.inGap) return true;
+    if (segment.kind !== "trip" || !Array.isArray(state.playbackSegments)) return false;
+    const index = Number(state.segmentIndex);
+    if (!Number.isFinite(index)) return false;
+    const previous = state.playbackSegments[index - 1];
+    const next = state.playbackSegments[index + 1];
+    return (
+      isActivityPlaybackSegment(previous) ||
+      isActivityPlaybackSegment(next) ||
+      previous?.kind === "connector" ||
+      next?.kind === "connector"
+    );
+  };
+
   const segmentActualKilometersPerSecond = (state, mode) => {
     const properties = state?.segment?.properties || {};
     const distanceMeters =
@@ -3532,15 +3620,22 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   };
 
   const playbackKilometersPerSecondForState = (state, mode) => {
-    if (state?.segment?.kind === "connector" || state?.segment?.kind === "transition") {
+    if (isTransferPlaybackState(state)) {
       const baseSpeed = playbackKilometersPerSecondByMode[mode] || playbackKilometersPerSecondByMode.car;
-      return mode === "car" ? baseSpeed * 2.2 : baseSpeed;
+      return baseSpeed * (playbackTransferSpeedMultiplierByMode[mode] || 1);
     }
     if (state?.segment?.kind === "strava" || state?.item?.type === "strava" || state?.segment?.kind === "race") {
       return segmentActualKilometersPerSecond(state, mode) || playbackKilometersPerSecondByMode[mode] || playbackKilometersPerSecondByMode.run;
     }
     const baseSpeed = playbackKilometersPerSecondByMode[mode] || playbackKilometersPerSecondByMode.car;
     return baseSpeed;
+  };
+
+  const photoPlaybackSpeedMultiplier = (state, mode) => {
+    if (!photoForPlaybackState(state)) return 1;
+    if (isTransferPlaybackState(state)) return 0.82;
+    if (mode === "plane" || mode === "car" || mode === "boat" || mode === "helicopter") return 0.68;
+    return 0.4;
   };
 
   const playbackRouteUnitsForState = (state) =>
@@ -3568,7 +3663,8 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
 
   const clampPlaybackDeltaToModeBoundary = (state, delta) => {
     const attemptedDelta = Math.max(0, Number(delta) || 0);
-    if (!state?.item || attemptedDelta <= 0) return attemptedDelta;
+    const unclamped = { delta: attemptedDelta, boundaryHit: false };
+    if (!state?.item || attemptedDelta <= 0) return unclamped;
 
     if (state.inGap && state.nextItem) {
       const nextSegments = playbackSegmentsForItem(state.nextItem);
@@ -3592,34 +3688,40 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
         const boundaryValue = (state.itemIndex + 1) * scrubberUnitsPerItem;
         const remainingToBoundary = boundaryValue - scrubberValueForState(state);
         if (remainingToBoundary >= 0 && attemptedDelta > remainingToBoundary) {
-          return Math.max(0, remainingToBoundary) + 0.0001;
+          return {
+            delta: Math.min(attemptedDelta, Math.max(0, remainingToBoundary) + playbackBoundaryEpsilon),
+            boundaryHit: true,
+          };
         }
       }
-      return attemptedDelta;
+      return unclamped;
     }
 
     const segmentIndex = Number(state.segmentIndex);
     const segments = Array.isArray(state.playbackSegments) ? state.playbackSegments : [];
-    if (!Number.isFinite(segmentIndex) || segmentIndex < 0 || segmentIndex >= segments.length - 1) return attemptedDelta;
+    if (!Number.isFinite(segmentIndex) || segmentIndex < 0 || segmentIndex >= segments.length - 1) return unclamped;
 
     const nextState = stateForNeighborSegment(state, segmentIndex + 1, 0);
-    if (!nextState) return attemptedDelta;
+    if (!nextState) return unclamped;
 
     const currentMode = playbackModeForState(state);
     const nextMode = playbackModeForState(nextState);
     const currentKind = state.segment?.kind || "";
     const nextKind = nextState.segment?.kind || "";
-    if (currentMode === nextMode && currentKind === nextKind) return attemptedDelta;
+    if (currentMode === nextMode && currentKind === nextKind) return unclamped;
 
     const boundaryProgress = routeProgressAtSegmentEnd(segments, segmentIndex);
     const boundaryValue = state.itemIndex * scrubberUnitsPerItem + boundaryProgress * playbackRouteUnitsForState(state);
     const remainingToBoundary = boundaryValue - scrubberValueForState(state);
-    if (remainingToBoundary < 0 || attemptedDelta <= remainingToBoundary) return attemptedDelta;
+    if (remainingToBoundary < 0 || attemptedDelta <= remainingToBoundary) return unclamped;
 
-    return Math.max(0, remainingToBoundary) + 0.0001;
+    return {
+      delta: Math.min(attemptedDelta, Math.max(0, remainingToBoundary) + playbackBoundaryEpsilon),
+      boundaryHit: true,
+    };
   };
 
-  const playbackValueDeltaForState = (state, elapsedSeconds) => {
+  const playbackRawValueDeltaForState = (state, elapsedSeconds) => {
     const elapsed = Math.max(0, Number(elapsedSeconds) || 0);
     if (!state?.item) return elapsed * playbackGapUnitsPerSecond;
     const mode = playbackModeForState(state);
@@ -3628,9 +3730,37 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     const routeDistance = Math.max(0.08, Number(state.pathDistance) || cachedPathDistance(state.coordinates || []));
     const routeUnits = playbackRouteUnitsForState(state);
     const kilometersPerSecond = playbackKilometersPerSecondForState(state, mode);
-    const photoMultiplier = photoForPlaybackState(state) ? 0.34 : 1;
-    const delta = (elapsed * kilometersPerSecond * speed * photoMultiplier * routeUnits) / routeDistance;
-    return clampPlaybackDeltaToModeBoundary(state, delta);
+    const photoMultiplier = photoPlaybackSpeedMultiplier(state, mode);
+    return (elapsed * kilometersPerSecond * speed * photoMultiplier * routeUnits) / routeDistance;
+  };
+
+  const playbackValueDeltaForState = (state, elapsedSeconds) => {
+    const elapsed = Math.max(0, Number(elapsedSeconds) || 0);
+    if (!state?.item || elapsed <= 0) return playbackRawValueDeltaForState(state, elapsed);
+
+    let simulatedState = state;
+    let simulatedValue = scrubberValueForState(state);
+    let remainingElapsed = elapsed;
+    let totalDelta = 0;
+
+    for (let guard = 0; guard < 6 && remainingElapsed > 0.0005; guard += 1) {
+      const rawDelta = playbackRawValueDeltaForState(simulatedState, remainingElapsed);
+      if (!Number.isFinite(rawDelta) || rawDelta <= 0) break;
+
+      const clampResult = clampPlaybackDeltaToModeBoundary(simulatedState, rawDelta);
+      const stepDelta = Math.max(0, Math.min(rawDelta, Number(clampResult.delta) || 0));
+      totalDelta += stepDelta;
+
+      if (!clampResult.boundaryHit || stepDelta >= rawDelta - 0.0000001) break;
+
+      const consumedRatio = Math.min(1, Math.max(0, stepDelta / rawDelta));
+      remainingElapsed *= 1 - consumedRatio;
+      simulatedValue = clampScrubberValue(simulatedValue + stepDelta);
+      simulatedState = scrubberStateFromValue(simulatedValue);
+      if (!simulatedState?.item) break;
+    }
+
+    return totalDelta;
   };
 
   const renderTimelinePlaybackButton = () => {
@@ -3667,9 +3797,10 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   const stopTimelinePlayback = () => {
     timelinePlaybackActive = false;
     timelinePlaybackLastTime = 0;
+    timelinePlaybackCacheItemIndex = -1;
     timelinePlaybackStartSlug = "";
     playbackStandaloneRaceSlugs = new Set();
-    tripPlaybackSegmentsCache.clear();
+    clearPlaybackRouteCaches();
     if (timelinePlaybackFrame) window.cancelAnimationFrame(timelinePlaybackFrame);
     timelinePlaybackFrame = 0;
     renderTimelinePlaybackButton();
@@ -3690,6 +3821,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
       if (!shouldSkipStrava && !shouldSkipEmbeddedRace) break;
       const nextValue = (state.itemIndex + 1) * scrubberUnitsPerItem;
       scrubberValue = Math.min(scrubberMaxValue, nextValue);
+      timelinePlaybackCacheItemIndex = -1;
       skipped = true;
       if (nextValue >= scrubberMaxValue) {
         stopTimelinePlayback();
@@ -3717,7 +3849,19 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     if (!timelinePlaybackLastTime) timelinePlaybackLastTime = timestamp;
     const elapsedSeconds = Math.min(0.08, Math.max(0, (timestamp - timelinePlaybackLastTime) / 1000));
     timelinePlaybackLastTime = timestamp;
-    const state = scrubberStateFromValue(scrubberValue);
+    let state = scrubberStateFromValue(scrubberValue);
+    const stateItemIndex = Number(state?.itemIndex);
+    if (
+      playbackRouteCacheClearPending &&
+      Number.isFinite(stateItemIndex) &&
+      stateItemIndex !== timelinePlaybackCacheItemIndex
+    ) {
+      consumeDeferredPlaybackRouteCaches();
+      state = scrubberStateFromValue(scrubberValue);
+    }
+    if (Number.isFinite(Number(state?.itemIndex))) {
+      timelinePlaybackCacheItemIndex = Number(state.itemIndex);
+    }
     if (state?.item?.type === "race") playbackStandaloneRaceSlugs.add(state.item.slug);
     const nextValue = clampScrubberValue(scrubberValue + playbackValueDeltaForState(state, elapsedSeconds));
     setScrubberProgress(nextValue, {
@@ -3742,7 +3886,12 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     timelinePlaybackStartSlug = startState?.item?.slug || "";
     playbackStandaloneRaceSlugs = new Set();
     if (startState?.item?.type === "race") playbackStandaloneRaceSlugs.add(startState.item.slug);
-    tripPlaybackSegmentsCache.clear();
+    clearPlaybackRouteCaches();
+    activeTripRouteSegment = null;
+    playbackStravaActivityId = "";
+    playbackRaceSlug = "";
+    timelinePlaybackCacheItemIndex = Number.isFinite(Number(startState?.itemIndex)) ? Number(startState.itemIndex) : -1;
+    updateLayerVisibility();
     timelinePlaybackActive = true;
     timelinePlaybackLastTime = 0;
     renderTimelinePlaybackButton();

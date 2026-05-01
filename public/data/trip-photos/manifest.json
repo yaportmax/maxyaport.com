@@ -37,28 +37,6 @@
         "distanceKm": 0.34,
         "width": 4284,
         "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/apr-2026-truckee-and-auburn/04-5313DB4D-IMG_0732.HEIC.jpg",
-        "lat": 37.92908,
-        "lon": -122.577872,
-        "progress": 0.9602,
-        "capturedAt": "2026-04-05 16:21:20",
-        "score": 4.499,
-        "distanceKm": 21.92,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/apr-2026-truckee-and-auburn/05-805A2AF5-IMG_0757.HEIC.jpg",
-        "lat": 37.906958,
-        "lon": -122.596345,
-        "progress": 0.9997,
-        "capturedAt": "2026-04-05 18:24:48",
-        "score": 4.514,
-        "distanceKm": 21.37,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "mar-2026-sedona": [
@@ -120,50 +98,6 @@
     ],
     "mar-2026-lake-almanor": [
       {
-        "src": "/data/trip-photos/mar-2026-lake-almanor/01-06E05CF6-IMG_0268.HEIC.jpg",
-        "lat": 37.898842,
-        "lon": -122.637528,
-        "progress": 0.0,
-        "capturedAt": "2026-03-21 16:50:26",
-        "score": 5.079,
-        "distanceKm": 23.59,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/mar-2026-lake-almanor/02-240B325D-IMG_9678.HEIC.jpg",
-        "lat": 37.854155,
-        "lon": -122.501463,
-        "progress": 0.0,
-        "capturedAt": "2026-03-04 16:05:58",
-        "score": 4.752,
-        "distanceKm": 11.38,
-        "width": 5712,
-        "height": 4284
-      },
-      {
-        "src": "/data/trip-photos/mar-2026-lake-almanor/03-B4C2BFF5-IMG_0375.HEIC.jpg",
-        "lat": 38.051267,
-        "lon": -122.624992,
-        "progress": 0.0382,
-        "capturedAt": "2026-03-22 16:01:46",
-        "score": 4.82,
-        "distanceKm": 27.77,
-        "width": 5712,
-        "height": 4284
-      },
-      {
-        "src": "/data/trip-photos/mar-2026-lake-almanor/04-1ACD3973-IMG_0309.HEIC.jpg",
-        "lat": 38.022953,
-        "lon": -122.582353,
-        "progress": 0.0382,
-        "capturedAt": "2026-03-22 14:17:49",
-        "score": 4.735,
-        "distanceKm": 23.19,
-        "width": 4284,
-        "height": 5712
-      },
-      {
         "src": "/data/trip-photos/mar-2026-lake-almanor/05-23242C64-IMG_9911.HEIC.jpg",
         "lat": 40.222063,
         "lon": -121.137017,
@@ -177,50 +111,6 @@
     ],
     "feb-2026-tahoe": [
       {
-        "src": "/data/trip-photos/feb-2026-tahoe/01-B549AD81-IMG_9189.HEIC.jpg",
-        "lat": 37.832595,
-        "lon": -122.483667,
-        "progress": 0.0,
-        "capturedAt": "2026-02-15 19:31:34",
-        "score": 5.056,
-        "distanceKm": 8.54,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/feb-2026-tahoe/02-F7CB8FDD-IMG_9331.HEIC.jpg",
-        "lat": 37.859353,
-        "lon": -122.573678,
-        "progress": 0.0,
-        "capturedAt": "2026-02-21 01:49:41",
-        "score": 4.988,
-        "distanceKm": 16.48,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/feb-2026-tahoe/03-967061E4-IMG_9174.HEIC.jpg",
-        "lat": 37.889175,
-        "lon": -122.516512,
-        "progress": 0.0,
-        "capturedAt": "2026-02-14 19:15:37",
-        "score": 4.559,
-        "distanceKm": 15.3,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/feb-2026-tahoe/04-8A5B9839-IMG_9417.HEIC.jpg",
-        "lat": 37.929117,
-        "lon": -122.577788,
-        "progress": 0.0468,
-        "capturedAt": "2026-02-21 19:29:05",
-        "score": 4.587,
-        "distanceKm": 21.92,
-        "width": 3024,
-        "height": 4032
-      },
-      {
         "src": "/data/trip-photos/feb-2026-tahoe/05-50591F96-IMG_8992.HEIC.jpg",
         "lat": 39.331417,
         "lon": -120.149933,
@@ -230,63 +120,6 @@
         "distanceKm": 2.88,
         "width": 5712,
         "height": 4284
-      }
-    ],
-    "jan-2026-costa-mesa": [
-      {
-        "src": "/data/trip-photos/jan-2026-costa-mesa/01-D82E83FA-IMG_8493.HEIC.jpg",
-        "lat": 37.636033,
-        "lon": -122.475945,
-        "progress": 0.0,
-        "capturedAt": "2026-01-18 18:27:13",
-        "score": 4.951,
-        "distanceKm": 8.69,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jan-2026-costa-mesa/02-4E8345AD-IMG_8514.HEIC.jpg",
-        "lat": 37.619888,
-        "lon": -122.49865,
-        "progress": 0.0,
-        "capturedAt": "2026-01-18 19:08:24",
-        "score": 4.711,
-        "distanceKm": 10.54,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/jan-2026-costa-mesa/03-43EE0C09-IMG_8233.HEIC.jpg",
-        "lat": 37.918495,
-        "lon": -122.592238,
-        "progress": 0.0,
-        "capturedAt": "2026-01-03 17:15:38",
-        "score": 4.606,
-        "distanceKm": 37.99,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/jan-2026-costa-mesa/04-A5D65B05-IMG_8499.HEIC.jpg",
-        "lat": 37.633488,
-        "lon": -122.493942,
-        "progress": 0.0,
-        "capturedAt": "2026-01-18 18:51:53",
-        "score": 4.596,
-        "distanceKm": 10.21,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/jan-2026-costa-mesa/05-04311857-IMG_8257.HEIC.jpg",
-        "lat": 37.31767,
-        "lon": -121.990028,
-        "progress": 0.0397,
-        "capturedAt": "2026-01-03 21:48:37",
-        "score": 4.738,
-        "distanceKm": 1.15,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "dec-2025-maui": [
@@ -333,53 +166,9 @@
         "distanceKm": 0.88,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/dec-2025-maui/05-B067DBF7-IMG_5382.HEIC.jpg",
-        "lat": 20.755913,
-        "lon": -156.215163,
-        "progress": 0.5013,
-        "capturedAt": "2025-12-26 23:25:43",
-        "score": 6.09,
-        "distanceKm": 1.48,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "nov-2025-paso-robles-and-los-osos": [
-      {
-        "src": "/data/trip-photos/nov-2025-paso-robles-and-los-osos/01-4C358EFA-IMG_6569.HEIC.jpg",
-        "lat": 37.801083,
-        "lon": -122.479605,
-        "progress": 0.0,
-        "capturedAt": "2025-11-01 22:31:56",
-        "score": 5.4,
-        "distanceKm": 6.03,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/nov-2025-paso-robles-and-los-osos/02-EF81E9DB-IMG_6573.HEIC.jpg",
-        "lat": 37.827075,
-        "lon": -122.499153,
-        "progress": 0.0,
-        "capturedAt": "2025-11-01 22:31:59",
-        "score": 5.16,
-        "distanceKm": 9.09,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/nov-2025-paso-robles-and-los-osos/03-86696F25-IMG_1916.heic.jpeg.jpg",
-        "lat": 37.350838,
-        "lon": -122.041292,
-        "progress": 0.079,
-        "capturedAt": "2025-11-01 01:34:11",
-        "score": 5.006,
-        "distanceKm": 5.46,
-        "width": 2584,
-        "height": 4016
-      },
       {
         "src": "/data/trip-photos/nov-2025-paso-robles-and-los-osos/04-B5556E8F-IMG_7191.HEIC.jpg",
         "lat": 35.268355,
@@ -404,39 +193,6 @@
       }
     ],
     "nov-2025-broomfield": [
-      {
-        "src": "/data/trip-photos/nov-2025-broomfield/01-4C358EFA-IMG_6569.HEIC.jpg",
-        "lat": 37.801083,
-        "lon": -122.479605,
-        "progress": 0.0,
-        "capturedAt": "2025-11-01 22:31:56",
-        "score": 5.084,
-        "distanceKm": 21.86,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/nov-2025-broomfield/02-EF81E9DB-IMG_6573.HEIC.jpg",
-        "lat": 37.827075,
-        "lon": -122.499153,
-        "progress": 0.0,
-        "capturedAt": "2025-11-01 22:31:59",
-        "score": 4.837,
-        "distanceKm": 25.2,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/nov-2025-broomfield/03-D2221435-IMG_6869.HEIC.jpg",
-        "lat": 37.755488,
-        "lon": -122.44583,
-        "progress": 0.0,
-        "capturedAt": "2025-11-14 16:05:33",
-        "score": 4.708,
-        "distanceKm": 16.04,
-        "width": 3024,
-        "height": 4032
-      },
       {
         "src": "/data/trip-photos/nov-2025-broomfield/04-F0B25048-IMG_6649.HEIC.jpg",
         "lat": 39.914628,
@@ -539,53 +295,9 @@
         "distanceKm": 1.78,
         "width": 4284,
         "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/sep-2025-arnold/03-9690A6A9-IMG_4264.HEIC.jpg",
-        "lat": 38.254158,
-        "lon": -120.354163,
-        "progress": 0.4992,
-        "capturedAt": "2025-09-13 15:50:42",
-        "score": 4.784,
-        "distanceKm": 0.04,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/sep-2025-arnold/04-296981A1-IMG_4073.HEIC.jpg",
-        "lat": 37.771583,
-        "lon": -122.437942,
-        "progress": 0.9995,
-        "capturedAt": "2025-09-01 01:13:33",
-        "score": 4.835,
-        "distanceKm": 1.52,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/sep-2025-arnold/05-D81A3661-IMG_4375.HEIC.jpg",
-        "lat": 37.766962,
-        "lon": -122.45472,
-        "progress": 0.9995,
-        "capturedAt": "2025-09-18 02:18:10",
-        "score": 4.757,
-        "distanceKm": 3.06,
-        "width": 4284,
-        "height": 5712
       }
     ],
     "sep-2025-santa-cruz": [
-      {
-        "src": "/data/trip-photos/sep-2025-santa-cruz/01-AB565098-IMG_4088.HEIC.jpg",
-        "lat": 36.991478,
-        "lon": -122.169022,
-        "progress": 0.4894,
-        "capturedAt": "2025-09-01 20:16:12",
-        "score": 5.492,
-        "distanceKm": 12.19,
-        "width": 3024,
-        "height": 4032
-      },
       {
         "src": "/data/trip-photos/sep-2025-santa-cruz/02-4B260C76-IMG_4208.HEIC.jpg",
         "lat": 36.964492,
@@ -607,28 +319,6 @@
         "distanceKm": 0.24,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2025-santa-cruz/04-A935656C-IMG_4104.HEIC.jpg",
-        "lat": 37.420913,
-        "lon": -122.177187,
-        "progress": 0.7748,
-        "capturedAt": "2025-09-03 02:33:58",
-        "score": 4.897,
-        "distanceKm": 1.89,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2025-santa-cruz/05-296981A1-IMG_4073.HEIC.jpg",
-        "lat": 37.771583,
-        "lon": -122.437942,
-        "progress": 0.9991,
-        "capturedAt": "2025-09-01 01:13:33",
-        "score": 4.835,
-        "distanceKm": 1.51,
-        "width": 4284,
-        "height": 5712
       }
     ],
     "aug-2025-mammoth": [
@@ -675,17 +365,6 @@
         "distanceKm": 2.31,
         "width": 4284,
         "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/aug-2025-mammoth/05-F7867D49-IMG_3568.HEIC.jpg",
-        "lat": 37.707455,
-        "lon": -119.150719,
-        "progress": 0.4933,
-        "capturedAt": "2025-08-02 23:14:49",
-        "score": 4.965,
-        "distanceKm": 6.83,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "jul-2025-yosemite": [
@@ -804,28 +483,6 @@
     ],
     "jun-2025-tahoe": [
       {
-        "src": "/data/trip-photos/jun-2025-tahoe/01-759319DF-IMG_1307.HEIC.jpg",
-        "lat": 37.862033,
-        "lon": -122.492692,
-        "progress": 0.0,
-        "capturedAt": "2025-06-14 20:27:56",
-        "score": 5.161,
-        "distanceKm": 11.63,
-        "width": 2316,
-        "height": 3088
-      },
-      {
-        "src": "/data/trip-photos/jun-2025-tahoe/02-3C8BD976-IMG_1252.HEIC.jpg",
-        "lat": 37.792988,
-        "lon": -122.44648,
-        "progress": 0.0,
-        "capturedAt": "2025-06-13 02:52:29",
-        "score": 4.844,
-        "distanceKm": 3.11,
-        "width": 4284,
-        "height": 5712
-      },
-      {
         "src": "/data/trip-photos/jun-2025-tahoe/03-FEDF874E-IMG_1501.HEIC.jpg",
         "lat": 39.188295,
         "lon": -120.227028,
@@ -844,17 +501,6 @@
         "capturedAt": "2025-06-22 17:58:38",
         "score": 4.78,
         "distanceKm": 3.54,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/jun-2025-tahoe/05-DD519A30-IMG_1383.HEIC.jpg",
-        "lat": 37.775528,
-        "lon": -122.444305,
-        "progress": 0.9996,
-        "capturedAt": "2025-06-17 05:35:56",
-        "score": 4.739,
-        "distanceKm": 2.12,
         "width": 4284,
         "height": 5712
       }
@@ -916,75 +562,7 @@
         "height": 5712
       }
     ],
-    "may-2025-santa-rosa": [
-      {
-        "src": "/data/trip-photos/may-2025-santa-rosa/01-65E5F7ED-IMG_0340.HEIC.jpg",
-        "lat": 37.85732,
-        "lon": -122.571183,
-        "progress": 0.9098,
-        "capturedAt": "2025-05-23 02:48:25",
-        "score": 5.147,
-        "distanceKm": 5.44,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/may-2025-santa-rosa/02-B9200908-IMG_0366.HEIC.jpg",
-        "lat": 37.858953,
-        "lon": -122.559547,
-        "progress": 0.9098,
-        "capturedAt": "2025-05-23 02:57:23",
-        "score": 4.813,
-        "distanceKm": 4.46,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/may-2025-santa-rosa/03-7C3B7A45-IMG_2342.HEIC.jpg",
-        "lat": 37.76733,
-        "lon": -122.455283,
-        "progress": 0.9994,
-        "capturedAt": "2025-05-01 01:00:19",
-        "score": 4.949,
-        "distanceKm": 3.21,
-        "width": 2316,
-        "height": 3088
-      },
-      {
-        "src": "/data/trip-photos/may-2025-santa-rosa/04-6B2CA4CB-IMG_9038.HEIC.jpg",
-        "lat": 37.765995,
-        "lon": -122.4533,
-        "progress": 0.9994,
-        "capturedAt": "2025-05-01 00:58:41",
-        "score": 4.86,
-        "distanceKm": 3.08,
-        "width": 2316,
-        "height": 3088
-      },
-      {
-        "src": "/data/trip-photos/may-2025-santa-rosa/05-20DCA576-IMG_0249.HEIC.jpg",
-        "lat": 37.74913,
-        "lon": -122.444258,
-        "progress": 0.9994,
-        "capturedAt": "2025-05-21 02:18:13",
-        "score": 4.824,
-        "distanceKm": 3.5,
-        "width": 3024,
-        "height": 4032
-      }
-    ],
     "may-2025-utah-and-zion": [
-      {
-        "src": "/data/trip-photos/may-2025-utah-and-zion/01-49124C04-IMG_9395.HEIC.jpg",
-        "lat": 37.107989,
-        "lon": -113.58345,
-        "progress": 0.4854,
-        "capturedAt": "2025-05-09 18:09:41",
-        "score": 5.362,
-        "distanceKm": 1.33,
-        "width": 2316,
-        "height": 3088
-      },
       {
         "src": "/data/trip-photos/may-2025-utah-and-zion/02-855530E1-IMG_9557.HEIC.jpg",
         "lat": 37.270412,
@@ -1008,17 +586,6 @@
         "height": 3024
       },
       {
-        "src": "/data/trip-photos/may-2025-utah-and-zion/04-693CC6A7-IMG_0155.HEIC.jpg",
-        "lat": 36.129875,
-        "lon": -115.174417,
-        "progress": 0.6927,
-        "capturedAt": "2025-05-17 15:28:12",
-        "score": 5.314,
-        "distanceKm": 0.45,
-        "width": 3024,
-        "height": 4032
-      },
-      {
         "src": "/data/trip-photos/may-2025-utah-and-zion/05-15C09350-IMG_0136.HEIC.jpg",
         "lat": 36.274463,
         "lon": -115.006942,
@@ -1032,17 +599,6 @@
     ],
     "apr-2025-humboldt-and-the-redwoods": [
       {
-        "src": "/data/trip-photos/apr-2025-humboldt-and-the-redwoods/01-A7DC2B75-IMG_8707.HEIC.jpg",
-        "lat": 37.789608,
-        "lon": -122.443612,
-        "progress": 0.0051,
-        "capturedAt": "2025-04-18 22:27:51",
-        "score": 4.997,
-        "distanceKm": 1.03,
-        "width": 3024,
-        "height": 4032
-      },
-      {
         "src": "/data/trip-photos/apr-2025-humboldt-and-the-redwoods/02-DFE9EE6C-IMG_8557.HEIC.jpg",
         "lat": 41.403313,
         "lon": -124.062997,
@@ -1052,64 +608,9 @@
         "distanceKm": 5.5,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/apr-2025-humboldt-and-the-redwoods/03-9CCE8B7C-IMG_8406.HEIC.jpg",
-        "lat": 37.833605,
-        "lon": -122.49215,
-        "progress": 0.9889,
-        "capturedAt": "2025-04-10 15:22:54",
-        "score": 4.947,
-        "distanceKm": 0.68,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/apr-2025-humboldt-and-the-redwoods/04-F25BC03E-IMG_8421.HEIC.jpg",
-        "lat": 37.829147,
-        "lon": -122.486687,
-        "progress": 0.9898,
-        "capturedAt": "2025-04-10 15:24:20",
-        "score": 4.959,
-        "distanceKm": 0.58,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/apr-2025-humboldt-and-the-redwoods/05-BC9E6E81-IMG_8367.HEIC.jpg",
-        "lat": 37.768925,
-        "lon": -122.485108,
-        "progress": 0.9932,
-        "capturedAt": "2025-04-09 01:45:37",
-        "score": 5.159,
-        "distanceKm": 4.03,
-        "width": 4284,
-        "height": 5712
       }
     ],
     "mar-2025-bear-valley": [
-      {
-        "src": "/data/trip-photos/mar-2025-bear-valley/01-78CE6022-IMG_7611.HEIC.jpg",
-        "lat": 37.704238,
-        "lon": -122.459137,
-        "progress": 0.0012,
-        "capturedAt": "2025-03-20 16:04:22",
-        "score": 4.841,
-        "distanceKm": 8.03,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/mar-2025-bear-valley/02-77D0C103-IMG_7612.HEIC.jpg",
-        "lat": 37.701387,
-        "lon": -121.90055,
-        "progress": 0.1021,
-        "capturedAt": "2025-03-20 18:25:27",
-        "score": 4.965,
-        "distanceKm": 0.01,
-        "width": 3024,
-        "height": 4032
-      },
       {
         "src": "/data/trip-photos/mar-2025-bear-valley/03-1423901A-IMG_2967.heic.jpg",
         "lat": 38.499292,
@@ -1203,39 +704,6 @@
     ],
     "mar-2025-big-sur": [
       {
-        "src": "/data/trip-photos/mar-2025-big-sur/01-6D44619F-IMG_7596.HEIC.jpg",
-        "lat": 37.776305,
-        "lon": -122.441413,
-        "progress": 0.0,
-        "capturedAt": "2025-03-20 02:51:47",
-        "score": 4.549,
-        "distanceKm": 1.94,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/mar-2025-big-sur/02-950EF9C7-IMG_7408.HEIC.jpg",
-        "lat": 37.759197,
-        "lon": -122.409247,
-        "progress": 0.0063,
-        "capturedAt": "2025-03-09 03:33:14",
-        "score": 4.587,
-        "distanceKm": 0.29,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/mar-2025-big-sur/03-78CE6022-IMG_7611.HEIC.jpg",
-        "lat": 37.704238,
-        "lon": -122.459137,
-        "progress": 0.0168,
-        "capturedAt": "2025-03-20 16:04:22",
-        "score": 4.892,
-        "distanceKm": 5.46,
-        "width": 4284,
-        "height": 5712
-      },
-      {
         "src": "/data/trip-photos/mar-2025-big-sur/04-E0AC5C79-IMG_0059.JPG.jpg",
         "lat": 36.246887,
         "lon": -121.766625,
@@ -1259,39 +727,6 @@
       }
     ],
     "jan-2025-scottsdale": [
-      {
-        "src": "/data/trip-photos/jan-2025-scottsdale/01-91F100EA-IMG_6085.HEIC.jpg",
-        "lat": 37.792947,
-        "lon": -122.446455,
-        "progress": 0.0,
-        "capturedAt": "2025-01-20 20:08:40",
-        "score": 4.574,
-        "distanceKm": 19.99,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jan-2025-scottsdale/02-51F7806F-IMG_6262.HEIC.jpg",
-        "lat": 37.786545,
-        "lon": -122.49218,
-        "progress": 0.0,
-        "capturedAt": "2025-01-29 04:47:59",
-        "score": 4.328,
-        "distanceKm": 20.9,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jan-2025-scottsdale/03-48B85D54-IMG_6125.HEIC.jpg",
-        "lat": 37.84333,
-        "lon": -122.488105,
-        "progress": 0.0,
-        "capturedAt": "2025-01-24 02:00:22",
-        "score": 4.218,
-        "distanceKm": 26.49,
-        "width": 5712,
-        "height": 4284
-      },
       {
         "src": "/data/trip-photos/jan-2025-scottsdale/04-8544F1BC-IMG_6011.HEIC.jpg",
         "lat": 33.537942,
@@ -1374,17 +809,6 @@
     ],
     "nov-2024-yosemite": [
       {
-        "src": "/data/trip-photos/nov-2024-yosemite/01-E6A2135A-IMG_3794.HEIC.jpg",
-        "lat": 37.841183,
-        "lon": -122.488853,
-        "progress": 0.0,
-        "capturedAt": "2024-11-09 16:25:47",
-        "score": 5.7,
-        "distanceKm": 9.56,
-        "width": 3024,
-        "height": 4032
-      },
-      {
         "src": "/data/trip-photos/nov-2024-yosemite/02-215469EC-IMG_7890.JPG.jpg",
         "lat": 37.763562,
         "lon": -119.536812,
@@ -1440,50 +864,6 @@
         "distanceKm": 5.31,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2024-mendocino/02-7F3D8F99-IMG_2403.HEIC.jpg",
-        "lat": 39.303367,
-        "lon": -123.807092,
-        "progress": 0.5013,
-        "capturedAt": "2024-09-28 21:50:37",
-        "score": 5.131,
-        "distanceKm": 0.79,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2024-mendocino/03-0905D4D5-IMG_2275.HEIC.jpg",
-        "lat": 37.927292,
-        "lon": -122.579553,
-        "progress": 0.9518,
-        "capturedAt": "2024-09-21 18:00:54",
-        "score": 4.962,
-        "distanceKm": 5.59,
-        "width": 2316,
-        "height": 3088
-      },
-      {
-        "src": "/data/trip-photos/sep-2024-mendocino/04-55B43B9C-IMG_2333.HEIC.jpg",
-        "lat": 37.823897,
-        "lon": -122.529563,
-        "progress": 0.9759,
-        "capturedAt": "2024-09-26 14:12:24",
-        "score": 5.336,
-        "distanceKm": 4.11,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2024-mendocino/05-EB801ACD-IMG_2330.HEIC.jpg",
-        "lat": 37.820372,
-        "lon": -122.529913,
-        "progress": 0.9763,
-        "capturedAt": "2024-09-26 14:11:07",
-        "score": 5.181,
-        "distanceKm": 4.31,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "sep-2024-santa-cruz": [
@@ -1508,121 +888,9 @@
         "distanceKm": 1.05,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2024-santa-cruz/03-14875380-IMG_2336.HEIC.jpg",
-        "lat": 37.487755,
-        "lon": -122.229142,
-        "progress": 0.8,
-        "capturedAt": "2024-09-26 16:46:32",
-        "score": 4.827,
-        "distanceKm": 5.4,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2024-santa-cruz/04-55B43B9C-IMG_2333.HEIC.jpg",
-        "lat": 37.823897,
-        "lon": -122.529563,
-        "progress": 0.9991,
-        "capturedAt": "2024-09-26 14:12:24",
-        "score": 5.197,
-        "distanceKm": 11.06,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2024-santa-cruz/05-EB801ACD-IMG_2330.HEIC.jpg",
-        "lat": 37.820372,
-        "lon": -122.529913,
-        "progress": 0.9991,
-        "capturedAt": "2024-09-26 14:11:07",
-        "score": 5.049,
-        "distanceKm": 10.89,
-        "width": 3024,
-        "height": 4032
-      }
-    ],
-    "aug-2024-oregon": [
-      {
-        "src": "/data/trip-photos/aug-2024-oregon/01-106E12BD-IMG_1717.HEIC.jpg",
-        "lat": 37.750388,
-        "lon": -122.449013,
-        "progress": 0.0065,
-        "capturedAt": "2024-08-16 14:56:23",
-        "score": 6.17,
-        "distanceKm": 5.88,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/aug-2024-oregon/02-5CD49D50-IMG_1665.HEIC.jpg",
-        "lat": 37.929128,
-        "lon": -122.577713,
-        "progress": 0.0155,
-        "capturedAt": "2024-08-11 18:45:40",
-        "score": 5.862,
-        "distanceKm": 16.77,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/aug-2024-oregon/03-A8D58CAC-IMG_1890.HEIC.jpg",
-        "lat": 37.963405,
-        "lon": -122.626617,
-        "progress": 0.0172,
-        "capturedAt": "2024-08-25 23:18:18",
-        "score": 5.68,
-        "distanceKm": 20.98,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/aug-2024-oregon/04-A1D9B8C1-IMG_1517.HEIC.jpg",
-        "lat": 38.017505,
-        "lon": -122.676017,
-        "progress": 0.0199,
-        "capturedAt": "2024-08-03 20:54:48",
-        "score": 5.631,
-        "distanceKm": 25.17,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/aug-2024-oregon/05-707FCDB5-IMG_1497.HEIC.jpg",
-        "lat": 38.245708,
-        "lon": -122.90573,
-        "progress": 0.0314,
-        "capturedAt": "2024-08-03 17:34:11",
-        "score": 5.285,
-        "distanceKm": 44.67,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "jun-2024-tahoe": [
-      {
-        "src": "/data/trip-photos/jun-2024-tahoe/01-97E7F8E1-IMG_9982.HEIC.jpg",
-        "lat": 37.805472,
-        "lon": -122.445647,
-        "progress": 0.0,
-        "capturedAt": "2024-06-08 20:33:24",
-        "score": 5.589,
-        "distanceKm": 4.1,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jun-2024-tahoe/02-54F9A8C4-IMG_0740.HEIC.jpg",
-        "lat": 37.750325,
-        "lon": -122.448988,
-        "progress": 0.0011,
-        "capturedAt": "2024-06-28 14:56:00",
-        "score": 6.22,
-        "distanceKm": 3.39,
-        "width": 4032,
-        "height": 3024
-      },
       {
         "src": "/data/trip-photos/jun-2024-tahoe/03-9090481F-IMG_0400.HEIC.jpg",
         "lat": 39.378925,
@@ -1642,74 +910,6 @@
         "capturedAt": "2024-06-21 20:27:18",
         "score": 5.879,
         "distanceKm": 3.55,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jun-2024-tahoe/05-332A2141-IMG_0779.HEIC.jpg",
-        "lat": 37.75587,
-        "lon": -122.450762,
-        "progress": 0.9991,
-        "capturedAt": "2024-06-28 15:07:47",
-        "score": 5.968,
-        "distanceKm": 3.17,
-        "width": 4032,
-        "height": 3024
-      }
-    ],
-    "may-2024-morro-bay": [
-      {
-        "src": "/data/trip-photos/may-2024-morro-bay/01-3FDEE4EF-IMG_9371.HEIC.jpg",
-        "lat": 37.805242,
-        "lon": -122.452928,
-        "progress": 0.0,
-        "capturedAt": "2024-05-12 17:38:22",
-        "score": 5.123,
-        "distanceKm": 4.47,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/may-2024-morro-bay/02-3D5A73FB-IMG_9278.HEIC.jpg",
-        "lat": 37.823538,
-        "lon": -122.47898,
-        "progress": 0.0,
-        "capturedAt": "2024-05-09 14:45:40",
-        "score": 5.066,
-        "distanceKm": 7.52,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/may-2024-morro-bay/03-450C1084-IMG_9801.HEIC.jpg",
-        "lat": 37.750358,
-        "lon": -122.448958,
-        "progress": 0.0009,
-        "capturedAt": "2024-05-31 14:55:37",
-        "score": 6.467,
-        "distanceKm": 3.38,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/may-2024-morro-bay/04-012365A2-IMG_9240.HEIC.jpg",
-        "lat": 37.761642,
-        "lon": -122.421417,
-        "progress": 0.0009,
-        "capturedAt": "2024-05-06 02:12:42",
-        "score": 5.846,
-        "distanceKm": 0.85,
-        "width": 2316,
-        "height": 3088
-      },
-      {
-        "src": "/data/trip-photos/may-2024-morro-bay/05-6B4FAE63-IMG_9823.HEIC.jpg",
-        "lat": 37.75128,
-        "lon": -122.448745,
-        "progress": 0.0009,
-        "capturedAt": "2024-05-31 15:01:12",
-        "score": 5.076,
-        "distanceKm": 3.3,
         "width": 3024,
         "height": 4032
       }
@@ -1758,17 +958,6 @@
         "distanceKm": 4.81,
         "width": 4032,
         "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/mar-2024-occidental/05-7C188D82-IMG_8078.HEIC.jpg",
-        "lat": 37.842062,
-        "lon": -122.551863,
-        "progress": 0.93,
-        "capturedAt": "2024-03-17 19:10:21",
-        "score": 5.531,
-        "distanceKm": 4.64,
-        "width": 4032,
-        "height": 3024
       }
     ],
     "feb-2024-mexico-city": [
@@ -1795,17 +984,6 @@
         "height": 4032
       },
       {
-        "src": "/data/trip-photos/feb-2024-mexico-city/03-EF5024A0-IMG_7737.HEIC.jpg",
-        "lat": 19.620895,
-        "lon": -98.919037,
-        "progress": 0.4978,
-        "capturedAt": "2024-02-05 20:08:51",
-        "score": 5.873,
-        "distanceKm": 0.0,
-        "width": 4032,
-        "height": 3024
-      },
-      {
         "src": "/data/trip-photos/feb-2024-mexico-city/04-906C9077-IMG_7757.HEIC.jpg",
         "lat": 19.697392,
         "lon": -98.844955,
@@ -1829,39 +1007,6 @@
       }
     ],
     "jan-2024-joshua-tree": [
-      {
-        "src": "/data/trip-photos/jan-2024-joshua-tree/01-E9E25D07-IMG_7195.HEIC.jpg",
-        "lat": 37.833967,
-        "lon": -122.486838,
-        "progress": 0.0,
-        "capturedAt": "2024-01-07 18:37:11",
-        "score": 5.762,
-        "distanceKm": 8.84,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/jan-2024-joshua-tree/02-E5B0EA23-IMG_7477.HEIC.jpg",
-        "lat": 37.7468,
-        "lon": -122.46277,
-        "progress": 0.0004,
-        "capturedAt": "2024-01-21 20:17:44",
-        "score": 5.643,
-        "distanceKm": 4.58,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jan-2024-joshua-tree/03-2E88138F-IMG_7401.HEIC.jpg",
-        "lat": 34.127128,
-        "lon": -116.334463,
-        "progress": 0.4721,
-        "capturedAt": "2024-01-15 17:58:52",
-        "score": 5.46,
-        "distanceKm": 0.87,
-        "width": 3024,
-        "height": 4032
-      },
       {
         "src": "/data/trip-photos/jan-2024-joshua-tree/04-A8E3FC4B-IMG_7315.HEIC.jpg",
         "lat": 33.994033,
@@ -1894,17 +1039,6 @@
         "capturedAt": "2023-04-23 22:58:18",
         "score": 5.008,
         "distanceKm": 0.38,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/apr-2023-san-luis-obispo/02-58C0D580-IMG_4111.HEIC.jpg",
-        "lat": 35.459033,
-        "lon": -120.33335,
-        "progress": 0.4905,
-        "capturedAt": "2023-04-23 22:58:39",
-        "score": 5.108,
-        "distanceKm": 0.07,
         "width": 4032,
         "height": 3024
       },
@@ -1944,50 +1078,6 @@
     ],
     "feb-2023-san-luis-obispo-and-san-simeon": [
       {
-        "src": "/data/trip-photos/feb-2023-san-luis-obispo-and-san-simeon/01-23167871-IMG_2936.HEIC.jpg",
-        "lat": 37.433472,
-        "lon": -122.052803,
-        "progress": 0.0023,
-        "capturedAt": "2023-02-11 21:54:12",
-        "score": 5.191,
-        "distanceKm": 9.84,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/feb-2023-san-luis-obispo-and-san-simeon/02-8C834BC0-IMG_2931.HEIC.jpg",
-        "lat": 37.426937,
-        "lon": -122.0364,
-        "progress": 0.0023,
-        "capturedAt": "2023-02-11 21:42:08",
-        "score": 5.133,
-        "distanceKm": 8.26,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/feb-2023-san-luis-obispo-and-san-simeon/03-6962B6CD-IMG_2630.HEIC.jpg",
-        "lat": 37.715672,
-        "lon": -119.676963,
-        "progress": 0.4475,
-        "capturedAt": "2023-02-04 17:24:44",
-        "score": 6.753,
-        "distanceKm": 0.09,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/feb-2023-san-luis-obispo-and-san-simeon/04-298D3031-IMG_2795.HEIC.jpg",
-        "lat": 37.725042,
-        "lon": -119.533492,
-        "progress": 0.4539,
-        "capturedAt": "2023-02-04 21:11:54",
-        "score": 5.539,
-        "distanceKm": 5.15,
-        "width": 4032,
-        "height": 3024
-      },
-      {
         "src": "/data/trip-photos/feb-2023-san-luis-obispo-and-san-simeon/05-ACB338BE-IMG_3207.HEIC.jpg",
         "lat": 35.626713,
         "lon": -121.158225,
@@ -2001,28 +1091,6 @@
     ],
     "feb-2023-yosemite": [
       {
-        "src": "/data/trip-photos/feb-2023-yosemite/01-23167871-IMG_2936.HEIC.jpg",
-        "lat": 37.433472,
-        "lon": -122.052803,
-        "progress": 0.0023,
-        "capturedAt": "2023-02-11 21:54:12",
-        "score": 5.191,
-        "distanceKm": 9.84,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/feb-2023-yosemite/02-8C834BC0-IMG_2931.HEIC.jpg",
-        "lat": 37.426937,
-        "lon": -122.0364,
-        "progress": 0.0023,
-        "capturedAt": "2023-02-11 21:42:08",
-        "score": 5.133,
-        "distanceKm": 8.26,
-        "width": 4032,
-        "height": 3024
-      },
-      {
         "src": "/data/trip-photos/feb-2023-yosemite/03-6962B6CD-IMG_2630.HEIC.jpg",
         "lat": 37.715672,
         "lon": -119.676963,
@@ -2032,42 +1100,9 @@
         "distanceKm": 0.09,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/feb-2023-yosemite/04-298D3031-IMG_2795.HEIC.jpg",
-        "lat": 37.725042,
-        "lon": -119.533492,
-        "progress": 0.4539,
-        "capturedAt": "2023-02-04 21:11:54",
-        "score": 5.539,
-        "distanceKm": 5.15,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/feb-2023-yosemite/05-ACB338BE-IMG_3207.HEIC.jpg",
-        "lat": 35.626713,
-        "lon": -121.158225,
-        "progress": 0.7491,
-        "capturedAt": "2023-02-25 16:26:13",
-        "score": 5.142,
-        "distanceKm": 0.0,
-        "width": 4032,
-        "height": 3024
       }
     ],
     "jan-2023-seattle": [
-      {
-        "src": "/data/trip-photos/jan-2023-seattle/01-71F43917-IMG_2550.HEIC.jpg",
-        "lat": 47.441742,
-        "lon": -122.300103,
-        "progress": 0.4609,
-        "capturedAt": "2023-01-29 00:02:33",
-        "score": 4.131,
-        "distanceKm": 0.66,
-        "width": 3024,
-        "height": 4032
-      },
       {
         "src": "/data/trip-photos/jan-2023-seattle/02-F1A4D954-IMG_2547.HEIC.jpg",
         "lat": 47.50058,
@@ -2114,17 +1149,6 @@
       }
     ],
     "dec-2022-portland-and-bend": [
-      {
-        "src": "/data/trip-photos/dec-2022-portland-and-bend/01-40694B9B-IMG_2080.HEIC.jpg",
-        "lat": 37.26872,
-        "lon": -122.146317,
-        "progress": 0.0,
-        "capturedAt": "2022-12-25 21:40:24",
-        "score": 5.034,
-        "distanceKm": 44.26,
-        "width": 4032,
-        "height": 3024
-      },
       {
         "src": "/data/trip-photos/dec-2022-portland-and-bend/02-967DFCD4-IMG_1051.heic.jpg",
         "lat": 43.983958,
@@ -2214,74 +1238,6 @@
         "distanceKm": 0.39,
         "width": 4032,
         "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/oct-2022-yosemite/05-FD485A0F-IMG_0827.HEIC.jpg",
-        "lat": 37.352008,
-        "lon": -121.977225,
-        "progress": 0.9989,
-        "capturedAt": "2022-10-14 22:01:58",
-        "score": 5.445,
-        "distanceKm": 0.75,
-        "width": 2316,
-        "height": 3088
-      }
-    ],
-    "sep-2022-orlando": [
-      {
-        "src": "/data/trip-photos/sep-2022-orlando/01-E75666F2-IMG_0545.HEIC.jpg",
-        "lat": 37.770192,
-        "lon": -122.469887,
-        "progress": 0.0,
-        "capturedAt": "2022-09-24 23:12:53",
-        "score": 4.876,
-        "distanceKm": 18.39,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2022-orlando/02-DAB10873-IMG_0555.HEIC.jpg",
-        "lat": 37.332917,
-        "lon": -122.005342,
-        "progress": 0.0044,
-        "capturedAt": "2022-09-25 20:18:02",
-        "score": 4.119,
-        "distanceKm": 30.36,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2022-orlando/03-AD4EB5E7-IMG_0509.HEIC.jpg",
-        "lat": 37.31663,
-        "lon": -121.988572,
-        "progress": 0.0046,
-        "capturedAt": "2022-09-23 04:19:18",
-        "score": 4.715,
-        "distanceKm": 32.09,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/sep-2022-orlando/04-FE2F5D9B-IMG_0540.HEIC.jpg",
-        "lat": 37.356297,
-        "lon": -121.981178,
-        "progress": 0.0046,
-        "capturedAt": "2022-09-24 14:42:38",
-        "score": 4.327,
-        "distanceKm": 27.65,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/sep-2022-orlando/05-317581B3-IMG_0486.HEIC.jpg",
-        "lat": 37.352178,
-        "lon": -121.977638,
-        "progress": 0.0047,
-        "capturedAt": "2022-09-21 22:56:15",
-        "score": 4.789,
-        "distanceKm": 28.09,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "aug-2022-sequoia-and-kings-canyon": [
@@ -2396,63 +1352,6 @@
         "distanceKm": 0.57,
         "width": 4032,
         "height": 3024
-      }
-    ],
-    "jun-2022-reno": [
-      {
-        "src": "/data/trip-photos/jun-2022-reno/01-C411BC8C-IMG_8059.HEIC.jpg",
-        "lat": 35.278358,
-        "lon": -120.664162,
-        "progress": 0.0,
-        "capturedAt": "2022-06-18 05:30:41",
-        "score": 4.347,
-        "distanceKm": 0.2,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jun-2022-reno/02-3139B5E8-IMG_7867.HEIC.jpg",
-        "lat": 35.370442,
-        "lon": -120.86438,
-        "progress": 0.0094,
-        "capturedAt": "2022-06-11 21:40:43",
-        "score": 4.705,
-        "distanceKm": 20.27,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jun-2022-reno/03-44D871F0-IMG_8253.HEIC.jpg",
-        "lat": 37.228778,
-        "lon": -122.096305,
-        "progress": 0.7881,
-        "capturedAt": "2022-06-28 20:44:38",
-        "score": 4.036,
-        "distanceKm": 25.02,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jun-2022-reno/04-0E4F4C34-IMG_7800.HEIC.jpg",
-        "lat": 35.295338,
-        "lon": -120.674203,
-        "progress": 0.9993,
-        "capturedAt": "2022-06-08 18:30:37",
-        "score": 4.603,
-        "distanceKm": 1.38,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jun-2022-reno/05-F5435743-IMG_7714.HEIC.jpg",
-        "lat": 35.349147,
-        "lon": -120.82193,
-        "progress": 0.9995,
-        "capturedAt": "2022-06-03 23:45:45",
-        "score": 4.371,
-        "distanceKm": 15.8,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "may-2022-yosemite": [
@@ -2582,17 +1481,6 @@
         "height": 4032
       },
       {
-        "src": "/data/trip-photos/feb-2022-mount-pinos/02-F5BDBEE1-IMG_5910.HEIC.jpg",
-        "lat": 34.808287,
-        "lon": -119.175217,
-        "progress": 0.4996,
-        "capturedAt": "2022-02-20 01:51:56",
-        "score": 5.885,
-        "distanceKm": 4.27,
-        "width": 3024,
-        "height": 4032
-      },
-      {
         "src": "/data/trip-photos/feb-2022-mount-pinos/03-DF975245-IMG_5839.HEIC.jpg",
         "lat": 34.81353,
         "lon": -119.150605,
@@ -2600,17 +1488,6 @@
         "capturedAt": "2022-02-20 00:08:53",
         "score": 5.584,
         "distanceKm": 2.09,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/feb-2022-mount-pinos/04-0C7AC603-IMG_5810.HEIC.jpg",
-        "lat": 34.812928,
-        "lon": -119.145478,
-        "progress": 0.5001,
-        "capturedAt": "2022-02-19 23:44:20",
-        "score": 5.352,
-        "distanceKm": 1.62,
         "width": 4032,
         "height": 3024
       },
@@ -2627,39 +1504,6 @@
       }
     ],
     "jan-2022-big-sur-ventana-wilderness": [
-      {
-        "src": "/data/trip-photos/jan-2022-big-sur-ventana-wilderness/01-8949E940-IMG_5433.HEIC.jpg",
-        "lat": 36.221655,
-        "lon": -121.759605,
-        "progress": 0.4879,
-        "capturedAt": "2022-01-16 19:26:50",
-        "score": 6.035,
-        "distanceKm": 0.11,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/jan-2022-big-sur-ventana-wilderness/02-B97EA102-IMG_5403.HEIC.jpg",
-        "lat": 36.248017,
-        "lon": -121.800322,
-        "progress": 0.5002,
-        "capturedAt": "2022-01-16 17:01:40",
-        "score": 5.135,
-        "distanceKm": 1.69,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/jan-2022-big-sur-ventana-wilderness/03-23D94451-IMG_5470.HEIC.jpg",
-        "lat": 36.174245,
-        "lon": -121.696153,
-        "progress": 0.5388,
-        "capturedAt": "2022-01-16 20:39:59",
-        "score": 4.993,
-        "distanceKm": 0.2,
-        "width": 3024,
-        "height": 4032
-      },
       {
         "src": "/data/trip-photos/jan-2022-big-sur-ventana-wilderness/04-117D58AD-IMG_5573.HEIC.jpg",
         "lat": 36.029367,
@@ -2685,17 +1529,6 @@
     ],
     "jan-2022-big-sur-pfeiffer-ridge": [
       {
-        "src": "/data/trip-photos/jan-2022-big-sur-pfeiffer-ridge/01-23D94451-IMG_5470.HEIC.jpg",
-        "lat": 36.174245,
-        "lon": -121.696153,
-        "progress": 0.4577,
-        "capturedAt": "2022-01-16 20:39:59",
-        "score": 4.993,
-        "distanceKm": 0.2,
-        "width": 3024,
-        "height": 4032
-      },
-      {
         "src": "/data/trip-photos/jan-2022-big-sur-pfeiffer-ridge/02-8949E940-IMG_5433.HEIC.jpg",
         "lat": 36.221655,
         "lon": -121.759605,
@@ -2705,75 +1538,9 @@
         "distanceKm": 0.15,
         "width": 4032,
         "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/jan-2022-big-sur-pfeiffer-ridge/03-B97EA102-IMG_5403.HEIC.jpg",
-        "lat": 36.248017,
-        "lon": -121.800322,
-        "progress": 0.4996,
-        "capturedAt": "2022-01-16 17:01:40",
-        "score": 5.156,
-        "distanceKm": 0.6,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/jan-2022-big-sur-pfeiffer-ridge/04-117D58AD-IMG_5573.HEIC.jpg",
-        "lat": 36.029367,
-        "lon": -121.489687,
-        "progress": 0.6234,
-        "capturedAt": "2022-01-22 04:22:13",
-        "score": 5.094,
-        "distanceKm": 3.17,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jan-2022-big-sur-pfeiffer-ridge/05-914FD2EA-IMG_5527.HEIC.jpg",
-        "lat": 35.999233,
-        "lon": -121.496308,
-        "progress": 0.628,
-        "capturedAt": "2022-01-21 21:12:47",
-        "score": 6.334,
-        "distanceKm": 0.32,
-        "width": 4032,
-        "height": 3024
       }
     ],
     "oct-2021-santa-barbara": [
-      {
-        "src": "/data/trip-photos/oct-2021-santa-barbara/01-11E66683-IMG_4479.HEIC.jpg",
-        "lat": 35.298472,
-        "lon": -120.6595,
-        "progress": 0.0,
-        "capturedAt": "2021-10-13 02:20:08",
-        "score": 5.538,
-        "distanceKm": 2.09,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/oct-2021-santa-barbara/02-98181BCD-IMG_6662.HEIC.jpg",
-        "lat": 35.287688,
-        "lon": -120.668725,
-        "progress": 0.0,
-        "capturedAt": "2021-10-31 03:37:23",
-        "score": 4.986,
-        "distanceKm": 1.02,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/oct-2021-santa-barbara/03-4DD774A1-IMG_4601.HEIC.jpg",
-        "lat": 35.25227,
-        "lon": -120.685037,
-        "progress": 0.0114,
-        "capturedAt": "2021-10-28 20:55:49",
-        "score": 4.39,
-        "distanceKm": 0.58,
-        "width": 2316,
-        "height": 3088
-      },
       {
         "src": "/data/trip-photos/oct-2021-santa-barbara/04-A75C5E94-IMG_4388.HEIC.jpg",
         "lat": 34.467563,
@@ -2830,17 +1597,6 @@
         "distanceKm": 0.44,
         "width": 1536,
         "height": 2049
-      },
-      {
-        "src": "/data/trip-photos/sep-2021-croatia-andorra-amsterdam/04-4B76E424-IMG_0178.JPG.jpg",
-        "lat": 44.068492,
-        "lon": 15.27192,
-        "progress": 0.5228,
-        "capturedAt": "2021-09-17 08:19:58",
-        "score": 7.22,
-        "distanceKm": 1.6,
-        "width": 1536,
-        "height": 2048
       },
       {
         "src": "/data/trip-photos/sep-2021-croatia-andorra-amsterdam/05-EA925AC3-IMG_0196.JPG.jpg",
@@ -2913,28 +1669,6 @@
     ],
     "may-2021-las-vegas": [
       {
-        "src": "/data/trip-photos/may-2021-las-vegas/01-6FF7F561-IMG_2563.HEIC.jpg",
-        "lat": 35.260288,
-        "lon": -120.648505,
-        "progress": 0.0,
-        "capturedAt": "2021-05-19 02:47:49",
-        "score": 5.316,
-        "distanceKm": 2.54,
-        "width": 2316,
-        "height": 3088
-      },
-      {
-        "src": "/data/trip-photos/may-2021-las-vegas/02-C54F14BF-IMG_2758.HEIC.jpg",
-        "lat": 35.291325,
-        "lon": -120.659058,
-        "progress": 0.0012,
-        "capturedAt": "2021-05-29 19:39:02",
-        "score": 4.482,
-        "distanceKm": 0.1,
-        "width": 3024,
-        "height": 4032
-      },
-      {
         "src": "/data/trip-photos/may-2021-las-vegas/03-849E4163-IMG_2623.HEIC.jpg",
         "lat": 36.082,
         "lon": -115.172828,
@@ -2944,42 +1678,9 @@
         "distanceKm": 0.7,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/may-2021-las-vegas/04-5545FAFA-IMG_2083.HEIC.jpg",
-        "lat": 35.285758,
-        "lon": -120.65483,
-        "progress": 0.9987,
-        "capturedAt": "2021-05-12 17:13:49",
-        "score": 4.945,
-        "distanceKm": 0.6,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/may-2021-las-vegas/05-FF81C076-IMG_2549.HEIC.jpg",
-        "lat": 35.27705,
-        "lon": -120.667922,
-        "progress": 1.0,
-        "capturedAt": "2021-05-18 21:01:01",
-        "score": 4.658,
-        "distanceKm": 0.56,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "may-2021-joshua-tree": [
-      {
-        "src": "/data/trip-photos/may-2021-joshua-tree/01-6FF7F561-IMG_2563.HEIC.jpg",
-        "lat": 35.260288,
-        "lon": -120.648505,
-        "progress": 0.002,
-        "capturedAt": "2021-05-19 02:47:49",
-        "score": 5.32,
-        "distanceKm": 2.33,
-        "width": 2316,
-        "height": 3088
-      },
       {
         "src": "/data/trip-photos/may-2021-joshua-tree/02-E46DBF85-IMG_2291.HEIC.jpg",
         "lat": 34.013394,
@@ -3027,28 +1728,6 @@
     ],
     "may-2021-big-sur": [
       {
-        "src": "/data/trip-photos/may-2021-big-sur/01-6FF7F561-IMG_2563.HEIC.jpg",
-        "lat": 35.260288,
-        "lon": -120.648505,
-        "progress": 0.0,
-        "capturedAt": "2021-05-19 02:47:49",
-        "score": 5.316,
-        "distanceKm": 2.54,
-        "width": 2316,
-        "height": 3088
-      },
-      {
-        "src": "/data/trip-photos/may-2021-big-sur/02-FF81C076-IMG_2549.HEIC.jpg",
-        "lat": 35.27705,
-        "lon": -120.667922,
-        "progress": 0.0,
-        "capturedAt": "2021-05-18 21:01:01",
-        "score": 4.658,
-        "distanceKm": 0.56,
-        "width": 3024,
-        "height": 4032
-      },
-      {
         "src": "/data/trip-photos/may-2021-big-sur/03-523C7731-IMG_1964.HEIC.jpg",
         "lat": 35.82977,
         "lon": -121.377542,
@@ -3069,17 +1748,6 @@
         "distanceKm": 3.0,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/may-2021-big-sur/05-5545FAFA-IMG_2083.HEIC.jpg",
-        "lat": 35.285758,
-        "lon": -120.65483,
-        "progress": 0.9977,
-        "capturedAt": "2021-05-12 17:13:49",
-        "score": 4.945,
-        "distanceKm": 0.58,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "sep-2020-arches-and-canyonlands": [
@@ -3095,17 +1763,6 @@
         "height": 3788
       },
       {
-        "src": "/data/trip-photos/sep-2020-arches-and-canyonlands/02-FC02D20B-IMG_5730.HEIC.jpg",
-        "lat": 38.691338,
-        "lon": -109.539803,
-        "progress": 0.465,
-        "capturedAt": "2020-09-09 20:56:56",
-        "score": 4.858,
-        "distanceKm": 10.1,
-        "width": 2320,
-        "height": 3088
-      },
-      {
         "src": "/data/trip-photos/sep-2020-arches-and-canyonlands/03-7BBDF280-IMG_5724.HEIC.jpg",
         "lat": 38.714875,
         "lon": -109.538545,
@@ -3115,17 +1772,6 @@
         "distanceKm": 12.61,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/sep-2020-arches-and-canyonlands/04-1309FD34-IMG_5677.HEIC.jpg",
-        "lat": 38.343705,
-        "lon": -109.887305,
-        "progress": 0.5042,
-        "capturedAt": "2020-09-08 18:36:54",
-        "score": 4.989,
-        "distanceKm": 22.6,
-        "width": 2320,
-        "height": 3088
       },
       {
         "src": "/data/trip-photos/sep-2020-arches-and-canyonlands/05-659902B5-IMG_5716.HEIC.jpg",
@@ -3192,63 +1838,6 @@
         "capturedAt": "2020-08-30 23:56:56",
         "score": 4.414,
         "distanceKm": 0.04,
-        "width": 3024,
-        "height": 4032
-      }
-    ],
-    "jul-2020-reno": [
-      {
-        "src": "/data/trip-photos/jul-2020-reno/01-8C50FC43-IMG_4953.HEIC.jpg",
-        "lat": 35.276358,
-        "lon": -120.662422,
-        "progress": 0.0,
-        "capturedAt": "2020-07-13 19:20:58",
-        "score": 3.453,
-        "distanceKm": 0.39,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jul-2020-reno/02-CFA3E85A-IMG_4955.HEIC.jpg",
-        "lat": 35.289845,
-        "lon": -120.628525,
-        "progress": 0.0028,
-        "capturedAt": "2020-07-13 19:21:03",
-        "score": 4.118,
-        "distanceKm": 0.72,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jul-2020-reno/03-2B369830-IMG_4907.HEIC.jpg",
-        "lat": 37.35642,
-        "lon": -121.981147,
-        "progress": 0.7817,
-        "capturedAt": "2020-07-01 18:47:51",
-        "score": 3.949,
-        "distanceKm": 10.42,
-        "width": 2320,
-        "height": 3088
-      },
-      {
-        "src": "/data/trip-photos/jul-2020-reno/04-10738278-IMG_4909.HEIC.jpg",
-        "lat": 37.338178,
-        "lon": -121.99582,
-        "progress": 0.7817,
-        "capturedAt": "2020-07-01 21:21:59",
-        "score": 3.314,
-        "distanceKm": 12.54,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jul-2020-reno/05-14F51F59-IMG_4931.HEIC.jpg",
-        "lat": 35.293378,
-        "lon": -120.661955,
-        "progress": 0.9988,
-        "capturedAt": "2020-07-10 00:51:49",
-        "score": 3.241,
-        "distanceKm": 0.51,
         "width": 3024,
         "height": 4032
       }
@@ -3354,17 +1943,6 @@
         "distanceKm": 0.23,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jun-2020-eastern-sierra/05-E052108E-IMG_4729.HEIC.jpg",
-        "lat": 35.372592,
-        "lon": -120.864875,
-        "progress": 0.9995,
-        "capturedAt": "2020-06-04 18:42:55",
-        "score": 4.857,
-        "distanceKm": 20.34,
-        "width": 4032,
-        "height": 3024
       }
     ],
     "feb-2020-lebec": [
@@ -3380,28 +1958,6 @@
         "height": 4032
       },
       {
-        "src": "/data/trip-photos/feb-2020-lebec/02-96275ABA-7E104C1D-B0A3-4A65-900B-8ED897DFDF26.JPG.jpg",
-        "lat": 35.268405,
-        "lon": -120.892355,
-        "progress": 0.0204,
-        "capturedAt": "2020-02-15 00:06:35",
-        "score": 5.627,
-        "distanceKm": 18.74,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/feb-2020-lebec/03-65533EDC-IMG_3892.JPG.jpg",
-        "lat": 34.825908,
-        "lon": -118.906945,
-        "progress": 0.4999,
-        "capturedAt": "2020-02-08 20:48:32",
-        "score": 4.884,
-        "distanceKm": 4.02,
-        "width": 3840,
-        "height": 2160
-      },
-      {
         "src": "/data/trip-photos/feb-2020-lebec/04-5D1FEE73-IMG_3894.JPG.jpg",
         "lat": 34.823422,
         "lon": -118.904458,
@@ -3411,17 +1967,6 @@
         "distanceKm": 3.88,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/feb-2020-lebec/05-4C6576BC-IMG_9944.HEIC.jpg",
-        "lat": 35.276542,
-        "lon": -120.885553,
-        "progress": 0.9844,
-        "capturedAt": "2020-02-15 01:42:14",
-        "score": 4.603,
-        "distanceKm": 18.42,
-        "width": 4032,
-        "height": 3024
       }
     ],
     "aug-2019-lake-arrowhead": [
@@ -3435,109 +1980,6 @@
         "distanceKm": 2.21,
         "width": 3024,
         "height": 4032
-      }
-    ],
-    "dec-2019-san-diego": [
-      {
-        "src": "/data/trip-photos/dec-2019-san-diego/01-4D2CE48A-IMG_3644.JPG.jpg",
-        "lat": 37.356353,
-        "lon": -121.981178,
-        "progress": 0.0316,
-        "capturedAt": "2019-12-23 02:39:03",
-        "score": 4.233,
-        "distanceKm": 6.1,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/dec-2019-san-diego/02-DBB2B27A-IMG_3574.JPG.jpg",
-        "lat": 37.04842,
-        "lon": -122.237913,
-        "progress": 0.0386,
-        "capturedAt": "2019-12-20 00:40:25",
-        "score": 4.461,
-        "distanceKm": 33.76,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/dec-2019-san-diego/03-8FA4C70A-IMG_3468.JPG.jpg",
-        "lat": 35.293278,
-        "lon": -120.66192,
-        "progress": 0.2054,
-        "capturedAt": "2019-12-07 01:05:00",
-        "score": 2.55,
-        "distanceKm": 58.77,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/dec-2019-san-diego/04-3CAD48FB-IMG_3676.JPG.jpg",
-        "lat": 32.870425,
-        "lon": -117.212487,
-        "progress": 0.4911,
-        "capturedAt": "2019-12-31 03:38:14",
-        "score": 3.527,
-        "distanceKm": 8.27,
-        "width": 2320,
-        "height": 3088
-      },
-      {
-        "src": "/data/trip-photos/dec-2019-san-diego/05-30456876-IMG_3685.JPG.jpg",
-        "lat": 32.729878,
-        "lon": -117.149125,
-        "progress": 0.5,
-        "capturedAt": "2019-12-30 22:55:50",
-        "score": 6.537,
-        "distanceKm": 4.16,
-        "width": 3024,
-        "height": 4032
-      }
-    ],
-    "jul-2018-tuscany-and-italy": [
-      {
-        "src": "/data/trip-photos/jul-2018-tuscany-and-italy/01-996ECFDC-IMG_0869.JPG.jpg",
-        "lat": 37.396933,
-        "lon": -122.11857,
-        "progress": 0.0,
-        "capturedAt": "2018-07-01 02:35:43",
-        "score": 3.993,
-        "distanceKm": 33.91,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jul-2018-tuscany-and-italy/02-C8D6DEDE-IMG_0888.JPG.jpg",
-        "lat": 37.356412,
-        "lon": -121.981195,
-        "progress": 0.0,
-        "capturedAt": "2018-07-04 01:27:18",
-        "score": 2.674,
-        "distanceKm": 45.82,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/jul-2018-tuscany-and-italy/03-90E21B13-IMG_0920.JPG.jpg",
-        "lat": 37.423858,
-        "lon": -122.103517,
-        "progress": 0.0,
-        "capturedAt": "2018-07-05 22:50:58",
-        "score": 1.716,
-        "distanceKm": 32.75,
-        "width": 4032,
-        "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/jul-2018-tuscany-and-italy/04-96A4D995-IMG_1016.JPG.jpg",
-        "lat": 43.493263,
-        "lon": 11.594095,
-        "progress": 0.5084,
-        "capturedAt": "2018-07-20 08:28:07",
-        "score": 4.102,
-        "distanceKm": 3.05,
-        "width": 2320,
-        "height": 3088
       }
     ],
     "mar-2018-portland-and-mount-hood": [
@@ -3564,17 +2006,6 @@
         "height": 2048
       },
       {
-        "src": "/data/trip-photos/mar-2018-portland-and-mount-hood/03-F9E95C65-IMG_0312.JPG.jpg",
-        "lat": 45.289692,
-        "lon": -121.67063,
-        "progress": 0.5052,
-        "capturedAt": "2018-03-05 19:19:19",
-        "score": 4.26,
-        "distanceKm": 0.03,
-        "width": 3024,
-        "height": 4032
-      },
-      {
         "src": "/data/trip-photos/mar-2018-portland-and-mount-hood/04-967EE9B7-IMG_0300.JPG.jpg",
         "lat": 45.53603,
         "lon": -122.218247,
@@ -3597,19 +2028,6 @@
         "height": 1536
       }
     ],
-    "nov-2017-atlanta": [
-      {
-        "src": "/data/trip-photos/nov-2017-atlanta/01-9ACB7697-IMG_4474.JPG.jpg",
-        "lat": 37.424655,
-        "lon": -122.104417,
-        "progress": 0.0033,
-        "capturedAt": "2017-11-07 21:54:05",
-        "score": 3.688,
-        "distanceKm": 23.63,
-        "width": 960,
-        "height": 1280
-      }
-    ],
     "feb-2017-israel": [
       {
         "src": "/data/trip-photos/feb-2017-israel/01-0CC1BE6D-IMG_3512.JPG.jpg",
@@ -3625,17 +2043,6 @@
     ],
     "apr-2017-coachella": [
       {
-        "src": "/data/trip-photos/apr-2017-coachella/01-37225E38-IMG_3806.JPG.jpg",
-        "lat": 37.425158,
-        "lon": -122.104478,
-        "progress": 0.0242,
-        "capturedAt": "2017-04-26 17:41:57",
-        "score": 3.451,
-        "distanceKm": 29.45,
-        "width": 960,
-        "height": 1280
-      },
-      {
         "src": "/data/trip-photos/apr-2017-coachella/02-93A9CEEF-IMG_3771.JPG.jpg",
         "lat": 33.68233,
         "lon": -116.234812,
@@ -3648,28 +2055,6 @@
       }
     ],
     "dec-2016-south-lake-tahoe": [
-      {
-        "src": "/data/trip-photos/dec-2016-south-lake-tahoe/01-DD0734C2-IMG_3157.JPG.jpg",
-        "lat": 37.42445,
-        "lon": -122.1045,
-        "progress": 0.0032,
-        "capturedAt": "2016-12-15 00:40:08",
-        "score": 3.461,
-        "distanceKm": 46.63,
-        "width": 960,
-        "height": 1280
-      },
-      {
-        "src": "/data/trip-photos/dec-2016-south-lake-tahoe/02-4735E282-IMG_3249.JPG.jpg",
-        "lat": 38.926575,
-        "lon": -119.968513,
-        "progress": 0.4984,
-        "capturedAt": "2016-12-31 07:05:42",
-        "score": 3.431,
-        "distanceKm": 1.07,
-        "width": 3264,
-        "height": 2448
-      },
       {
         "src": "/data/trip-photos/dec-2016-south-lake-tahoe/03-5E0AC4A5-IMG_3243.JPG.jpg",
         "lat": 38.953663,
@@ -3693,67 +2078,6 @@
         "distanceKm": 2.63,
         "width": 3264,
         "height": 2448
-      },
-      {
-        "src": "/data/trip-photos/nov-2016-boston-and-new-york/02-4E546640-IMG_3085.JPG.jpg",
-        "lat": 37.420933,
-        "lon": -122.246162,
-        "progress": 0.9996,
-        "capturedAt": "2016-11-26 09:08:00",
-        "score": 3.371,
-        "distanceKm": 24.95,
-        "width": 2448,
-        "height": 3264
-      }
-    ],
-    "jul-2016-alaska": [
-      {
-        "src": "/data/trip-photos/jul-2016-alaska/01-976CE5ED-IMG_2281.JPG.jpg",
-        "lat": 37.330805,
-        "lon": -121.889587,
-        "progress": 0.0,
-        "capturedAt": "2016-07-23 08:30:00",
-        "score": 4.123,
-        "distanceKm": 53.93,
-        "width": 2448,
-        "height": 3264
-      },
-      {
-        "src": "/data/trip-photos/jul-2016-alaska/02-FD4D5E4F-IMG_2219.JPG.jpg",
-        "lat": 63.440225,
-        "lon": -150.554138,
-        "progress": 0.486,
-        "capturedAt": "2016-07-12 20:37:04",
-        "score": 3.883,
-        "distanceKm": 98.63,
-        "width": 13154,
-        "height": 3046
-      }
-    ],
-    "aug-2015-boston-and-cape-cod": [
-      {
-        "src": "/data/trip-photos/aug-2015-boston-and-cape-cod/01-098DAD50-IMG_0012.JPG.jpg",
-        "lat": 38.75713,
-        "lon": -104.830155,
-        "progress": 0.1676,
-        "capturedAt": "2015-08-29 19:30:10",
-        "score": 2.787,
-        "distanceKm": 354.29,
-        "width": 2048,
-        "height": 1536
-      }
-    ],
-    "aug-2015-iceland-ring-road": [
-      {
-        "src": "/data/trip-photos/aug-2015-iceland-ring-road/01-098DAD50-IMG_0012.JPG.jpg",
-        "lat": 38.75713,
-        "lon": -104.830155,
-        "progress": 0.0679,
-        "capturedAt": "2015-08-29 19:30:10",
-        "score": 2.787,
-        "distanceKm": 1175.16,
-        "width": 2048,
-        "height": 1536
       }
     ]
   },
@@ -3830,30 +2154,6 @@
         "height": 4284
       }
     ],
-    "16745269392": [
-      {
-        "src": "/data/trip-photos/strava/16745269392/01-0414F0D8-IMG_7709.HEIC.jpg",
-        "lat": 37.790558,
-        "lon": -122.426247,
-        "progress": 0.0,
-        "capturedAt": "2025-12-15 03:24:42",
-        "score": 3.908,
-        "distanceKm": 2.33,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/strava/16745269392/02-A8BA5CC1-IMG_7706.HEIC.jpg",
-        "lat": 37.766438,
-        "lon": -122.494705,
-        "progress": 0.9524,
-        "capturedAt": "2025-12-15 01:10:40",
-        "score": 4.6,
-        "distanceKm": 0.04,
-        "width": 3024,
-        "height": 4032
-      }
-    ],
     "16385276341": [
       {
         "src": "/data/trip-photos/strava/16385276341/01-C551D2CD-IMG_6644.HEIC.jpg",
@@ -3903,17 +2203,6 @@
       }
     ],
     "16352473630": [
-      {
-        "src": "/data/trip-photos/strava/16352473630/01-66C2F1EF-IMG_6608.HEIC.jpg",
-        "lat": 39.940205,
-        "lon": -105.125167,
-        "progress": 0.0,
-        "capturedAt": "2025-11-04 11:48:34",
-        "score": 4.434,
-        "distanceKm": 1.1,
-        "width": 4284,
-        "height": 5712
-      },
       {
         "src": "/data/trip-photos/strava/16352473630/02-4135DD1D-IMG_6611.HEIC.jpg",
         "lat": 39.955867,
@@ -3998,54 +2287,6 @@
         "height": 4032
       }
     ],
-    "16045212854": [
-      {
-        "src": "/data/trip-photos/strava/16045212854/01-B596E528-IMG_4715.HEIC.jpg",
-        "lat": 37.785662,
-        "lon": -122.443328,
-        "progress": 0.5187,
-        "capturedAt": "2025-10-05 20:22:52",
-        "score": 3.35,
-        "distanceKm": 2.21,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/strava/16045212854/02-372BC8A4-IMG_4734.HEIC.jpg",
-        "lat": 37.790542,
-        "lon": -122.42627,
-        "progress": 0.5927,
-        "capturedAt": "2025-10-06 03:09:31",
-        "score": 4.499,
-        "distanceKm": 1.65,
-        "width": 3024,
-        "height": 4032
-      }
-    ],
-    "15894255150": [
-      {
-        "src": "/data/trip-photos/strava/15894255150/01-1C122A43-IMG_4481.HEIC.jpg",
-        "lat": 37.790547,
-        "lon": -122.426255,
-        "progress": 0.0,
-        "capturedAt": "2025-09-21 20:45:47",
-        "score": 3.997,
-        "distanceKm": 1.04,
-        "width": 4284,
-        "height": 5712
-      },
-      {
-        "src": "/data/trip-photos/strava/15894255150/02-B1A87F69-IMG_4474.HEIC.jpg",
-        "lat": 37.787663,
-        "lon": -122.413125,
-        "progress": 0.0,
-        "capturedAt": "2025-09-21 07:54:32",
-        "score": 3.821,
-        "distanceKm": 1.93,
-        "width": 4284,
-        "height": 5712
-      }
-    ],
     "15483221463": [
       {
         "src": "/data/trip-photos/strava/15483221463/01-552F4247-IMG_3930.HEIC.jpg",
@@ -4094,30 +2335,6 @@
         "height": 4032
       }
     ],
-    "15246751841": [
-      {
-        "src": "/data/trip-photos/strava/15246751841/01-74120AC9-IMG_3294.HEIC.jpg",
-        "lat": 37.808505,
-        "lon": -122.475992,
-        "progress": 0.0115,
-        "capturedAt": "2025-07-26 15:27:18",
-        "score": 4.446,
-        "distanceKm": 2.6,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/strava/15246751841/02-66654B46-IMG_3307.HEIC.jpg",
-        "lat": 37.903012,
-        "lon": -122.61532,
-        "progress": 0.9499,
-        "capturedAt": "2025-07-26 21:33:41",
-        "score": 4.363,
-        "distanceKm": 0.0,
-        "width": 3024,
-        "height": 4032
-      }
-    ],
     "15172098389": [
       {
         "src": "/data/trip-photos/strava/15172098389/01-DB5FA665-IMG_3062.HEIC.jpg",
@@ -4138,19 +2355,6 @@
         "capturedAt": "2025-07-19 23:08:22",
         "score": 7.018,
         "distanceKm": 0.0,
-        "width": 3024,
-        "height": 4032
-      }
-    ],
-    "15104557817": [
-      {
-        "src": "/data/trip-photos/strava/15104557817/01-A32FFBFB-IMG_2811.HEIC.jpg",
-        "lat": 37.929195,
-        "lon": -122.577713,
-        "progress": 0.1176,
-        "capturedAt": "2025-07-13 16:47:25",
-        "score": 4.217,
-        "distanceKm": 0.01,
         "width": 3024,
         "height": 4032
       }
@@ -4310,17 +2514,6 @@
         "distanceKm": 3.22,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/strava/13329740249/02-BF9021C1-IMG_5940.HEIC.jpg",
-        "lat": 37.788608,
-        "lon": -122.430113,
-        "progress": 0.0,
-        "capturedAt": "2025-01-11 01:27:27",
-        "score": 4.024,
-        "distanceKm": 7.16,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "13268025917": [
@@ -4476,17 +2669,6 @@
         "capturedAt": "2024-11-09 16:25:47",
         "score": 6.148,
         "distanceKm": 1.03,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/strava/12864006849/02-A956C981-IMG_3814.HEIC.jpg",
-        "lat": 37.842922,
-        "lon": -122.539397,
-        "progress": 0.7981,
-        "capturedAt": "2024-11-09 19:54:24",
-        "score": 5.777,
-        "distanceKm": 0.0,
         "width": 3024,
         "height": 4032
       }
@@ -4827,17 +3009,6 @@
         "distanceKm": 0.07,
         "width": 3024,
         "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/strava/11342021262/02-012365A2-IMG_9240.HEIC.jpg",
-        "lat": 37.761642,
-        "lon": -122.421417,
-        "progress": 1.0,
-        "capturedAt": "2024-05-06 02:12:42",
-        "score": 5.882,
-        "distanceKm": 6.97,
-        "width": 2316,
-        "height": 3088
       }
     ],
     "11226821298": [
@@ -4923,17 +3094,6 @@
         "distanceKm": 0.0,
         "width": 4032,
         "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/strava/10789620775/02-2B2D6B50-IMG_7874.HEIC.jpg",
-        "lat": 37.743003,
-        "lon": -122.507592,
-        "progress": 0.6996,
-        "capturedAt": "2024-02-18 17:00:41",
-        "score": 5.166,
-        "distanceKm": 0.0,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "10743492556": [
@@ -4945,17 +3105,6 @@
         "capturedAt": "2024-02-11 18:16:35",
         "score": 5.051,
         "distanceKm": 0.0,
-        "width": 3024,
-        "height": 4032
-      },
-      {
-        "src": "/data/trip-photos/strava/10743492556/02-9FD2FA86-IMG_7815.HEIC.jpg",
-        "lat": 37.766362,
-        "lon": -122.4572,
-        "progress": 0.7844,
-        "capturedAt": "2024-02-11 18:16:16",
-        "score": 5.016,
-        "distanceKm": 0.01,
         "width": 3024,
         "height": 4032
       }
@@ -5019,17 +3168,6 @@
         "distanceKm": 0.0,
         "width": 4032,
         "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/strava/10471081760/02-EAFDD1AE-IMG_7128.HEIC.jpg",
-        "lat": 37.769333,
-        "lon": -122.447905,
-        "progress": 1.0,
-        "capturedAt": "2024-01-01 03:48:56",
-        "score": 4.944,
-        "distanceKm": 1.08,
-        "width": 4032,
-        "height": 3024
       }
     ],
     "10180408518": [
@@ -5043,17 +3181,6 @@
         "distanceKm": 0.0,
         "width": 4032,
         "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/strava/10180408518/02-586C7313-IMG_6555.HEIC.jpg",
-        "lat": 37.769283,
-        "lon": -122.44787,
-        "progress": 0.5926,
-        "capturedAt": "2023-11-08 18:54:43",
-        "score": 2.979,
-        "distanceKm": 0.76,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "10161441141": [
@@ -5129,17 +3256,6 @@
       }
     ],
     "9817895547": [
-      {
-        "src": "/data/trip-photos/strava/9817895547/01-E344E03E-IMG_5549.HEIC.jpg",
-        "lat": 37.987072,
-        "lon": -122.589042,
-        "progress": 0.2336,
-        "capturedAt": "2023-09-09 20:45:35",
-        "score": 5.189,
-        "distanceKm": 0.0,
-        "width": 3024,
-        "height": 4032
-      },
       {
         "src": "/data/trip-photos/strava/9817895547/02-D8580E64-IMG_5546.HEIC.jpg",
         "lat": 37.854272,
@@ -5235,17 +3351,6 @@
         "distanceKm": 0.01,
         "width": 4032,
         "height": 3024
-      },
-      {
-        "src": "/data/trip-photos/strava/8980718925/02-E587C9A8-IMG_4416.HEIC.jpg",
-        "lat": 37.332972,
-        "lon": -122.087058,
-        "progress": 0.3367,
-        "capturedAt": "2023-04-29 20:45:59",
-        "score": 4.018,
-        "distanceKm": 0.01,
-        "width": 3024,
-        "height": 4032
       }
     ],
     "8856917789": [

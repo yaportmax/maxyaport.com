@@ -13,6 +13,9 @@
     "travel:routes": "python3 scripts/build-trip-routes.py",
     "travel:race-routes": "python3 scripts/build-race-routes.py",
     "travel:photos": "python3 scripts/build-trip-photos.py",
+    "travel:photos:prune": "python3 scripts/prune-trip-photo-manifest.py",
+    "travel:photos:check": "python3 scripts/prune-trip-photo-manifest.py --check",
+    "travel:check": "python3 scripts/check-travel-scrubber.py && python3 scripts/prune-trip-photo-manifest.py --check",
     "travel:strava-heatmap": "python3 scripts/build-strava-line-heatmap.py && python3 scripts/build-strava-line-heatmap.py --out public/data/strava-line-heatmap-overview.geojson --precision 3 --chunk-size 30 --point-step 6 --coordinate-precision 3 && python3 scripts/build-route-tiles.py --source public/data/strava-line-heatmap.geojson --out-dir public/data/route-tiles/strava-heat --zoom 4"
   },
   "dependencies": {

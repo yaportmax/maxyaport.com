@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import math
 import shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -75,16 +76,20 @@ def gpx_coordinates(path: Path) -> list[list[float]]:
     tree = ET.parse(path)
     root = tree.getroot()
     coordinates: list[list[float]] = []
+    point_index = 0
 
     for element in root.iter():
         tag = element.tag.rsplit("}", 1)[-1]
         if tag not in {"trkpt", "rtept"}:
             continue
+        point_index += 1
         try:
             lat = float(element.attrib["lat"])
             lon = float(element.attrib["lon"])
-        except (KeyError, ValueError):
-            continue
+        except (KeyError, ValueError) as error:
+            raise ValueError(f"{path}: invalid GPX point #{point_index}") from error
+        if not math.isfinite(lat) or not math.isfinite(lon) or not (-90 <= lat <= 90 and -180 <= lon <= 180):
+            raise ValueError(f"{path}: GPX point #{point_index} out of bounds: {lon}, {lat}")
         coordinates.append([round(lon, 6), round(lat, 6)])
 
     return coordinates
@@ -145,14 +150,13 @@ def main() -> None:
             public_paths.append(static_path)
             source_paths.append(ROOT / "public" / static_path.lstrip("/"))
 
-        if public_paths:
-            race["gpxPaths"] = public_paths
-            race["raceRouteSource"] = "strava" if race["stravaActivityIds"] else "static-gpx"
+        validated_public_paths: list[str] = []
 
         for segment_index, (public_path, source_path) in enumerate(zip(public_paths, source_paths)):
             coordinates = gpx_coordinates(source_path)
             if len(coordinates) < 2:
-                continue
+                raise SystemExit(f"{public_path} has fewer than 2 coordinates for {slug}")
+            validated_public_paths.append(public_path)
 
             activity_id = None
             sport_type = None
@@ -183,6 +187,10 @@ def main() -> None:
                     },
                 }
             )
+
+        if validated_public_paths:
+            race["gpxPaths"] = validated_public_paths
+            race["raceRouteSource"] = "strava" if race["stravaActivityIds"] else "static-gpx"
 
     RACE_ROUTES_PATH.write_text(
         json.dumps({"type": "FeatureCollection", "features": route_features}, indent=2) + "\n"

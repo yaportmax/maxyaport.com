@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 from pathlib import Path
 
@@ -83,6 +84,16 @@ def decode_polyline(polyline: str) -> list[tuple[float, float]]:
         points.append((lat / 1e5, lon / 1e5))
 
     return points
+
+
+def valid_activity_coordinate(lat: float, lon: float) -> bool:
+    return math.isfinite(lat) and math.isfinite(lon) and -90 <= lat <= 90 and -180 <= lon <= 180
+
+
+def validate_route_points(points: list[tuple[float, float]], activity_id: str) -> None:
+    for index, (lat, lon) in enumerate(points):
+        if not valid_activity_coordinate(float(lat), float(lon)):
+            raise SystemExit(f"Activity {activity_id} has invalid route coordinate #{index}: {lon}, {lat}")
 
 
 def public_route_points(points: list[tuple[float, float]], max_points: int) -> list[tuple[float, float]]:
@@ -282,6 +293,11 @@ def main() -> None:
         polyline = (activity.get("map") or {}).get("summary_polyline")
         if not polyline:
             continue
+        start_date = activity.get("start_date_local") or activity.get("start_date")
+        if not activity_id:
+            raise SystemExit("Strava activity route is missing an id.")
+        if not start_date:
+            raise SystemExit(f"Activity {activity_id} has a route but no start date.")
 
         try:
             points = public_route_points(decode_polyline(polyline), args.max_points)
@@ -289,6 +305,7 @@ def main() -> None:
             continue
         if len(points) < 2:
             continue
+        validate_route_points(points, activity_id)
 
         coordinates = [[round(lon, 5), round(lat, 5)] for lat, lon in points]
         features.append(
@@ -301,7 +318,7 @@ def main() -> None:
                     "type": activity_type,
                     "sportType": sport_type,
                     "activityGroup": activity_group(activity_type, sport_type),
-                    "startDate": activity.get("start_date_local") or activity.get("start_date"),
+                    "startDate": start_date,
                     "distanceMeters": round(float(activity.get("distance") or 0), 1),
                     "movingTimeSeconds": round(float(activity.get("moving_time") or 0), 1),
                     "elapsedTimeSeconds": round(float(activity.get("elapsed_time") or 0), 1),

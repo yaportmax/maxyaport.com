@@ -99,9 +99,13 @@ def sampled_coordinates(coordinates: list[list[float]], max_points: int) -> list
     return sampled
 
 
+def normalize_longitude(longitude: float) -> float:
+    return ((((longitude + 180) % 360) + 360) % 360) - 180
+
+
 def rounded_coordinates(coordinates: list[list[float]], max_points: int) -> list[list[float]]:
     return [
-        [round(float(lon), 5), round(float(lat), 5)]
+        [round(normalize_longitude(float(lon)), 5), round(float(lat), 5)]
         for lon, lat in sampled_coordinates(coordinates, max_points)
     ]
 
@@ -245,8 +249,8 @@ def feature_for_segment(
         "routeKey": key,
     }
     if mode == "drive":
-        properties["routeProvider"] = "mapbox-directions"
-        properties["routeProfile"] = profile
+        properties["routeProvider"] = segment.get("routeProvider") or "mapbox-directions"
+        properties["routeProfile"] = segment.get("routeProfile") or profile
     if distance:
         properties["distanceMeters"] = round(distance)
     if duration:
@@ -257,9 +261,25 @@ def feature_for_segment(
 
     return {
         "type": "Feature",
-        "geometry": {"type": "LineString", "coordinates": coordinates},
+        "geometry": {"type": "LineString", "coordinates": rounded_coordinates(coordinates, len(coordinates))},
         "properties": properties,
     }
+
+
+def validate_output_features(features: list[dict[str, Any]]) -> None:
+    errors: list[str] = []
+    for feature_index, feature in enumerate(features):
+        properties = feature.get("properties") or {}
+        label = f"{properties.get('slug', 'unknown')} segment {properties.get('segmentIndex', feature_index)}"
+        coordinates = feature.get("geometry", {}).get("coordinates")
+        if not valid_coordinates(coordinates):
+            errors.append(f"{label}: invalid coordinates")
+            continue
+        for coordinate_index, (lon, lat) in enumerate(coordinates):
+            if not (-180 <= lon <= 180 and -90 <= lat <= 90):
+                errors.append(f"{label}: coordinate {coordinate_index} out of bounds: {[lon, lat]}")
+    if errors:
+        raise SystemExit("Invalid generated trip routes:\n" + "\n".join(errors[:40]))
 
 
 def load_cached_features() -> dict[str, dict[str, Any]]:
@@ -302,6 +322,11 @@ def main() -> None:
     parser.add_argument("--max-points", type=int, default=DEFAULT_MAX_POINTS, help="Maximum coordinates stored per leg.")
     parser.add_argument("--sleep", type=float, default=0.15, help="Delay between Directions API requests.")
     parser.add_argument(
+        "--allow-fallback",
+        action="store_true",
+        help="Publish straight-line fallback drive legs when Mapbox routing fails.",
+    )
+    parser.add_argument(
         "--strip-inline",
         action="store_true",
         help="Remove generated segment coordinate fields from src/data/travel-map.json after writing GeoJSON.",
@@ -323,7 +348,14 @@ def main() -> None:
     failed = 0
 
     for trip in data.get("trips", []):
-        nodes = [node for node in trip.get("routeNodes", []) if valid_node(node)]
+        raw_nodes = trip.get("routeNodes", [])
+        if not isinstance(raw_nodes, list):
+            raw_nodes = []
+        invalid_nodes = [(index, node) for index, node in enumerate(raw_nodes) if not valid_node(node)]
+        if invalid_nodes:
+            details = ", ".join(f"#{index}: {node!r}" for index, node in invalid_nodes[:6])
+            raise SystemExit(f"Invalid route node(s) for {trip.get('slug', trip.get('title', 'unknown'))}: {details}")
+        nodes = raw_nodes
         if len(nodes) < 2:
             continue
 
@@ -411,11 +443,13 @@ def main() -> None:
                 )
             except (urllib.error.URLError, TimeoutError, RuntimeError) as error:
                 failed += 1
+                if not args.allow_fallback:
+                    raise SystemExit(f"Drive route failed for {label}: {error}")
                 print(f"warning: {label}: {error}")
                 features.append(
                     feature_for_segment(
                         trip=trip,
-                        segment=segment,
+                        segment={**segment, "routeProvider": "fallback", "routeProfile": "straight-line"},
                         index=index,
                         mode=mode,
                         start=start,
@@ -447,6 +481,7 @@ def main() -> None:
             if args.sleep > 0:
                 time.sleep(args.sleep)
 
+    validate_output_features(features)
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_text(json.dumps({"type": "FeatureCollection", "features": features}, indent=2) + "\n")
 
