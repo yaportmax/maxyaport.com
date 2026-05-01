@@ -845,6 +845,9 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   });
 
   map.scrollZoom.enable();
+  map.dragRotate?.enable?.();
+  map.touchZoomRotate?.enable?.();
+  map.touchZoomRotate?.enableRotation?.();
 
   map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), "top-right");
 
@@ -3354,10 +3357,10 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     updatePlaybackPhotoCallout(showPopup ? state : null);
     if (syncRail && itemChanged) scrollTimelineToValue(clampedValue, "smooth");
     if (showPopup) updatePlaybackSegmentHighlight(state);
-    if (trackCamera && !(timelinePlaybackActive && playbackCameraManualOverride)) {
+    if (trackCamera && !(timelinePlaybackActive && (playbackCameraManualOverride || playbackCameraUserInteracting))) {
       trackScrubCamera(state, itemChanged, cinematicPlaybackCameraEnabled);
     }
-    if (showPopup && !(timelinePlaybackActive && playbackCameraManualOverride)) showScrubPlaybackPopup(state);
+    if (showPopup && !(timelinePlaybackActive && (playbackCameraManualOverride || playbackCameraUserInteracting))) showScrubPlaybackPopup(state);
   };
 
   let timelinePlaybackFrame = 0;
@@ -5344,7 +5347,6 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   const notePlaybackCameraUserStart = (event) => {
     if (!event?.originalEvent || !timelinePlaybackActive) return;
     playbackCameraUserInteracting = true;
-    playbackCameraManualOverride = true;
     playbackCameraOffsetActive = true;
     renderTimelineCameraResetButton();
     clearScheduledPopup();
@@ -5357,6 +5359,11 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     }, 420);
     schedulePlaybackCameraOffsetUpdate();
   };
+  const notePlaybackCameraManualPanStart = (event) => {
+    if (!event?.originalEvent || !timelinePlaybackActive) return;
+    playbackCameraManualOverride = true;
+    notePlaybackCameraUserStart(event);
+  };
   const notePlaybackCameraUserChange = (event) => {
     if (!timelinePlaybackActive) return;
     if (event?.originalEvent) {
@@ -5367,9 +5374,10 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     schedulePlaybackCameraOffsetUpdate();
   };
   ["rotatestart", "pitchstart", "zoomstart"].forEach((eventName) => map.on(eventName, notePlaybackCameraUserStart));
+  map.on("dragstart", notePlaybackCameraManualPanStart);
   ["rotate", "pitch", "zoom", "moveend"].forEach((eventName) => map.on(eventName, notePlaybackCameraUserChange));
   const mapCanvas = map.getCanvas?.();
-  ["wheel", "pointerdown", "touchstart"].forEach((eventName) => {
+  ["wheel"].forEach((eventName) => {
     mapCanvas?.addEventListener(eventName, (event) => notePlaybackCameraUserStart({ originalEvent: event }), { passive: true });
   });
 
