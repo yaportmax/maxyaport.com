@@ -518,128 +518,38 @@ const travel = [
     <RecentList items={recent} />
   </section>
 
-  <section class="about-tabs" aria-label="About details">
-    <div class="tab-list" role="tablist" aria-label="About sections">
-      <button
-        id="tab-work"
-        class="tab-button is-active"
-        type="button"
-        role="tab"
-        aria-selected="true"
-        aria-controls="panel-work"
-        data-about-tab="work"
-      >
-        Work
-      </button>
-      <button
-        id="tab-races"
-        class="tab-button"
-        type="button"
-        role="tab"
-        aria-selected="false"
-        aria-controls="panel-races"
-        data-about-tab="races"
-      >
-        Races
-      </button>
-      <button
-        id="tab-travel"
-        class="tab-button"
-        type="button"
-        role="tab"
-        aria-selected="false"
-        aria-controls="panel-travel"
-        data-about-tab="travel"
-      >
-        Journey
-      </button>
-    </div>
-
-    <section
-      id="panel-work"
-      class="tab-panel work-list"
-      role="tabpanel"
-      aria-labelledby="tab-work"
-      data-about-panel="work"
-    >
+  <section class="about-work" aria-labelledby="work-title">
+    <h2 id="work-title">Work</h2>
+    <div class="work-list">
       <div class="work-row">
         <div>
-          <p><a href="https://www.magnite.com/">Magnite</a></p>
+          <p><a href="https://www.magnite.com/" target="_blank" rel="noreferrer noopener">Magnite</a></p>
           <small>Product Manager</small>
         </div>
         <span>2025 - Present</span>
       </div>
       <div class="work-row">
         <div>
-          <p><a href="https://pubmatic.com/">PubMatic</a></p>
+          <p><a href="https://pubmatic.com/" target="_blank" rel="noreferrer noopener">PubMatic</a></p>
           <small>Business Operations Manager</small>
         </div>
         <span>2024 - 2025</span>
       </div>
       <div class="work-row">
         <div>
-          <p><a href="https://www.pwc.com/">PwC</a></p>
+          <p><a href="https://www.pwc.com/" target="_blank" rel="noreferrer noopener">PwC</a></p>
           <small>M&A Valuations Consultant</small>
         </div>
         <span>2022 - 2024</span>
       </div>
       <div class="work-row">
         <div>
-          <p><a href="https://www.calpoly.edu/">Cal Poly SLO</a></p>
+          <p><a href="https://www.calpoly.edu/" target="_blank" rel="noreferrer noopener">Cal Poly SLO</a></p>
           <small>Economics & Finance</small>
         </div>
         <span>2018 - 2022</span>
       </div>
-    </section>
-
-    <section
-      id="panel-races"
-      class="tab-panel race-list"
-      role="tabpanel"
-      aria-labelledby="tab-races"
-      data-about-panel="races"
-      hidden
-    >
-      {
-        races.map((race) => (
-          <div class="race-row">
-            <div>
-              <p>
-                <a href={race.href} target="_blank" rel="noreferrer">
-                  {race.title}
-                </a>
-              </p>
-              <small>{race.detail}</small>
-            </div>
-            <div class="race-result">
-              <span>{race.result}</span>
-              {race.rank && <small>{race.rank}</small>}
-            </div>
-          </div>
-        ))
-      }
-    </section>
-
-    <section
-      id="panel-travel"
-      class="tab-panel travel-list"
-      role="tabpanel"
-      aria-labelledby="tab-travel"
-      data-about-panel="travel"
-      hidden
-    >
-      {
-        travel.map((trip) => (
-          <div class="travel-row">
-            <div>
-              <p><a href={`/travel/#${tripSlug(trip.date, trip.title)}`}>{trip.title}</a></p>
-              <small>{trip.detail}</small>
-            </div>
-            <span>{trip.date}</span>
-          </div>
-        ))
-      }
-    </section>
+    </div>
   </section>
 </section>
 
@@ -735,7 +645,6 @@ const travel = [
 
     const renderAscii = (time = 0) => {
       const baseColor = getColor("--ascii-main", "#f4efe4");
-      const hotColor = getColor("--ascii-hot", "#f28f45");
       const sideColor = getColor("--ascii-side", "rgba(159, 183, 125, 0.42)");
       const shadowColor = getColor("--ascii-shadow", "rgba(159, 183, 125, 0.14)");
       const idleTiltX = Math.sin(time * 0.00042) * 3.6;
@@ -776,11 +685,10 @@ const travel = [
           if (alpha < 0.08) continue;
           const distance = Math.hypot(x - pointer.x, y - pointer.y);
           const hover = pointer.active ? Math.max(0, 1 - distance / 110) : 0;
-          const pulse = pointer.pulse > 0 ? Math.max(0, 1 - distance / pointer.pulse) : 0;
-          const brightness = Math.max(0, Math.min(1, alpha + hover * 0.24 + pulse * 0.32));
+          const brightness = Math.max(0, Math.min(1, alpha));
           const glyph = faceGlyphs[Math.min(faceGlyphs.length - 1, Math.floor(brightness * faceGlyphs.length))];
-          context.globalAlpha = Math.max(0.5, Math.min(1, alpha + hover * 0.22 + pulse * 0.3));
-          context.fillStyle = hover > 0.16 || pulse > 0.08 ? hotColor : baseColor;
+          context.globalAlpha = Math.max(0.5, Math.min(1, alpha));
+          context.fillStyle = baseColor;
           context.fillText(glyph, x - hover * 5 + wave, y - hover * 2);
         }
       }
@@ -822,22 +730,4 @@ const travel = [
     });
   }
 
-  const tabs = document.querySelectorAll("[data-about-tab]");
-  const panels = document.querySelectorAll("[data-about-panel]");
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const activeTab = tab.getAttribute("data-about-tab");
-
-      tabs.forEach((item) => {
-        const isActive = item === tab;
-        item.classList.toggle("is-active", isActive);
-        item.setAttribute("aria-selected", String(isActive));
-      });
-
-      panels.forEach((panel) => {
-        panel.hidden = panel.getAttribute("data-about-panel") !== activeTab;
-      });
-    });
-  });
 </script>

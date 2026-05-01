@@ -1,12 +1,9 @@
 ---
-import { navItems, site } from "../lib/site";
+import { site } from "../lib/site";
 ---
 
 <footer class="site-footer">
   <div class="site-footer__inner shell">
     <span>© {new Date().getFullYear()} {site.name}</span>
-    <nav aria-label="Footer">
-      {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
-    </nav>
   </div>
 </footer>
