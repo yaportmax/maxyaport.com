@@ -504,12 +504,24 @@ const travel = [
 <section class="about-page" aria-labelledby="about-title">
   <header class="about-hero">
     <h1 id="about-title" class="sr-only">Max Yaport</h1>
-    <div class="ascii-title" data-ascii-title aria-hidden="true">
-      <canvas class="ascii-title__canvas" data-ascii-canvas></canvas>
+    <div class="ascii-title" data-ascii-title>
+      <canvas class="ascii-title__canvas" data-ascii-canvas aria-hidden="true"></canvas>
+      <button class="ascii-pong-trigger" type="button" data-pong-trigger aria-label="Play ASCII Pong">
+        <svg aria-hidden="true" viewBox="0 0 28 28" fill="none">
+          <circle cx="10.5" cy="9.5" r="5.2" stroke="currentColor" stroke-width="2" />
+          <path d="M14 14l6.5 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <circle cx="21" cy="7" r="1.9" fill="currentColor" />
+        </svg>
+      </button>
     </div>
-    <div class="about-intro" aria-label="Intro">
-      <p>Obsessed with running, biking, and the outdoors.</p>
-      <p>Spending too much free time exploring AI.</p>
+    <div class="about-intro" data-about-intro aria-label="Intro">
+      <div class="about-intro__copy" data-intro-copy>
+        <p>Obsessed with running, biking, and the outdoors.</p>
+        <p>Spending too much free time exploring AI.</p>
+      </div>
+      <div class="ascii-pong" data-ascii-pong hidden>
+        <pre class="ascii-pong__screen" data-pong-screen tabindex="0" aria-label="ASCII Pong game"></pre>
+      </div>
     </div>
   </header>
 
@@ -556,6 +568,10 @@ const travel = [
 <script>
   const asciiRoot = document.querySelector("[data-ascii-title]");
   const asciiCanvas = document.querySelector("[data-ascii-canvas]");
+  const pongTrigger = document.querySelector("[data-pong-trigger]");
+  const introCopy = document.querySelector("[data-intro-copy]");
+  const pongGame = document.querySelector("[data-ascii-pong]");
+  const pongScreen = document.querySelector("[data-pong-screen]");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   if (asciiRoot && asciiCanvas instanceof HTMLCanvasElement) {
@@ -643,6 +659,22 @@ const travel = [
       return maskData[(sampleY * width + sampleX) * 4 + 3] / 255;
     };
 
+    const asciiMotionAt = (x, y, time) => {
+      if (prefersReducedMotion.matches) return { sampleX: x, sampleY: y, drawX: 0, drawY: 0 };
+      const step = Math.floor(time / 150);
+      const row = Math.floor(y / Math.max(1, cellHeight));
+      const column = Math.floor(x / Math.max(1, cellWidth));
+      const rowShift = Math.round(Math.sin(step * 0.52 + row * 0.9) * 2) * cellWidth * 0.44;
+      const columnLift = Math.round(Math.cos(step * 0.4 + column * 0.31) * 1) * cellHeight * 0.3;
+      const crawl = Math.sin(time * 0.0012 + y * 0.045) * cellWidth * 0.5;
+      return {
+        sampleX: x - rowShift - crawl,
+        sampleY: y - columnLift,
+        drawX: rowShift * 0.52 + crawl * 0.48,
+        drawY: columnLift * 0.5,
+      };
+    };
+
     const renderAscii = (time = 0) => {
       const baseColor = getColor("--ascii-main", "#f4efe4");
       const sideColor = getColor("--ascii-side", "rgba(159, 183, 125, 0.42)");
@@ -666,13 +698,14 @@ const travel = [
         for (let y = cellHeight * 0.5; y < height; y += cellHeight) {
           const rowBend = prefersReducedMotion.matches ? 0 : Math.sin(time * 0.0007 + y * 0.027) * 1.1;
           for (let x = cellWidth * 0.5; x < width; x += cellWidth) {
-            const alpha = alphaAt(x - layer * 0.9, y - layer * 0.55);
+            const motion = asciiMotionAt(x, y, time);
+            const alpha = alphaAt(motion.sampleX - layer * 0.9, motion.sampleY - layer * 0.55);
             if (alpha < 0.18) continue;
             const distance = Math.hypot(x - pointer.x, y - pointer.y);
             const localLift = pointer.active ? Math.max(0, 1 - distance / 130) : 0;
             const offsetX = depthX * layerRatio + rowBend - localLift * 8;
             const offsetY = depthY * layerRatio - localLift * 4;
-            context.fillText(layer % 2 === 0 ? "\\" : "|", x + offsetX, y + offsetY);
+            context.fillText(layer % 2 === 0 ? "\\" : "|", x + motion.drawX + offsetX, y + motion.drawY + offsetY);
           }
         }
       }
@@ -681,15 +714,17 @@ const travel = [
       for (let y = cellHeight * 0.5; y < height; y += cellHeight) {
         const wave = prefersReducedMotion.matches ? 0 : Math.sin(time * 0.0006 + y * 0.025) * faceSkew;
         for (let x = cellWidth * 0.5; x < width; x += cellWidth) {
-          const alpha = alphaAt(x, y);
+          const motion = asciiMotionAt(x, y, time);
+          const alpha = alphaAt(motion.sampleX, motion.sampleY);
           if (alpha < 0.08) continue;
           const distance = Math.hypot(x - pointer.x, y - pointer.y);
           const hover = pointer.active ? Math.max(0, 1 - distance / 110) : 0;
           const brightness = Math.max(0, Math.min(1, alpha));
-          const glyph = faceGlyphs[Math.min(faceGlyphs.length - 1, Math.floor(brightness * faceGlyphs.length))];
+          const glyphOffset = prefersReducedMotion.matches ? 0 : Math.floor(time / 220 + x / Math.max(1, cellWidth) + y / Math.max(1, cellHeight));
+          const glyph = faceGlyphs[Math.min(faceGlyphs.length - 1, Math.floor(brightness * faceGlyphs.length + glyphOffset) % faceGlyphs.length)];
           context.globalAlpha = Math.max(0.5, Math.min(1, alpha));
           context.fillStyle = baseColor;
-          context.fillText(glyph, x - hover * 5 + wave, y - hover * 2);
+          context.fillText(glyph, x + motion.drawX - hover * 5 + wave, y + motion.drawY - hover * 2);
         }
       }
 
@@ -727,6 +762,152 @@ const travel = [
       pointer.active = false;
       pointer.pulse = 0;
       if (prefersReducedMotion.matches) renderAscii();
+    });
+  }
+
+  if (
+    pongTrigger instanceof HTMLButtonElement &&
+    introCopy instanceof HTMLElement &&
+    pongGame instanceof HTMLElement &&
+    pongScreen instanceof HTMLElement
+  ) {
+    const state = {
+      cols: 46,
+      rows: 9,
+      playerY: 3,
+      botY: 3,
+      ballX: 23,
+      ballY: 4,
+      vx: 19,
+      vy: 8,
+      scoreLeft: 0,
+      scoreRight: 0,
+      frame: 0,
+      lastTime: 0,
+      running: false,
+    };
+    const paddle = ["M", "A", "X"];
+    const botPaddle = ["Y", "A", "P"];
+
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+    const sizePong = () => {
+      const available = Math.max(280, pongGame.getBoundingClientRect().width || 420);
+      state.cols = clamp(Math.floor(available / 9), 34, 58);
+      state.rows = window.innerWidth < 560 ? 8 : 9;
+      state.playerY = clamp(state.playerY, 1, state.rows - paddle.length - 1);
+      state.botY = clamp(state.botY, 1, state.rows - botPaddle.length - 1);
+    };
+
+    const resetBall = (direction = 1) => {
+      state.ballX = Math.floor(state.cols / 2);
+      state.ballY = Math.floor(state.rows / 2);
+      state.vx = direction * 18;
+      state.vy = (Math.random() > 0.5 ? 1 : -1) * 7;
+    };
+
+    const drawPong = () => {
+      const grid = Array.from({ length: state.rows }, () => Array.from({ length: state.cols }, () => " "));
+      const center = Math.floor(state.cols / 2);
+      const score = `MAX ${state.scoreLeft} : ${state.scoreRight} YAP`;
+      const scoreX = Math.max(0, Math.floor((state.cols - score.length) / 2));
+      for (let index = 0; index < score.length && scoreX + index < state.cols; index += 1) {
+        grid[0][scoreX + index] = score[index];
+      }
+      for (let row = 1; row < state.rows; row += 1) {
+        if (row % 2 === 0) grid[row][center] = ".";
+      }
+      paddle.forEach((char, index) => {
+        grid[Math.round(state.playerY) + index][1] = char;
+      });
+      botPaddle.forEach((char, index) => {
+        grid[Math.round(state.botY) + index][state.cols - 2] = char;
+      });
+      const ballX = clamp(Math.round(state.ballX), 2, state.cols - 3);
+      const ballY = clamp(Math.round(state.ballY), 1, state.rows - 1);
+      grid[ballY][ballX] = "o";
+      pongScreen.textContent = grid.map((row) => row.join("")).join("\n");
+    };
+
+    const movePlayerTo = (clientY) => {
+      const rect = pongScreen.getBoundingClientRect();
+      const ratio = (clientY - rect.top) / Math.max(1, rect.height);
+      state.playerY = clamp(Math.round(ratio * state.rows) - 1, 1, state.rows - paddle.length - 1);
+    };
+
+    const tickPong = (time = 0) => {
+      if (!state.running) return;
+      if (!state.lastTime) state.lastTime = time;
+      const dt = Math.min(0.04, Math.max(0.012, (time - state.lastTime) / 1000));
+      state.lastTime = time;
+      state.botY += (state.ballY - state.botY - botPaddle.length / 2) * Math.min(1, dt * 4.2);
+      state.botY = clamp(state.botY, 1, state.rows - botPaddle.length - 1);
+      state.ballX += state.vx * dt;
+      state.ballY += state.vy * dt;
+
+      if (state.ballY <= 1 || state.ballY >= state.rows - 1) {
+        state.ballY = clamp(state.ballY, 1, state.rows - 1);
+        state.vy *= -1;
+      }
+
+      const playerHit = state.ballX <= 2 && state.ballY >= state.playerY - 0.4 && state.ballY <= state.playerY + paddle.length - 0.2;
+      const botHit = state.ballX >= state.cols - 3 && state.ballY >= state.botY - 0.4 && state.ballY <= state.botY + botPaddle.length - 0.2;
+      if (playerHit) {
+        state.ballX = 2.2;
+        state.vx = Math.abs(state.vx) + 1.4;
+        state.vy += (state.ballY - state.playerY - 1) * 2.4;
+      } else if (botHit) {
+        state.ballX = state.cols - 3.2;
+        state.vx = -Math.abs(state.vx) - 0.8;
+        state.vy += (state.ballY - state.botY - 1) * 1.8;
+      }
+
+      if (state.ballX < 0) {
+        state.scoreRight += 1;
+        resetBall(1);
+      } else if (state.ballX > state.cols - 1) {
+        state.scoreLeft += 1;
+        resetBall(-1);
+      }
+
+      drawPong();
+      state.frame = window.requestAnimationFrame(tickPong);
+    };
+
+    const startPong = () => {
+      introCopy.hidden = true;
+      pongGame.hidden = false;
+      pongTrigger.setAttribute("aria-pressed", "true");
+      sizePong();
+      resetBall(Math.random() > 0.5 ? 1 : -1);
+      drawPong();
+      pongScreen.focus({ preventScroll: true });
+      if (!state.running) {
+        state.running = true;
+        state.lastTime = 0;
+        state.frame = window.requestAnimationFrame(tickPong);
+      }
+    };
+
+    pongTrigger.addEventListener("click", startPong);
+    pongScreen.addEventListener("pointermove", (event) => movePlayerTo(event.clientY));
+    pongScreen.addEventListener("pointerdown", (event) => {
+      movePlayerTo(event.clientY);
+      pongScreen.focus({ preventScroll: true });
+    });
+    pongScreen.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowUp" || event.key.toLowerCase() === "w") {
+        event.preventDefault();
+        state.playerY = clamp(state.playerY - 1, 1, state.rows - paddle.length - 1);
+      } else if (event.key === "ArrowDown" || event.key.toLowerCase() === "s") {
+        event.preventDefault();
+        state.playerY = clamp(state.playerY + 1, 1, state.rows - paddle.length - 1);
+      }
+    });
+    window.addEventListener("resize", () => {
+      if (!state.running) return;
+      sizePong();
+      drawPong();
     });
   }
 

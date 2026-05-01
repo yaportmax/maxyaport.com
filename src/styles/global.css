@@ -999,6 +999,38 @@ main:has(.about-page) {
   transform: translate3d(0, 0, 0);
 }
 
+.ascii-pong-trigger {
+  position: absolute;
+  right: 4px;
+  bottom: 6px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg) 62%, transparent);
+  color: color-mix(in srgb, var(--accent) 72%, var(--text));
+  opacity: 0.46;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: opacity 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.ascii-pong-trigger:hover,
+.ascii-pong-trigger:focus-visible,
+.ascii-pong-trigger[aria-pressed="true"] {
+  opacity: 1;
+  border-color: color-mix(in srgb, var(--accent) 62%, transparent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.ascii-pong-trigger svg {
+  width: 19px;
+  height: 19px;
+}
+
 .about-intro {
   max-width: 38rem;
   margin: clamp(18px, 3vw, 28px) 0 0;
@@ -1015,6 +1047,42 @@ main:has(.about-page) {
   margin-top: 2px;
 }
 
+.about-intro__copy[hidden],
+.ascii-pong[hidden] {
+  display: none;
+}
+
+.ascii-pong {
+  width: min(100%, 520px);
+}
+
+.ascii-pong__screen {
+  width: 100%;
+  min-height: 8.6rem;
+  margin: 0;
+  padding: 13px 14px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--border));
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--panel) 74%, transparent), color-mix(in srgb, var(--bg) 84%, transparent)),
+    var(--panel);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 1.6vw, 0.9rem);
+  line-height: 1.22;
+  letter-spacing: 0;
+  outline: none;
+  white-space: pre;
+  touch-action: none;
+  user-select: none;
+  box-shadow: inset 0 1px 16px color-mix(in srgb, #000 34%, transparent);
+}
+
+.ascii-pong__screen:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
+}
+
 @media (max-width: 560px) {
   .about-hero {
     padding-top: 0;
@@ -1027,6 +1095,18 @@ main:has(.about-page) {
 
   .about-intro {
     margin-top: 12px;
+  }
+
+  .ascii-pong-trigger {
+    right: 0;
+    bottom: 2px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .ascii-pong__screen {
+    min-height: 7.8rem;
+    padding: 11px 10px;
   }
 }
 
