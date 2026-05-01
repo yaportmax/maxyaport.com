@@ -505,7 +505,7 @@ const travel = [
   <header class="about-hero">
     <h1 id="about-title" class="sr-only">Max Yaport</h1>
     <div class="ascii-title" data-ascii-title>
-      <canvas class="ascii-title__canvas" data-ascii-canvas aria-hidden="true"></canvas>
+      <pre class="ascii-title__text" data-ascii-text aria-hidden="true"></pre>
       <button class="ascii-pong-trigger" type="button" data-pong-trigger aria-label="Play ASCII Pong">
         <svg aria-hidden="true" viewBox="0 0 28 28" fill="none">
           <circle cx="10.5" cy="9.5" r="5.2" stroke="currentColor" stroke-width="2" />
@@ -567,201 +567,84 @@ const travel = [
 
 <script>
   const asciiRoot = document.querySelector("[data-ascii-title]");
-  const asciiCanvas = document.querySelector("[data-ascii-canvas]");
+  const asciiText = document.querySelector("[data-ascii-text]");
   const pongTrigger = document.querySelector("[data-pong-trigger]");
   const introCopy = document.querySelector("[data-intro-copy]");
   const pongGame = document.querySelector("[data-ascii-pong]");
   const pongScreen = document.querySelector("[data-pong-screen]");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  if (asciiRoot && asciiCanvas instanceof HTMLCanvasElement) {
-    const context = asciiCanvas.getContext("2d");
-    const maskCanvas = document.createElement("canvas");
-    const maskContext = maskCanvas.getContext("2d", { willReadFrequently: true });
-    const faceGlyphs = [".", ":", "+", "*"];
-    const pointer = { x: -9999, y: -9999, active: false, pulse: 0 };
-    let width = 0;
-    let height = 0;
-    let dpr = 1;
-    let cellWidth = 8;
-    let cellHeight = 10;
-    let maskData = null;
+  if (asciiRoot instanceof HTMLElement && asciiText instanceof HTMLElement) {
+    const baseArt = [
+      "##     ##    ###    ##     ##",
+      "###   ###   ## ##    ##   ## ",
+      "#### ####  ##   ##    ## ##  ",
+      "## ### ## ##     ##    ###   ",
+      "##     ## #########   ## ##  ",
+      "##     ## ##     ##  ##   ## ",
+      "##     ## ##     ## ##     ##",
+      "",
+      "##    ##    ###    ########   #######  ########  ########",
+      " ##  ##    ## ##   ##     ## ##     ## ##     ##    ##   ",
+      "  ####    ##   ##  ##     ## ##     ## ##     ##    ##   ",
+      "   ##    ##     ## ########  ##     ## ########     ##   ",
+      "   ##    ######### ##        ##     ## ##   ##      ##   ",
+      "   ##    ##     ## ##        ##     ## ##    ##     ##   ",
+      "   ##    ##     ## ##         #######  ##     ##    ##   ",
+    ];
+    const shimmer = ["#", "#", "#", "+", "*"];
+    let pointerRatio = 0;
     let frame = 0;
+    let timer = 0;
 
-    const getColor = (name, fallback) => {
-      const value = window.getComputedStyle(asciiRoot).getPropertyValue(name).trim();
-      return value || fallback;
+    const renderAscii = () => {
+      const shouldAnimate = !prefersReducedMotion.matches;
+      const shifted = baseArt.map((line, row) => {
+        const hoverOffset = Math.round((pointerRatio - 0.5) * 2);
+        const rowOffset = shouldAnimate && row % 4 === frame % 4 ? 1 : 0;
+        const leading = Math.max(0, rowOffset + (row > 7 ? hoverOffset : 0));
+        return `${" ".repeat(leading)}${line.replace(/#/g, (char, index) => {
+          if (!shouldAnimate) return char;
+          const twinkle = (index + row * 7 + frame) % 41 === 0;
+          return twinkle ? shimmer[(index + frame + row) % shimmer.length] : char;
+        })}`;
+      });
+
+      asciiText.textContent = shifted.join("\n");
     };
 
-    const fitFontSize = (fontFamily) => {
-      const isCompact = width < 520;
-      let size = Math.min(width * (isCompact ? 0.28 : 0.25), height * (isCompact ? 0.44 : 0.38), 168);
-      maskContext.font = `900 ${size}px ${fontFamily}`;
-      while (size > 28 && Math.max(maskContext.measureText("MAX").width, maskContext.measureText("YAPORT").width) > width - 20) {
-        size -= 2;
-        maskContext.font = `900 ${size}px ${fontFamily}`;
-      }
-      return size;
-    };
-
-    const drawMask = () => {
-      const fontFamily = window.getComputedStyle(asciiCanvas).fontFamily || "monospace";
-      const fontSize = fitFontSize(fontFamily);
-      const lineGap = fontSize * 0.82;
-      const startX = 14;
-      const topPadding = width < 520 ? 8 : Math.max(10, fontSize * 0.08);
-      const startY = topPadding + fontSize;
-
-      maskContext.clearRect(0, 0, width, height);
-      maskContext.lineJoin = "round";
-      maskContext.textBaseline = "alphabetic";
-      maskContext.font = `900 ${fontSize}px ${fontFamily}`;
-
-      const drawWord = (word, x, y) => {
-        const depth = Math.max(4, Math.round(fontSize * 0.11));
-        maskContext.lineWidth = Math.max(2, fontSize * 0.055);
-        for (let offset = depth; offset > 0; offset -= 1) {
-          maskContext.strokeStyle = `rgba(180, 180, 180, ${0.035 + offset / depth * 0.055})`;
-          maskContext.strokeText(word, x + offset * 1.18, y + offset * 0.72);
-        }
-        maskContext.strokeStyle = "rgba(255, 255, 255, 0.72)";
-        maskContext.strokeText(word, x, y);
-        maskContext.fillStyle = "rgba(255, 255, 255, 0.95)";
-        maskContext.fillText(word, x, y);
-      };
-
-      drawWord("MAX", startX, startY);
-      drawWord("YAPORT", startX, startY + lineGap);
-      maskData = maskContext.getImageData(0, 0, width, height).data;
-    };
-
-    const resizeAscii = () => {
+    const setPointer = (event) => {
       const rect = asciiRoot.getBoundingClientRect();
-      width = Math.max(1, Math.round(rect.width));
-      height = Math.max(1, Math.round(rect.height));
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      asciiCanvas.width = Math.round(width * dpr);
-      asciiCanvas.height = Math.round(height * dpr);
-      asciiCanvas.style.width = `${width}px`;
-      asciiCanvas.style.height = `${height}px`;
-      maskCanvas.width = width;
-      maskCanvas.height = height;
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cellWidth = Math.max(5.4, Math.min(8.8, width / 108));
-      cellHeight = cellWidth * 1.18;
-      drawMask();
+      pointerRatio = Math.max(0, Math.min(1, (event.clientX - rect.left) / Math.max(1, rect.width)));
+      asciiRoot.classList.add("is-hot");
+      renderAscii();
     };
 
-    const alphaAt = (x, y) => {
-      if (!maskData) return 0;
-      const sampleX = Math.max(0, Math.min(width - 1, Math.round(x)));
-      const sampleY = Math.max(0, Math.min(height - 1, Math.round(y)));
-      return maskData[(sampleY * width + sampleX) * 4 + 3] / 255;
-    };
-
-    const asciiMotionAt = (x, y, time) => {
-      if (prefersReducedMotion.matches) return { sampleX: x, sampleY: y, drawX: 0, drawY: 0 };
-      const step = Math.floor(time / 150);
-      const row = Math.floor(y / Math.max(1, cellHeight));
-      const column = Math.floor(x / Math.max(1, cellWidth));
-      const rowShift = Math.round(Math.sin(step * 0.52 + row * 0.9) * 2) * cellWidth * 0.44;
-      const columnLift = Math.round(Math.cos(step * 0.4 + column * 0.31) * 1) * cellHeight * 0.3;
-      const crawl = Math.sin(time * 0.0012 + y * 0.045) * cellWidth * 0.5;
-      return {
-        sampleX: x - rowShift - crawl,
-        sampleY: y - columnLift,
-        drawX: rowShift * 0.52 + crawl * 0.48,
-        drawY: columnLift * 0.5,
-      };
-    };
-
-    const renderAscii = (time = 0) => {
-      const baseColor = getColor("--ascii-main", "#f4efe4");
-      const sideColor = getColor("--ascii-side", "rgba(159, 183, 125, 0.42)");
-      const shadowColor = getColor("--ascii-shadow", "rgba(159, 183, 125, 0.14)");
-      const idleTiltX = Math.sin(time * 0.00042) * 3.6;
-      const idleTiltY = Math.cos(time * 0.00036) * 2.3;
-      const pointerTiltX = pointer.active ? ((pointer.x / Math.max(1, width)) - 0.5) * 9 : 0;
-      const pointerTiltY = pointer.active ? ((pointer.y / Math.max(1, height)) - 0.5) * 5 : 0;
-      const depthX = 8 + idleTiltX + pointerTiltX;
-      const depthY = 6 + idleTiltY + pointerTiltY;
-      const faceSkew = prefersReducedMotion.matches ? 0 : Math.sin(time * 0.0005) * 1.4;
-
-      context.clearRect(0, 0, width, height);
-      context.font = `700 ${cellWidth * 1.42}px ${window.getComputedStyle(asciiCanvas).fontFamily || "monospace"}`;
-      context.textBaseline = "middle";
-
-      for (let layer = 6; layer >= 1; layer -= 1) {
-        const layerRatio = layer / 6;
-        context.fillStyle = layer > 2 ? sideColor : shadowColor;
-        context.globalAlpha = 0.11 + layerRatio * 0.075;
-        for (let y = cellHeight * 0.5; y < height; y += cellHeight) {
-          const rowBend = prefersReducedMotion.matches ? 0 : Math.sin(time * 0.0007 + y * 0.027) * 1.1;
-          for (let x = cellWidth * 0.5; x < width; x += cellWidth) {
-            const motion = asciiMotionAt(x, y, time);
-            const alpha = alphaAt(motion.sampleX - layer * 0.9, motion.sampleY - layer * 0.55);
-            if (alpha < 0.18) continue;
-            const distance = Math.hypot(x - pointer.x, y - pointer.y);
-            const localLift = pointer.active ? Math.max(0, 1 - distance / 130) : 0;
-            const offsetX = depthX * layerRatio + rowBend - localLift * 8;
-            const offsetY = depthY * layerRatio - localLift * 4;
-            context.fillText(layer % 2 === 0 ? "\\" : "|", x + motion.drawX + offsetX, y + motion.drawY + offsetY);
-          }
-        }
-      }
-
-      context.globalAlpha = 1;
-      for (let y = cellHeight * 0.5; y < height; y += cellHeight) {
-        const wave = prefersReducedMotion.matches ? 0 : Math.sin(time * 0.0006 + y * 0.025) * faceSkew;
-        for (let x = cellWidth * 0.5; x < width; x += cellWidth) {
-          const motion = asciiMotionAt(x, y, time);
-          const alpha = alphaAt(motion.sampleX, motion.sampleY);
-          if (alpha < 0.08) continue;
-          const distance = Math.hypot(x - pointer.x, y - pointer.y);
-          const hover = pointer.active ? Math.max(0, 1 - distance / 110) : 0;
-          const brightness = Math.max(0, Math.min(1, alpha));
-          const glyphOffset = prefersReducedMotion.matches ? 0 : Math.floor(time / 220 + x / Math.max(1, cellWidth) + y / Math.max(1, cellHeight));
-          const glyph = faceGlyphs[Math.min(faceGlyphs.length - 1, Math.floor(brightness * faceGlyphs.length + glyphOffset) % faceGlyphs.length)];
-          context.globalAlpha = Math.max(0.5, Math.min(1, alpha));
-          context.fillStyle = baseColor;
-          context.fillText(glyph, x + motion.drawX - hover * 5 + wave, y + motion.drawY - hover * 2);
-        }
-      }
-
-      context.globalAlpha = 1;
-      asciiRoot.classList.toggle("is-hot", pointer.active);
-      if (pointer.pulse > 0) pointer.pulse *= 0.88;
-      if (!prefersReducedMotion.matches) frame = window.requestAnimationFrame(renderAscii);
-    };
-
-    const pointerFromEvent = (event) => {
-      const rect = asciiCanvas.getBoundingClientRect();
-      pointer.x = event.clientX - rect.left;
-      pointer.y = event.clientY - rect.top;
-      pointer.active = true;
-    };
-
-    resizeAscii();
     renderAscii();
-    new ResizeObserver(() => {
-      window.cancelAnimationFrame(frame);
-      resizeAscii();
-      renderAscii();
-    }).observe(asciiRoot);
+    if (!prefersReducedMotion.matches) {
+      timer = window.setInterval(() => {
+        frame += 1;
+        renderAscii();
+      }, 950);
+    }
 
-    asciiCanvas.addEventListener("pointermove", (event) => {
-      pointerFromEvent(event);
-      if (prefersReducedMotion.matches) renderAscii();
-    });
-    asciiCanvas.addEventListener("pointerdown", (event) => {
-      pointerFromEvent(event);
-      pointer.pulse = 130;
+    asciiRoot.addEventListener("pointermove", setPointer);
+    asciiRoot.addEventListener("pointerdown", setPointer);
+    asciiRoot.addEventListener("pointerleave", () => {
+      pointerRatio = 0;
+      asciiRoot.classList.remove("is-hot");
       renderAscii();
     });
-    asciiRoot.addEventListener("pointerleave", () => {
-      pointer.active = false;
-      pointer.pulse = 0;
-      if (prefersReducedMotion.matches) renderAscii();
+    prefersReducedMotion.addEventListener("change", () => {
+      if (timer) window.clearInterval(timer);
+      timer = 0;
+      if (!prefersReducedMotion.matches) {
+        timer = window.setInterval(() => {
+          frame += 1;
+          renderAscii();
+        }, 950);
+      }
+      renderAscii();
     });
   }
 

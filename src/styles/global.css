@@ -1305,7 +1305,7 @@ main:has(.about-page) {
   --ascii-shadow: color-mix(in srgb, #9fb77d 18%, transparent);
   position: relative;
   width: 100%;
-  min-height: clamp(220px, 27vw, 310px);
+  min-height: clamp(190px, 25vw, 284px);
   margin: 0;
   overflow: hidden;
   user-select: none;
@@ -1313,13 +1313,32 @@ main:has(.about-page) {
   isolation: isolate;
 }
 
-.ascii-title__canvas {
+.ascii-title__text {
   display: block;
   width: 100%;
-  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: var(--ascii-main);
   font-family: var(--font-mono);
-  cursor: crosshair;
+  font-size: clamp(0.58rem, 1.34vw, 1rem);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: 0;
+  white-space: pre;
+  text-shadow:
+    1px 1px 0 var(--ascii-side),
+    2px 2px 0 var(--ascii-shadow);
+  cursor: default;
   transform: translate3d(0, 0, 0);
+  transition: color 180ms ease, text-shadow 180ms ease;
+}
+
+.ascii-title.is-hot .ascii-title__text {
+  color: color-mix(in srgb, var(--ascii-main) 86%, #fffaf0);
+  text-shadow:
+    1px 1px 0 var(--ascii-side),
+    2px 2px 0 var(--ascii-shadow),
+    0 0 18px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .ascii-pong-trigger {
@@ -1413,7 +1432,12 @@ main:has(.about-page) {
   }
 
   .ascii-title {
-    min-height: clamp(154px, 38vw, 198px);
+    min-height: clamp(130px, 36vw, 178px);
+  }
+
+  .ascii-title__text {
+    font-size: clamp(0.34rem, 1.58vw, 0.54rem);
+    line-height: 0.98;
   }
 
   .about-intro {
@@ -1434,8 +1458,10 @@ main:has(.about-page) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ascii-title__canvas {
-    filter: none;
+  .ascii-title__text {
+    text-shadow:
+      1px 1px 0 var(--ascii-side),
+      2px 2px 0 var(--ascii-shadow);
   }
 }
 
