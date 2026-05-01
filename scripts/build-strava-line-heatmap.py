@@ -29,6 +29,29 @@ def segment_key(start: list[float], end: list[float], precision: int) -> tuple[f
     return (round(mid_lon, precision), round(mid_lat, precision))
 
 
+def sampled_coordinates(coordinates: list[list[float]], point_step: int) -> list[list[float]]:
+    if point_step <= 1 or len(coordinates) <= 2:
+        return coordinates
+    sampled = coordinates[::point_step]
+    if sampled[-1] != coordinates[-1]:
+        sampled.append(coordinates[-1])
+    return sampled
+
+
+def rounded_coordinate(coordinate: list[float], precision: int) -> list[float]:
+    return [round(float(coordinate[0]), precision), round(float(coordinate[1]), precision)]
+
+
+def rounded_line_coordinates(coordinates: list[list[float]], precision: int) -> list[list[float]]:
+    rounded = []
+    for coordinate in coordinates:
+        next_coordinate = rounded_coordinate(coordinate, precision)
+        if rounded and next_coordinate == rounded[-1]:
+            continue
+        rounded.append(next_coordinate)
+    return rounded
+
+
 def activity_bucket(properties: dict[str, Any]) -> str:
     activity = str(properties.get("activityGroup") or properties.get("type") or "").lower()
     if "swim" in activity:
@@ -100,12 +123,16 @@ def main() -> None:
     parser.add_argument("--in", dest="in_path", type=Path, default=IN)
     parser.add_argument("--out", type=Path, default=OUT)
     parser.add_argument("--precision", type=int, default=4)
-    parser.add_argument("--chunk-size", type=int, default=6)
+    parser.add_argument("--chunk-size", type=int, default=14)
+    parser.add_argument("--point-step", type=int, default=2)
+    parser.add_argument("--coordinate-precision", type=int, default=4)
     parser.add_argument("--max-weight", type=float, default=8.5)
     args = parser.parse_args()
 
     if args.chunk_size < 1:
         raise SystemExit("--chunk-size must be at least 1.")
+    if args.point_step < 1:
+        raise SystemExit("--point-step must be at least 1.")
     if not args.in_path.exists():
         raise SystemExit(f"Missing {args.in_path}. Run build-strava-routes.py first.")
 
@@ -114,11 +141,14 @@ def main() -> None:
     route_segments = []
 
     for route in routes.get("features", []):
-        coordinates = [
-            coordinate
-            for coordinate in route.get("geometry", {}).get("coordinates", [])
-            if finite_coordinate(coordinate)
-        ]
+        coordinates = sampled_coordinates(
+            [
+                coordinate
+                for coordinate in route.get("geometry", {}).get("coordinates", [])
+                if finite_coordinate(coordinate)
+            ],
+            args.point_step,
+        )
         if len(coordinates) < 2:
             continue
 
@@ -141,7 +171,9 @@ def main() -> None:
             chunk = segments[start_index : start_index + args.chunk_size]
             if not chunk:
                 continue
-            coordinates = [chunk[0][0], *[segment[1] for segment in chunk]]
+            coordinates = rounded_line_coordinates([chunk[0][0], *[segment[1] for segment in chunk]], args.coordinate_precision)
+            if len(coordinates) < 2:
+                continue
             raw_run_weight = sum(cell_weights.get(segment[2], {}).get("run", 0.0) for segment in chunk) / len(chunk)
             raw_swim_weight = sum(cell_weights.get(segment[2], {}).get("swim", 0.0) for segment in chunk) / len(chunk)
             raw_ride_weight = sum(cell_weights.get(segment[2], {}).get("ride", 0.0) for segment in chunk) / len(chunk)

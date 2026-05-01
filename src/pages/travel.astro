@@ -356,6 +356,15 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   const routeEditorFit = document.getElementById("route-editor-fit");
   const layerToggleButtons = Array.from(document.querySelectorAll("[data-map-layer-toggle]"));
   const mapboxToken = import.meta.env.PUBLIC_MAPBOX_TOKEN || "";
+  const travelDataVersion = "2026-05-01-route-perf";
+  const dataUrl = (path, { bustCache = false } = {}) => {
+    const separator = path.includes("?") ? "&" : "?";
+    const version = bustCache ? Date.now() : travelDataVersion;
+    return `${path}${separator}v=${encodeURIComponent(version)}`;
+  };
+  const staticFetchOptions = ({ bustCache = false } = {}) => ({
+    cache: bustCache ? "no-store" : "force-cache",
+  });
 
   if (!mapElement) {
     if (mapElement) mapElement.setAttribute("data-map-empty", "true");
@@ -406,6 +415,13 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   let routeCoordinatesCache = new Map();
   let coordinateDistanceCache = new WeakMap();
   let timelineTransitionRouteCache = new Map();
+  const emptyFeatureCollection = { type: "FeatureCollection", features: [] };
+  const stravaHeatTileZoom = 4;
+  const stravaHeatDetailMinZoom = 3.15;
+  let stravaHeatTileKeys = new Set();
+  let stravaHeatTileCache = new Map();
+  let stravaHeatTileInflight = new Map();
+  let stravaHeatTileEventsBound = false;
   let activeTimelineDot = null;
   let activeTripRouteSegment = null;
   const layerVisibility = {
@@ -428,6 +444,128 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   const clearRouteRuntimeCaches = () => {
     clearPlaybackRouteCaches();
     timelineTransitionRouteCache = new Map();
+  };
+
+  const clampNumber = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const normalizeLongitude = (longitude) => {
+    const value = Number(longitude);
+    if (!Number.isFinite(value)) return 0;
+    return ((((value + 180) % 360) + 360) % 360) - 180;
+  };
+
+  const heatTileForLngLat = (longitude, latitude, zoom = stravaHeatTileZoom) => {
+    const tileCount = 2 ** zoom;
+    const safeLng = normalizeLongitude(longitude);
+    const safeLat = clampNumber(Number(latitude) || 0, -85.05112878, 85.05112878);
+    const latRad = (safeLat * Math.PI) / 180;
+    const x = Math.floor(((safeLng + 180) / 360) * tileCount);
+    const y = Math.floor(((1 - Math.asinh(Math.tan(latRad)) / Math.PI) / 2) * tileCount);
+    return [clampNumber(x, 0, tileCount - 1), clampNumber(y, 0, tileCount - 1)];
+  };
+
+  const visibleStravaHeatTileKeys = () => {
+    if (!map || map.getZoom() < stravaHeatDetailMinZoom || !stravaHeatTileKeys.size) return [];
+    const bounds = map.getBounds();
+    if (!bounds) return [];
+    const tileCount = 2 ** stravaHeatTileZoom;
+    const west = normalizeLongitude(bounds.getWest());
+    const east = normalizeLongitude(bounds.getEast());
+    const south = clampNumber(bounds.getSouth(), -85.05112878, 85.05112878);
+    const north = clampNumber(bounds.getNorth(), -85.05112878, 85.05112878);
+    const longitudeRanges = east < west ? [[west, 180], [-180, east]] : [[west, east]];
+    const keys = new Set();
+
+    longitudeRanges.forEach(([rangeWest, rangeEast]) => {
+      const [westX, northY] = heatTileForLngLat(rangeWest, north, stravaHeatTileZoom);
+      const [eastX, southY] = heatTileForLngLat(rangeEast, south, stravaHeatTileZoom);
+      const minX = clampNumber(Math.min(westX, eastX) - 1, 0, tileCount - 1);
+      const maxX = clampNumber(Math.max(westX, eastX) + 1, 0, tileCount - 1);
+      const minY = clampNumber(Math.min(northY, southY) - 1, 0, tileCount - 1);
+      const maxY = clampNumber(Math.max(northY, southY) + 1, 0, tileCount - 1);
+      for (let x = minX; x <= maxX; x += 1) {
+        for (let y = minY; y <= maxY; y += 1) {
+          const key = `${stravaHeatTileZoom}/${x}/${y}`;
+          if (stravaHeatTileKeys.has(key)) keys.add(key);
+        }
+      }
+    });
+
+    return [...keys];
+  };
+
+  const heatFeatureKey = (feature) => {
+    const coordinates = feature?.geometry?.coordinates || [];
+    const first = coordinates[0] || [];
+    const last = coordinates[coordinates.length - 1] || [];
+    return [
+      feature?.properties?.heatColor || "",
+      feature?.properties?.weight || "",
+      coordinates.length,
+      first[0],
+      first[1],
+      last[0],
+      last[1],
+    ].join(":");
+  };
+
+  const fetchStravaHeatTile = async (key) => {
+    if (stravaHeatTileCache.has(key)) return stravaHeatTileCache.get(key);
+    if (stravaHeatTileInflight.has(key)) return stravaHeatTileInflight.get(key);
+    const request = fetch(dataUrl(`/data/route-tiles/strava-heat/${key}.geojson`), staticFetchOptions())
+      .then((response) => (response?.ok ? response.json() : emptyFeatureCollection))
+      .then((data) => {
+        const features = Array.isArray(data?.features) ? data.features : [];
+        stravaHeatTileCache.set(key, features);
+        stravaHeatTileInflight.delete(key);
+        return features;
+      })
+      .catch(() => {
+        stravaHeatTileInflight.delete(key);
+        stravaHeatTileCache.set(key, []);
+        return [];
+      });
+    stravaHeatTileInflight.set(key, request);
+    return request;
+  };
+
+  const updateStravaHeatTileSource = async () => {
+    const source = map.getSource("strava-line-heatmap");
+    if (!source || !("setData" in source)) return;
+    if (!layerVisibility.strava || map.getZoom() < stravaHeatDetailMinZoom) {
+      source.setData(emptyFeatureCollection);
+      return;
+    }
+    const keys = visibleStravaHeatTileKeys();
+    if (!keys.length) {
+      source.setData(emptyFeatureCollection);
+      return;
+    }
+    await Promise.all(keys.map(fetchStravaHeatTile));
+    const seen = new Set();
+    const features = [];
+    keys.forEach((key) => {
+      (stravaHeatTileCache.get(key) || []).forEach((feature) => {
+        const dedupeKey = heatFeatureKey(feature);
+        if (seen.has(dedupeKey)) return;
+        seen.add(dedupeKey);
+        features.push(feature);
+      });
+    });
+    source.setData({ type: "FeatureCollection", features });
+  };
+
+  const loadStravaHeatTiles = async () => {
+    const response = await fetch(dataUrl("/data/route-tiles/strava-heat/manifest.json"), staticFetchOptions()).catch(() => null);
+    const manifest = response?.ok ? await response.json().catch(() => null) : null;
+    const tiles = Array.isArray(manifest?.tiles) ? manifest.tiles : [];
+    stravaHeatTileKeys = new Set(tiles);
+    if (!stravaHeatTileEventsBound) {
+      stravaHeatTileEventsBound = true;
+      map.on("moveend", updateStravaHeatTileSource);
+      map.on("zoomend", updateStravaHeatTileSource);
+    }
+    await updateStravaHeatTileSource();
   };
 
   const setActiveTimelineDot = (slug = "") => {
@@ -2196,23 +2334,6 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     if (nextItem && phase > scrubberRoutePortion) {
       const transitionProgress = (phase - scrubberRoutePortion) / (1 - scrubberRoutePortion);
       const transitionSegment = timelineTransitionSegment(item, nextItem);
-      if (transitionSegment?.loading) {
-        return {
-          itemIndex,
-          phase,
-          item,
-          nextItem,
-          coordinate: routeCoordinate || transitionSegment.coordinates?.[0] || routeEndpointForItem(item, "end"),
-          routeProgress: 0,
-          inGap: true,
-          pathDistance: 0,
-          segment: transitionSegment,
-          segmentIndex: 0,
-          segmentProgress: 0,
-          playbackSegments: transitionSegment ? [transitionSegment] : [],
-          coordinates: [],
-        };
-      }
       const transitionSegments = transitionSegment ? [transitionSegment] : [];
       const transitionCoordinates = flattenPlaybackSegments(transitionSegments);
       const transitionSample = coordinateAtProgressInSegments(transitionSegments, transitionProgress);
@@ -2673,10 +2794,10 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     const previousZoom = previousState ? rawZoomForState(previousState) : null;
     const nextZoom = nextState ? rawZoomForState(nextState) : null;
 
-    const longPlaneStartWindow = 0.34;
-    const longPlaneEndWindow = 0.42;
-    const groundAfterPlaneWindow = 0.34;
-    const groundBeforePlaneWindow = 0.26;
+    const longPlaneStartWindow = 0.4;
+    const longPlaneEndWindow = 0.68;
+    const groundAfterPlaneWindow = 0.48;
+    const groundBeforePlaneWindow = 0.36;
 
     if (currentMode === "plane") {
       if (previousState && previousMode !== "plane" && segmentProgress < longPlaneStartWindow) {
@@ -2983,7 +3104,9 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
           )
         : state.coordinate;
     const cameraDuration =
-      activityMode === "bike"
+      playbackMode === "plane"
+        ? (itemChanged ? 360 : 70)
+        : activityMode === "bike"
         ? itemChanged ? 620 : 220
         : isActivity
           ? itemChanged ? 820 : 300
@@ -3016,18 +3139,29 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
       trackCinematicScrubCamera(state, itemChanged);
       return;
     }
+    const playbackMode = playbackModeForState(state);
     const basePitch = state.item?.type === "race" ? (mapElement.clientWidth < 680 ? 34 : 42) : mapElement.clientWidth < 680 ? 28 : 36;
     const camera = cameraWithUserOffset({
       bearing: 0,
       pitch: basePitch,
       zoom: scrubZoomForState(state),
     });
+    const cameraDuration =
+      timelinePlaybackActive
+        ? itemChanged
+          ? (playbackMode === "plane" ? 260 : 220)
+          : playbackMode === "plane"
+            ? 55
+            : playbackMode === "car"
+              ? 80
+              : 95
+        : itemChanged ? 320 : 120;
     map.easeTo({
       center: state.coordinate,
       zoom: camera.zoom,
       bearing: camera.bearing,
       pitch: camera.pitch,
-      duration: itemChanged ? 320 : 120,
+      duration: cameraDuration,
       essential: true,
     });
   };
@@ -3068,7 +3202,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     car: 32.4,
     boat: 3.4,
     helicopter: 7.2,
-    plane: 2160,
+    plane: 1620,
   };
   const activityPaceScaleLimitsByMode = {
     race: [0.3, 2.4],
@@ -3166,13 +3300,16 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     if (state?.segment?.kind === "strava" || state?.item?.type === "strava" || state?.segment?.kind === "race") {
       return segmentActualKilometersPerSecond(state, mode) || playbackKilometersPerSecondByMode[mode] || playbackKilometersPerSecondByMode.run;
     }
-    return playbackKilometersPerSecondByMode[mode] || playbackKilometersPerSecondByMode.car;
+    const baseSpeed = playbackKilometersPerSecondByMode[mode] || playbackKilometersPerSecondByMode.car;
+    if ((state?.segment?.kind === "connector" || state?.segment?.kind === "transition") && mode === "car") {
+      return baseSpeed * 2.2;
+    }
+    return baseSpeed;
   };
 
   const playbackValueDeltaForState = (state, elapsedSeconds) => {
     const elapsed = Math.max(0, Number(elapsedSeconds) || 0);
     if (!state?.item) return elapsed * playbackGapUnitsPerSecond;
-    if (state.segment?.loading) return 0;
     const mode = playbackModeForState(state);
     const speed = timelinePlaybackSpeeds[timelinePlaybackSpeedIndex] || 1;
 
@@ -3397,7 +3534,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     setVisibility(["trip-routes-drive-casing", "trip-routes-drive"], layerVisibility.drive);
     setVisibility(["trip-routes-sail"], layerVisibility.sail);
     setVisibility(["trip-route-nodes"], layerVisibility.dots);
-    setVisibility(["strava-routes-heat", "strava-routes", "strava-route-highlight-casing", "strava-route-highlight"], layerVisibility.strava);
+    setVisibility(["strava-routes-heat-overview", "strava-routes-heat", "strava-routes", "strava-route-highlight-casing", "strava-route-highlight"], layerVisibility.strava);
     setVisibility(["map-points", "map-point-labels"], layerVisibility.dots);
     setVisibility(["race-routes-base-casing", "race-routes-base"], layerVisibility.race);
     setVisibility(["map-point-highlight"], layerVisibility.dots && Boolean(activeTimelineSlug));
@@ -3414,6 +3551,8 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
       button.setAttribute("aria-pressed", String(visible));
       button.classList.toggle("is-muted", !visible);
     });
+
+    if (map.getSource("strava-line-heatmap")) void updateStravaHeatTileSource();
   };
 
   const updatePlaybackSegmentHighlight = (state = null) => {
@@ -3773,8 +3912,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   };
 
   const loadGeneratedTripRoutes = async ({ bustCache = false } = {}) => {
-    const path = bustCache ? `/data/trip-routes.geojson?t=${Date.now()}` : "/data/trip-routes.geojson";
-    const response = await fetch(path, { cache: "no-store" }).catch(() => null);
+    const response = await fetch(dataUrl("/data/trip-routes.geojson", { bustCache }), staticFetchOptions({ bustCache })).catch(() => null);
     if (!response?.ok) return;
 
     const routes = await response.json().catch(() => null);
@@ -3948,7 +4086,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
   };
 
   const loadStravaRoutes = async () => {
-    const response = await fetch("/data/strava-routes.geojson", { cache: "no-store" }).catch(() => null);
+    const response = await fetch(dataUrl("/data/strava-routes.geojson"), staticFetchOptions()).catch(() => null);
     if (!response?.ok) return;
     const routes = await response.json();
     if (!routes.features?.length) return;
@@ -3956,12 +4094,13 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     stravaFeatureById = new Map(stravaRouteFeatureList.map((feature) => [String(feature.properties?.id || ""), feature]));
     clearRouteRuntimeCaches();
 
-    const heatResponse = await fetch("/data/strava-line-heatmap.geojson", { cache: "no-store" }).catch(() => null);
+    const heatResponse = await fetch(dataUrl("/data/strava-line-heatmap-overview.geojson"), staticFetchOptions()).catch(() => null);
     const heatRoutes = heatResponse?.ok ? await heatResponse.json().catch(() => null) : null;
-    const heatFeatures = heatRoutes?.features?.length ? heatRoutes : routes;
+    const heatFeatures = heatRoutes?.features?.length ? heatRoutes : emptyFeatureCollection;
 
     map.addSource("strava-routes", { type: "geojson", data: routes });
-    map.addSource("strava-line-heatmap", { type: "geojson", data: heatFeatures });
+    map.addSource("strava-line-heatmap-overview", { type: "geojson", data: heatFeatures });
+    map.addSource("strava-line-heatmap", { type: "geojson", data: emptyFeatureCollection });
     map.addLayer(
       {
         id: "strava-routes",
@@ -3982,6 +4121,53 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
           ],
           "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.14, 8, 0.58, 12, 1.05],
           "line-opacity": ["interpolate", ["linear"], ["zoom"], 1, 0.1, 8, 0.17, 12, 0.24],
+        },
+      },
+      "map-points",
+    );
+    map.addLayer(
+      {
+        id: "strava-routes-heat-overview",
+        type: "line",
+        source: "strava-line-heatmap-overview",
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+          "line-sort-key": ["coalesce", ["get", "weight"], 1],
+        },
+        paint: {
+          "line-color": [
+            "coalesce",
+            ["get", "heatColor"],
+            [
+              "interpolate",
+              ["linear"],
+              ["coalesce", ["get", "rideMix"], 0.5],
+              0,
+              "#d84c48",
+              0.32,
+              "#b84aa0",
+              0.5,
+              "#8253d2",
+              0.68,
+              "#4d6ee2",
+              1,
+              "#1689ee",
+            ],
+          ],
+          "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.48, 5, 1.05, 8, 1.35],
+          "line-opacity": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            1,
+            ["interpolate", ["linear"], ["coalesce", ["get", "weight"], 1], 0.8, 0.2, 8.5, 0.54],
+            4.7,
+            ["interpolate", ["linear"], ["coalesce", ["get", "weight"], 1], 0.8, 0.16, 8.5, 0.42],
+            6.2,
+            0.04,
+          ],
+          "line-blur": ["interpolate", ["linear"], ["zoom"], 1, 0.03, 8, 0.18],
         },
       },
       "map-points",
@@ -4080,11 +4266,12 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     });
     bindPointerLayer("strava-routes");
     bindPointerLayer("strava-route-highlight");
+    void loadStravaHeatTiles();
     updateLayerVisibility();
   };
 
   const loadRaceRoutes = async () => {
-    const response = await fetch("/data/race-routes.geojson", { cache: "no-store" }).catch(() => null);
+    const response = await fetch(dataUrl("/data/race-routes.geojson"), staticFetchOptions()).catch(() => null);
     if (!response?.ok) return;
     const routes = await response.json().catch(() => null);
     if (!routes?.features?.length) return;
