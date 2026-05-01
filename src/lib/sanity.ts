@@ -85,6 +85,8 @@ const postsQuery = `*[_type == "post" && !(_id in path("drafts.**"))] | order(da
 }`;
 
 const canyonsGpxUrl = "/routes/canyons-2026.gpx";
+const terigoAppStoreUrl = "https://apps.apple.com/us/app/terigo/id6761634158";
+const terigoPostSlug = "terigo-app-store";
 
 const canyonsChapters: Record<string, any> = {
   "Race Start to Deadwood 1": {
@@ -520,16 +522,31 @@ export async function getSanityPosts(): Promise<SanityPost[]> {
     const posts = await client.fetch<SanityRawPost[]>(postsQuery);
     return posts
       .filter((post) => post.title && post.slug && post.date)
-      .map((post) => ({
-        source: "sanity" as const,
-        id: post._id,
-        title: post.title || "",
-        description: post.description || "",
-        date: parseDate(post.date),
-        slug: post.slug || "",
-        url: post.url,
-        html: renderPostBody(post),
-      }));
+      .map((post) => {
+        const slug = post.slug || "";
+        if (slug === terigoPostSlug) {
+          return {
+            source: "sanity" as const,
+            id: post._id,
+            title: "Terigo - Strava routes done better",
+            description: "",
+            date: parseDate(post.date),
+            slug,
+            url: terigoAppStoreUrl,
+            html: "",
+          };
+        }
+        return {
+          source: "sanity" as const,
+          id: post._id,
+          title: post.title || "",
+          description: post.description || "",
+          date: parseDate(post.date),
+          slug,
+          url: post.url,
+          html: renderPostBody(post),
+        };
+      });
   } catch (error) {
     console.warn("Could not load Sanity posts.", error);
     return [];

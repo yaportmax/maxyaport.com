@@ -15,6 +15,7 @@ interface Props {
 }
 
 const { items } = Astro.props;
+const isExternalHref = (href?: string) => Boolean(href && /^https?:\/\//i.test(href));
 ---
 
 {
@@ -24,7 +25,19 @@ const { items } = Astro.props;
         <article class="row">
           <div>
             <h3 class="row__title">
-              {item.href ? <a href={item.href}>{item.title}</a> : item.title}
+              {
+                item.href ? (
+                  <a
+                    href={item.href}
+                    target={isExternalHref(item.href) ? "_blank" : undefined}
+                    rel={isExternalHref(item.href) ? "noreferrer noopener" : undefined}
+                  >
+                    {item.title}
+                  </a>
+                ) : (
+                  item.title
+                )
+              }
             </h3>
             {item.description && <p class="row__description">{item.description}</p>}
           </div>
