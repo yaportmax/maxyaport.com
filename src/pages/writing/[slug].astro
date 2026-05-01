@@ -40,13 +40,30 @@ const { post } = Astro.props;
 if (post.url) {
   return Astro.redirect(post.url);
 }
+
+const isTerigoPost = post.slug === "terigo-app-store";
+const terigoAppStoreUrl = "https://apps.apple.com/us/app/terigo/id6761634158";
 ---
 
 <BaseLayout title={post.title} description={post.description}>
   <article>
-    <header class="page-header">
-      <h1 class="page-title">{post.title}</h1>
-      <p class="page-intro">
+    <header class:list={["page-header", { "page-header--terigo": isTerigoPost }]}>
+      {
+        isTerigoPost ? (
+          <>
+            <h1 class="sr-only">{post.title}</h1>
+            <div class="terigo-page-top">
+              <img src="/images/terigo/terigo-logo.png" alt="Terigo" width="1800" height="600" loading="eager" />
+              <a href={terigoAppStoreUrl} target="_blank" rel="noreferrer noopener">
+                View on the App Store
+              </a>
+            </div>
+          </>
+        ) : (
+          <h1 class="page-title">{post.title}</h1>
+        )
+      }
+      <p class:list={["page-intro", { "page-intro--terigo": isTerigoPost }]}>
         <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
       </p>
     </header>

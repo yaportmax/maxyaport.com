@@ -505,8 +505,7 @@ const travel = [
   <header class="about-hero">
     <h1 id="about-title" class="sr-only">Max Yaport</h1>
     <div class="ascii-title" data-ascii-title aria-hidden="true">
-      <pre class="ascii-title__mountains" data-ascii-mountains></pre>
-      <pre class="ascii-title__art" data-ascii-output></pre>
+      <canvas class="ascii-title__canvas" data-ascii-canvas></canvas>
     </div>
     <div class="about-intro" aria-label="Intro">
       <p>Obsessed with running, biking, and the outdoors.</p>
@@ -646,113 +645,180 @@ const travel = [
 
 <script>
   const asciiRoot = document.querySelector("[data-ascii-title]");
-  const asciiOutput = document.querySelector("[data-ascii-output]");
-  const asciiMountains = document.querySelector("[data-ascii-mountains]");
+  const asciiCanvas = document.querySelector("[data-ascii-canvas]");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  if (asciiRoot && asciiOutput) {
-    const titleArt = [
-      " _____ ______   ________     ___    ___ ",
-      "|\\   _ \\  _   \\|\\   __  \\   |\\  \\  /  /|",
-      "\\ \\  \\\\\\__\\ \\  \\ \\  \\|\\  \\  \\ \\  \\/  / /",
-      " \\ \\  \\\\|__| \\  \\ \\   __  \\  \\ \\    / / ",
-      "  \\ \\  \\    \\ \\  \\ \\  \\ \\  \\  /     \\/  ",
-      "   \\ \\__\\    \\ \\__\\ \\__\\ \\__\\/  /\\   \\  ",
-      "    \\|__|     \\|__|\\|__|\\|__/__/ /\\ __\\ ",
-      "                            |__|/ \\|__|",
-      "",
-      "  ___    ___ ________  ________  ________  ________  _________   ",
-      " |\\  \\  /  /|\\   __  \\|\\   __  \\|\\   __  \\|\\   __  \\|\\___   ___\\ ",
-      " \\ \\  \\/  / | \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\  \\|___ \\  \\_| ",
-      "  \\ \\    / / \\ \\   __  \\ \\   ____\\ \\  \\\\\\  \\ \\   _  _\\   \\ \\  \\  ",
-      "   \\/  /  /   \\ \\  \\ \\  \\ \\  \\___|\\ \\  \\\\\\  \\ \\  \\\\  \\|   \\ \\  \\ ",
-      " __/  / /      \\ \\__\\ \\__\\ \\__\\    \\ \\_______\\ \\__\\\\ _\\    \\ \\__\\",
-      "|\\___/ /        \\|__|\\|__|\\|__|     \\|_______|\\|__|\\|__|    \\|__|",
-      "\\|___|/",
-    ].join("\n");
-    const mountainArt = [
-      "                                      .                  .",
-      "                       .                /\\                /\\",
-      "             /\\        /\\        .     /  \\      /\\      /  \\       .",
-      "        /\\  /  \\      /  \\            / /\\ \\    /  \\    / /\\ \\     /\\",
-      "   /\\  /  \\/ /\\ \\    / /\\ \\      /\\  / /  \\ \\__/ /\\ \\__/ /  \\ \\   /  \\",
-      "__/  \\/ /\\  /  \\ \\__/ /  \\ \\____/  \\/_/    \\____/  \\____/    \\ \\_/ /\\ \\____",
-      "    /  /  \\/    \\____/    \\____/ /\\          /\\        /\\      \\___/  \\____",
-      "___/__/  _/\\_  _/\\_  _/\\_  _/\\__/  \\_  _/\\__/  \\_  _/\\__/\\_  _/\\_  _/\\_____",
-      "      _.-'  '--'  '--'  '--'  '-.    '--'  '--'  '--'  '--'  '-.",
-      "  _.-'    /\\    /\\      /\\        '-.      /\\    /\\      /\\        '-._",
-      "-'___/\\___/\\____/\\___/\\___/\\_______'-.___/\\____/\\____/\\____/\\_______'-._",
-    ].join("\n");
-    const pointer = { col: -999, row: -999, active: false, heat: 0 };
-    let baseLines = [];
-    let cols = 0;
-    let rows = 0;
-    let clickPulse = 0;
+  if (asciiRoot && asciiCanvas instanceof HTMLCanvasElement) {
+    const context = asciiCanvas.getContext("2d");
+    const maskCanvas = document.createElement("canvas");
+    const maskContext = maskCanvas.getContext("2d", { willReadFrequently: true });
+    const faceGlyphs = [".", ":", "+", "*"];
+    const pointer = { x: -9999, y: -9999, active: false, pulse: 0 };
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let cellWidth = 8;
+    let cellHeight = 10;
+    let maskData = null;
+    let frame = 0;
 
-    const setBaseArt = () => {
-      baseLines = titleArt.split("\n");
-      cols = Math.max(...baseLines.map((line) => line.length));
-      rows = baseLines.length;
-      asciiOutput.textContent = titleArt;
-      if (asciiMountains) asciiMountains.textContent = mountainArt;
+    const getColor = (name, fallback) => {
+      const value = window.getComputedStyle(asciiRoot).getPropertyValue(name).trim();
+      return value || fallback;
+    };
+
+    const fitFontSize = (fontFamily) => {
+      const isCompact = width < 520;
+      let size = Math.min(width * (isCompact ? 0.28 : 0.25), height * (isCompact ? 0.44 : 0.38), 168);
+      maskContext.font = `900 ${size}px ${fontFamily}`;
+      while (size > 28 && Math.max(maskContext.measureText("MAX").width, maskContext.measureText("YAPORT").width) > width - 20) {
+        size -= 2;
+        maskContext.font = `900 ${size}px ${fontFamily}`;
+      }
+      return size;
+    };
+
+    const drawMask = () => {
+      const fontFamily = window.getComputedStyle(asciiCanvas).fontFamily || "monospace";
+      const fontSize = fitFontSize(fontFamily);
+      const lineGap = fontSize * 0.82;
+      const startX = 14;
+      const topPadding = width < 520 ? 14 : Math.max(fontSize * 0.18, (height - lineGap - fontSize) * 0.5);
+      const startY = topPadding + fontSize;
+
+      maskContext.clearRect(0, 0, width, height);
+      maskContext.lineJoin = "round";
+      maskContext.textBaseline = "alphabetic";
+      maskContext.font = `900 ${fontSize}px ${fontFamily}`;
+
+      const drawWord = (word, x, y) => {
+        const depth = Math.max(4, Math.round(fontSize * 0.11));
+        maskContext.lineWidth = Math.max(2, fontSize * 0.055);
+        for (let offset = depth; offset > 0; offset -= 1) {
+          maskContext.strokeStyle = `rgba(180, 180, 180, ${0.035 + offset / depth * 0.055})`;
+          maskContext.strokeText(word, x + offset * 1.18, y + offset * 0.72);
+        }
+        maskContext.strokeStyle = "rgba(255, 255, 255, 0.72)";
+        maskContext.strokeText(word, x, y);
+        maskContext.fillStyle = "rgba(255, 255, 255, 0.95)";
+        maskContext.fillText(word, x, y);
+      };
+
+      drawWord("MAX", startX, startY);
+      drawWord("YAPORT", startX, startY + lineGap);
+      maskData = maskContext.getImageData(0, 0, width, height).data;
+    };
+
+    const resizeAscii = () => {
+      const rect = asciiRoot.getBoundingClientRect();
+      width = Math.max(1, Math.round(rect.width));
+      height = Math.max(1, Math.round(rect.height));
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      asciiCanvas.width = Math.round(width * dpr);
+      asciiCanvas.height = Math.round(height * dpr);
+      asciiCanvas.style.width = `${width}px`;
+      asciiCanvas.style.height = `${height}px`;
+      maskCanvas.width = width;
+      maskCanvas.height = height;
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cellWidth = Math.max(5.4, Math.min(8.8, width / 108));
+      cellHeight = cellWidth * 1.18;
+      drawMask();
+    };
+
+    const alphaAt = (x, y) => {
+      if (!maskData) return 0;
+      const sampleX = Math.max(0, Math.min(width - 1, Math.round(x)));
+      const sampleY = Math.max(0, Math.min(height - 1, Math.round(y)));
+      return maskData[(sampleY * width + sampleX) * 4 + 3] / 255;
+    };
+
+    const renderAscii = (time = 0) => {
+      const baseColor = getColor("--ascii-main", "#f4efe4");
+      const hotColor = getColor("--ascii-hot", "#f28f45");
+      const sideColor = getColor("--ascii-side", "rgba(159, 183, 125, 0.42)");
+      const shadowColor = getColor("--ascii-shadow", "rgba(159, 183, 125, 0.14)");
+      const idleTiltX = Math.sin(time * 0.00042) * 3.6;
+      const idleTiltY = Math.cos(time * 0.00036) * 2.3;
+      const pointerTiltX = pointer.active ? ((pointer.x / Math.max(1, width)) - 0.5) * 9 : 0;
+      const pointerTiltY = pointer.active ? ((pointer.y / Math.max(1, height)) - 0.5) * 5 : 0;
+      const depthX = 8 + idleTiltX + pointerTiltX;
+      const depthY = 6 + idleTiltY + pointerTiltY;
+      const faceSkew = prefersReducedMotion.matches ? 0 : Math.sin(time * 0.0005) * 1.4;
+
+      context.clearRect(0, 0, width, height);
+      context.font = `700 ${cellWidth * 1.42}px ${window.getComputedStyle(asciiCanvas).fontFamily || "monospace"}`;
+      context.textBaseline = "middle";
+
+      for (let layer = 6; layer >= 1; layer -= 1) {
+        const layerRatio = layer / 6;
+        context.fillStyle = layer > 2 ? sideColor : shadowColor;
+        context.globalAlpha = 0.11 + layerRatio * 0.075;
+        for (let y = cellHeight * 0.5; y < height; y += cellHeight) {
+          const rowBend = prefersReducedMotion.matches ? 0 : Math.sin(time * 0.0007 + y * 0.027) * 1.1;
+          for (let x = cellWidth * 0.5; x < width; x += cellWidth) {
+            const alpha = alphaAt(x - layer * 0.9, y - layer * 0.55);
+            if (alpha < 0.18) continue;
+            const distance = Math.hypot(x - pointer.x, y - pointer.y);
+            const localLift = pointer.active ? Math.max(0, 1 - distance / 130) : 0;
+            const offsetX = depthX * layerRatio + rowBend - localLift * 8;
+            const offsetY = depthY * layerRatio - localLift * 4;
+            context.fillText(layer % 2 === 0 ? "\\" : "|", x + offsetX, y + offsetY);
+          }
+        }
+      }
+
+      context.globalAlpha = 1;
+      for (let y = cellHeight * 0.5; y < height; y += cellHeight) {
+        const wave = prefersReducedMotion.matches ? 0 : Math.sin(time * 0.0006 + y * 0.025) * faceSkew;
+        for (let x = cellWidth * 0.5; x < width; x += cellWidth) {
+          const alpha = alphaAt(x, y);
+          if (alpha < 0.08) continue;
+          const distance = Math.hypot(x - pointer.x, y - pointer.y);
+          const hover = pointer.active ? Math.max(0, 1 - distance / 110) : 0;
+          const pulse = pointer.pulse > 0 ? Math.max(0, 1 - distance / pointer.pulse) : 0;
+          const brightness = Math.max(0, Math.min(1, alpha + hover * 0.24 + pulse * 0.32));
+          const glyph = faceGlyphs[Math.min(faceGlyphs.length - 1, Math.floor(brightness * faceGlyphs.length))];
+          context.globalAlpha = Math.max(0.5, Math.min(1, alpha + hover * 0.22 + pulse * 0.3));
+          context.fillStyle = hover > 0.16 || pulse > 0.08 ? hotColor : baseColor;
+          context.fillText(glyph, x - hover * 5 + wave, y - hover * 2);
+        }
+      }
+
+      context.globalAlpha = 1;
+      asciiRoot.classList.toggle("is-hot", pointer.active);
+      if (pointer.pulse > 0) pointer.pulse *= 0.88;
+      if (!prefersReducedMotion.matches) frame = window.requestAnimationFrame(renderAscii);
     };
 
     const pointerFromEvent = (event) => {
-      const rect = asciiOutput.getBoundingClientRect();
-      pointer.col = ((event.clientX - rect.left) / Math.max(1, rect.width)) * cols;
-      pointer.row = ((event.clientY - rect.top) / Math.max(1, rect.height)) * rows;
+      const rect = asciiCanvas.getBoundingClientRect();
+      pointer.x = event.clientX - rect.left;
+      pointer.y = event.clientY - rect.top;
       pointer.active = true;
-      pointer.heat = 1;
-      render();
     };
 
-    const render = () => {
-      if (!baseLines.length) setBaseArt();
-      const lines = baseLines.map((row, rowIndex) => {
-        let line = "";
-        [...row.padEnd(cols, " ")].forEach((character, colIndex) => {
-          if (character === " ") {
-            line += " ";
-            return;
-          }
-          const dx = colIndex - pointer.col;
-          const dy = (rowIndex - pointer.row) * 1.35;
-          const distance = Math.hypot(dx, dy);
-          if (clickPulse > 0 && distance < clickPulse) line += "*";
-          else if (pointer.active && pointer.heat > 0.04 && distance < 4.2) line += "*";
-          else if (pointer.active && pointer.heat > 0.04 && distance < 7.4) line += character === "_" ? "=" : character;
-          else line += character;
-        });
-        return line.replace(/\s+$/g, "");
-      });
+    resizeAscii();
+    renderAscii();
+    new ResizeObserver(() => {
+      window.cancelAnimationFrame(frame);
+      resizeAscii();
+      renderAscii();
+    }).observe(asciiRoot);
 
-      asciiOutput.textContent = lines.join("\n");
-      asciiRoot.classList.toggle("is-hot", pointer.active && pointer.heat > 0.05);
-    };
-
-    setBaseArt();
-    window.addEventListener("resize", () => {
-      setBaseArt();
+    asciiCanvas.addEventListener("pointermove", (event) => {
+      pointerFromEvent(event);
+      if (prefersReducedMotion.matches) renderAscii();
     });
-    asciiRoot.addEventListener("pointermove", (event) => {
-      if (!prefersReducedMotion.matches) pointerFromEvent(event);
+    asciiCanvas.addEventListener("pointerdown", (event) => {
+      pointerFromEvent(event);
+      pointer.pulse = 130;
+      renderAscii();
     });
     asciiRoot.addEventListener("pointerleave", () => {
       pointer.active = false;
-      pointer.heat = 0;
-      clickPulse = 0;
-      asciiOutput.textContent = baseLines.join("\n");
-      asciiRoot.classList.remove("is-hot");
-    });
-    asciiRoot.addEventListener("pointerdown", (event) => {
-      if (prefersReducedMotion.matches) return;
-      pointerFromEvent(event);
-      clickPulse = 9;
-      render();
-      window.setTimeout(() => {
-        clickPulse = 0;
-        render();
-      }, 180);
+      pointer.pulse = 0;
+      if (prefersReducedMotion.matches) renderAscii();
     });
   }
 

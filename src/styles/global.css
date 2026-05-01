@@ -306,7 +306,7 @@ main {
   cursor: zoom-in;
 }
 
-.prose figure:not(.photo-grid):not(.photo-carousel) img {
+.prose figure:not(.photo-grid):not(.photo-carousel):not(.terigo-gallery) img {
   width: auto;
   max-height: min(74vh, 640px);
   background: transparent;
@@ -323,6 +323,105 @@ main {
   font-family: var(--font-mono);
   font-size: 0.78rem;
   line-height: 1.5;
+}
+
+.page-header--terigo {
+  padding-bottom: 30px;
+}
+
+.terigo-page-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 0 22px;
+}
+
+.terigo-page-top img {
+  width: min(220px, 52vw);
+  height: auto;
+  max-height: none;
+  margin: 0;
+}
+
+.terigo-page-top a {
+  flex: 0 0 auto;
+  padding: 9px 13px;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, var(--border));
+  border-radius: 999px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1;
+  text-decoration: none;
+  background: color-mix(in srgb, var(--panel) 72%, transparent);
+}
+
+.terigo-page-top a:hover,
+.terigo-page-top a:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.page-intro--terigo {
+  margin-top: 0;
+}
+
+.terigo-feature-list {
+  margin: 1rem 0 1.6rem;
+  padding-left: 1.1rem;
+  color: var(--muted);
+}
+
+.terigo-feature-list li {
+  margin: 0.54rem 0;
+  padding-left: 0.15rem;
+}
+
+.prose .terigo-shot {
+  max-width: 360px;
+  margin-top: 1.8rem;
+  margin-bottom: 2rem;
+}
+
+.prose .terigo-shot--strava {
+  max-width: 330px;
+}
+
+.prose .terigo-gallery {
+  width: min(calc(100vw - 40px), 850px);
+  max-width: none;
+  margin: 2rem 0 2.2rem 50%;
+  transform: translateX(-50%);
+}
+
+.terigo-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.terigo-gallery__grid a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.prose .terigo-gallery__grid img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  aspect-ratio: 736 / 1600;
+  object-fit: cover;
+}
+
+.terigo-gallery__grid span {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--subtle);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1.35;
 }
 
 .prose .photo-grid {
@@ -874,60 +973,31 @@ main {
 }
 
 .ascii-title {
-  --ascii-main: color-mix(in srgb, var(--text) 78%, var(--accent) 22%);
-  --ascii-hot: color-mix(in srgb, var(--accent-strong) 72%, var(--text) 28%);
-  --ascii-mountain: color-mix(in srgb, var(--accent) 50%, transparent);
+  --ascii-main: #9fb77d;
+  --ascii-hot: color-mix(in srgb, #9fb77d 72%, var(--text) 28%);
+  --ascii-side: color-mix(in srgb, #9fb77d 48%, transparent);
+  --ascii-shadow: color-mix(in srgb, #9fb77d 18%, transparent);
   position: relative;
   width: 100%;
-  min-height: clamp(280px, 38vw, 430px);
+  min-height: clamp(260px, 31vw, 360px);
   margin: 0;
   overflow: hidden;
-  cursor: crosshair;
   user-select: none;
   touch-action: pan-y;
   isolation: isolate;
 }
 
-.ascii-title__mountains {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  z-index: 0;
-  margin: 0;
-  color: var(--ascii-mountain);
+.ascii-title__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
   font-family: var(--font-mono);
-  font-size: clamp(0.72rem, 1.5vw, 1rem);
-  font-weight: 560;
-  line-height: 0.9;
-  letter-spacing: 0;
-  white-space: pre;
-  opacity: 0.46;
-  text-shadow: 0 0 20px color-mix(in srgb, var(--accent) 12%, transparent);
-  transform: translateX(-46%);
+  cursor: crosshair;
+  transform: translate3d(0, 0, 0);
 }
 
-.ascii-title__art {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  padding-top: clamp(14px, 2.5vw, 28px);
-  color: var(--ascii-main);
-  font-family: var(--font-mono);
-  font-size: clamp(0.74rem, 1.6vw, 1.06rem);
-  font-weight: 720;
-  line-height: 0.94;
-  letter-spacing: 0;
-  white-space: pre;
-  text-shadow:
-    0 0 10px color-mix(in srgb, var(--accent) 16%, transparent);
-  transform: translateZ(0);
-  transition: color 180ms ease, text-shadow 180ms ease;
-}
-
-.ascii-title.is-hot .ascii-title__art {
-  color: var(--ascii-hot);
-  text-shadow:
-    0 0 9px color-mix(in srgb, var(--accent-strong) 28%, transparent);
+.ascii-title.is-hot .ascii-title__canvas {
+  filter: drop-shadow(0 0 7px color-mix(in srgb, #9fb77d 14%, transparent));
 }
 
 .about-intro {
@@ -947,27 +1017,23 @@ main {
 }
 
 @media (max-width: 560px) {
+  .about-hero {
+    padding-top: 0;
+    padding-bottom: 24px;
+  }
+
   .ascii-title {
-    min-height: 310px;
+    min-height: clamp(172px, 43vw, 222px);
   }
 
-  .ascii-title__mountains {
-    left: 50%;
-    bottom: 0;
-    font-size: 0.54rem;
-    opacity: 0.42;
-    transform: translateX(-42%);
-  }
-
-  .ascii-title__art {
-    font-size: clamp(0.48rem, 2.1vw, 0.68rem);
-    line-height: 0.95;
+  .about-intro {
+    margin-top: 12px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ascii-title__art {
-    transition: none;
+  .ascii-title__canvas {
+    filter: none;
   }
 }
 
@@ -2655,7 +2721,7 @@ body.travel-app .travel-timeline-rail__axis {
     max-height: 300px;
   }
 
-  .prose figure:not(.photo-grid):not(.photo-carousel) img {
+  .prose figure:not(.photo-grid):not(.photo-carousel):not(.terigo-gallery) img {
     width: auto;
     height: auto;
     max-height: 420px;
@@ -2762,6 +2828,46 @@ body.travel-app .travel-timeline-rail__axis {
     color: var(--muted);
     line-height: 1.35;
     white-space: normal;
+  }
+
+  .terigo-page-top {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+    padding-bottom: 16px;
+  }
+
+  .terigo-page-top img {
+    width: min(230px, 70vw);
+    max-height: none;
+  }
+
+  .prose .terigo-shot,
+  .prose .terigo-shot--strava {
+    max-width: min(330px, 88vw);
+  }
+
+  .prose .terigo-gallery {
+    width: calc(100vw - 28px);
+    margin: 1.7rem 0 2rem 50%;
+  }
+
+  .terigo-gallery__grid {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    scrollbar-width: none;
+  }
+
+  .terigo-gallery__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .terigo-gallery__grid a {
+    flex: 0 0 min(70vw, 290px);
+    scroll-snap-align: start;
   }
 
   .photo-lightbox__bar {

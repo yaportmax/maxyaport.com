@@ -401,6 +401,85 @@ function renderPortableText(body: any[] = []) {
   });
 }
 
+function renderTerigoScreenshot(src: string, alt: string, caption: string, className = "terigo-shot") {
+  return `<figure class="${className} pswp-gallery"><a href="${attr(src)}" data-pswp-width="736" data-pswp-height="1600"><img src="${attr(src)}" alt="${attr(alt)}" loading="lazy" width="736" height="1600" /></a>${caption ? `<figcaption>${attr(caption)}</figcaption>` : ""}</figure>`;
+}
+
+function renderTerigoGallery() {
+  const shots = [
+    {
+      src: "/images/terigo/filtering.png",
+      alt: "Terigo filtering screen showing stackable route filters",
+      caption: "Stackable filters",
+    },
+    {
+      src: "/images/terigo/map-browse.png",
+      alt: "Terigo map browse screen showing routes by starting location",
+      caption: "Map browse",
+    },
+    {
+      src: "/images/terigo/lists.png",
+      alt: "Terigo lists screen for organizing saved routes",
+      caption: "Lists and tags",
+    },
+    {
+      src: "/images/terigo/navigation.png",
+      alt: "Terigo route navigation screen with map and route controls",
+      caption: "Route navigation",
+    },
+  ];
+
+  const images = shots
+    .map(
+      (shot) =>
+        `<a href="${attr(shot.src)}" data-pswp-width="736" data-pswp-height="1600"><img src="${attr(shot.src)}" alt="${attr(shot.alt)}" loading="lazy" width="736" height="1600" /><span>${attr(shot.caption)}</span></a>`,
+    )
+    .join("");
+
+  return `<figure class="terigo-gallery pswp-gallery"><div class="terigo-gallery__grid">${images}</div></figure>`;
+}
+
+function renderTerigoArticle() {
+  return `
+    <section class="terigo-article">
+      <p>Today, I released my first app ever to the world - Terigo.</p>
+
+      <p>This was my first successful attempt at building something with AI that I find practical value in for my personal life and something that I actually enjoy using.</p>
+
+      <p>Strava is a great app that works well for most people, but some of its systems tend to fall apart and get clunky as your library grows. Saved routes in particular do not scale well as users accumulate hundreds of routes throughout their years. You can&rsquo;t categorize routes or put them into any lists for easy future retrieval. Couple this with a somewhat clunky buggy UI that always tends to break when you&rsquo;re miles from home and need it most, offline routes that don&rsquo;t work half the time, and live tracking that chews through your battery - at times, it&rsquo;s simply unusable.</p>
+
+      ${renderTerigoScreenshot(
+        "/images/terigo/clunky-strava.png",
+        "Strava offline route management screen",
+        "Strava offline routes: how do I sort by most recent?",
+        "terigo-shot terigo-shot--strava",
+      )}
+
+      <p>Terigo solves all of this!</p>
+
+      <p>We start by pulling all your route data directly from Strava API into Terigo. It&rsquo;s a very simple OAuth set up with no hassle, which gives you all the following tools:</p>
+
+      <ul class="terigo-feature-list">
+        <li>Clean responsive Apple Liquid Glass UI built with Swift.</li>
+        <li>Powerful hyper-specific stackable filters and sorting.</li>
+        <li>Geo-aware search that allows you to select where you&rsquo;d like to start, like Marin Headlands or Yosemite.</li>
+        <li>Simple lists and tags for organization and easy sharing.</li>
+        <li>A map-based browse view that lets you explore routes by their starting location.</li>
+        <li>Beautiful highly customizable maps for routes, including 3D and HD satellite.</li>
+        <li>Total control over what you download: route metadata, full GPX and altitude, 2D/3D map tiles, Satellite, Standard, Hybrid, and storage usage reporting.</li>
+        <li>Live route navigation with clear visuals and controls, designed to be battery efficient with dynamic GPS usage.</li>
+      </ul>
+
+      ${renderTerigoGallery()}
+
+      <p>In putting this together, I used the SwiftUI plugin on Codex. It did a fantastic job and frankly one-shot a significant portion of the UI. There was definitely lots of iteration still required, but overall I was very impressed with how well it can handle UI when using the standard Apple Liquid Glass library.</p>
+
+      <p>I had to deal with the whole Apple Developer Program and getting an app approved. I hope at least one other person can get value from this, because I&rsquo;m down $100 just for getting it live.</p>
+
+      <p>I also dealt, and am still in the process of dealing, with Strava API limits. They start you off with a tiny amount of requests to get you started, which is already annoying. But the real kicker: they only allow you to pull data for just one athlete - ever. And the only way to expand this is to send them a form asking them to do so. At the time of me writing this, it&rsquo;s been almost two weeks since I first submitted the form, so fingers crossed they can get to it.</p>
+    </section>`;
+}
+
 function textFromBlock(block: any) {
   if (block?._type !== "block") return "";
   return (block.children || []).map((child: any) => child.text || "").join("");
@@ -532,8 +611,7 @@ export async function getSanityPosts(): Promise<SanityPost[]> {
             description: "strava routes done better",
             date: parseDate(post.date),
             slug,
-            url: terigoAppStoreUrl,
-            html: "",
+            html: renderTerigoArticle(),
           };
         }
         return {
