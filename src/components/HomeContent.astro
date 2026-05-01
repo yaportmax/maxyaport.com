@@ -593,7 +593,7 @@ const travel = [
       const fontSize = fitFontSize(fontFamily);
       const lineGap = fontSize * 0.82;
       const startX = 14;
-      const topPadding = width < 520 ? 14 : Math.max(fontSize * 0.18, (height - lineGap - fontSize) * 0.5);
+      const topPadding = width < 520 ? 8 : Math.max(10, fontSize * 0.08);
       const startY = topPadding + fontSize;
 
       maskContext.clearRect(0, 0, width, height);

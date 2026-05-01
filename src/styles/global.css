@@ -969,7 +969,7 @@ main {
 }
 
 .about-hero {
-  padding: clamp(10px, 4vw, 34px) 0 34px;
+  padding: clamp(4px, 2vw, 18px) 0 28px;
 }
 
 .ascii-title {
@@ -978,7 +978,7 @@ main {
   --ascii-shadow: color-mix(in srgb, #9fb77d 18%, transparent);
   position: relative;
   width: 100%;
-  min-height: clamp(260px, 31vw, 360px);
+  min-height: clamp(220px, 27vw, 310px);
   margin: 0;
   overflow: hidden;
   user-select: none;
@@ -1018,7 +1018,7 @@ main {
   }
 
   .ascii-title {
-    min-height: clamp(172px, 43vw, 222px);
+    min-height: clamp(154px, 38vw, 198px);
   }
 
   .about-intro {
