@@ -61,6 +61,14 @@ const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: r
 const defaultRouteColor = "#b7d39a";
 const fastRouteColor = "#f4d35e";
 const finishRouteColor = "#f0b07a";
+const moodLightPresets: Record<string, string> = {
+  overview: "dusk",
+  cold: "dawn",
+  good: "day",
+  hard: "dusk",
+  "weird-good": "day",
+  finish: "night",
+};
 
 function readJsonAttribute<T>(element: Element, name: string, fallback: T): T {
   try {
@@ -290,6 +298,11 @@ function fitRouteBounds(
 
 function applyCinematicTerrain(map: mapboxgl.Map, payload: RoutePayload) {
   try {
+    const lightPreset = moodLightPresets[payload.mood || ""] || "dusk";
+    if (typeof (map as any).setConfigProperty === "function") {
+      (map as any).setConfigProperty("basemap", "lightPreset", lightPreset);
+    }
+
     if (!map.getSource("mapbox-dem")) {
       map.addSource("mapbox-dem", {
         type: "raster-dem",
@@ -299,13 +312,15 @@ function applyCinematicTerrain(map: mapboxgl.Map, payload: RoutePayload) {
       });
     }
 
-    map.setTerrain({source: "mapbox-dem", exaggeration: payload.mood === "overview" ? 1.22 : 1.55});
+    const terrainExaggeration =
+      payload.mood === "overview" ? 1.35 : payload.mood === "weird-good" ? 1.82 : 1.62;
+    map.setTerrain({source: "mapbox-dem", exaggeration: terrainExaggeration});
     map.setFog({
-      color: "rgb(12, 14, 11)",
-      "high-color": "rgb(76, 91, 74)",
-      "horizon-blend": 0.1,
-      "space-color": "rgb(3, 5, 6)",
-      "star-intensity": 0.08,
+      color: payload.mood === "cold" ? "rgb(13, 17, 18)" : "rgb(12, 14, 11)",
+      "high-color": payload.mood === "finish" ? "rgb(92, 72, 54)" : "rgb(76, 91, 74)",
+      "horizon-blend": payload.mood === "overview" ? 0.08 : 0.16,
+      "space-color": "rgb(2, 4, 5)",
+      "star-intensity": payload.mood === "finish" ? 0.16 : 0.06,
     });
   } catch (error) {
     console.warn("Could not enable Mapbox terrain", error);
@@ -469,6 +484,9 @@ function createRouteOverlay(
   const pathLength = progressPath.getTotalLength();
   progressPath.style.strokeDasharray = String(pathLength);
   const progress = {value: routeShouldAnimate(payload) ? 0 : 1};
+  const progressMile = card.querySelector<HTMLElement>("[data-route-mile]");
+  const mileStart = payload.mileStart ?? 0;
+  const mileEnd = payload.mileEnd ?? routeMiles;
 
   const update = () => {
     const safeProgress = clamp(progress.value, 0, 1);
@@ -477,6 +495,9 @@ function createRouteOverlay(
     marker.setAttribute("cx", String(markerPoint.x));
     marker.setAttribute("cy", String(markerPoint.y));
     card.style.setProperty("--route-progress", String(safeProgress));
+    if (progressMile) {
+      progressMile.textContent = `Mile ${(mileStart + (mileEnd - mileStart) * safeProgress).toFixed(1)}`;
+    }
   };
 
   update();
@@ -514,9 +535,9 @@ function createRouteOverlay(
 function routeScrollTrigger(card: HTMLElement) {
   return {
     trigger: card,
-    start: "top 76%",
-    end: "bottom 36%",
-    scrub: 0.16,
+    start: "top 82%",
+    end: "bottom 24%",
+    scrub: 0.34,
     invalidateOnRefresh: true,
   };
 }
@@ -725,6 +746,60 @@ async function initRouteCard(card: HTMLElement) {
       : null;
     const shouldAnimate = routeShouldAnimate(payload);
     const progress = {value: shouldAnimate ? 0 : 1};
+    const progressMile = card.querySelector<HTMLElement>("[data-route-mile]");
+    const segmentMiles = segmentLine ? length(segmentLine, {units: "miles"}) : 0;
+    const absoluteStartMile = payload.mileStart ?? 0;
+    const absoluteEndMile = payload.mileEnd ?? absoluteStartMile + segmentMiles;
+    let cameraState:
+      | {lng: number; lat: number; zoom: number; pitch: number; bearing: number}
+      | null = null;
+
+    const updateFollowCamera = (markerPoint: [number, number], safeProgress: number) => {
+      if (!segmentLine || !payload.followCamera || safeProgress <= 0.02 || safeProgress >= 0.98) return;
+
+      const lookAhead = clamp(safeProgress + (payload.animation === "fast" ? 0.075 : 0.045), 0, 1);
+      const aheadPoint = along(segmentLine, segmentMiles * lookAhead, {units: "miles"}).geometry
+        .coordinates as [number, number];
+      const dynamicBearing = Number.isFinite(turfBearing(point(markerPoint), point(aheadPoint)))
+        ? turfBearing(point(markerPoint), point(aheadPoint))
+        : routeCardBearing;
+      const targetZoom =
+        payload.mood === "weird-good"
+          ? 11.35
+          : payload.animation === "fast"
+            ? 10.9
+            : card.clientWidth < 640
+              ? 10.2
+              : 10.7;
+      const targetPitch = payload.mood === "weird-good" ? Math.max(routeCardPitch, 70) : routeCardPitch;
+      const target = {
+        lng: markerPoint[0],
+        lat: markerPoint[1],
+        zoom: Math.max(map.getZoom(), targetZoom),
+        pitch: targetPitch,
+        bearing: dynamicBearing,
+      };
+
+      if (!cameraState) {
+        cameraState = target;
+      } else {
+        const blend = payload.mood === "weird-good" ? 0.32 : 0.22;
+        cameraState = {
+          lng: cameraState.lng + (target.lng - cameraState.lng) * blend,
+          lat: cameraState.lat + (target.lat - cameraState.lat) * blend,
+          zoom: cameraState.zoom + (target.zoom - cameraState.zoom) * blend,
+          pitch: cameraState.pitch + (target.pitch - cameraState.pitch) * blend,
+          bearing: cameraState.bearing + (target.bearing - cameraState.bearing) * blend,
+        };
+      }
+
+      map.jumpTo({
+        center: [cameraState.lng, cameraState.lat],
+        zoom: cameraState.zoom,
+        pitch: cameraState.pitch,
+        bearing: cameraState.bearing,
+      });
+    };
 
     const update = () => {
       if (!segmentLine || !movingMarker) return;
@@ -741,15 +816,11 @@ async function initRouteCard(card: HTMLElement) {
         .coordinates as [number, number];
       movingMarker.setLngLat(markerPoint);
       card.style.setProperty("--route-progress", String(safeProgress));
-
-      if (payload.followCamera && safeProgress > 0.02 && safeProgress < 0.98) {
-        map.jumpTo({
-          center: markerPoint,
-          zoom: Math.max(map.getZoom(), payload.animation === "fast" ? 10.4 : 9.7),
-          pitch: routeCardPitch,
-          bearing: routeCardBearing,
-        });
+      if (progressMile) {
+        progressMile.textContent = `Mile ${(absoluteStartMile + (absoluteEndMile - absoluteStartMile) * safeProgress).toFixed(1)}`;
       }
+
+      updateFollowCamera(markerPoint, safeProgress);
     };
 
     update();
@@ -846,7 +917,86 @@ function initScrollReveals() {
   });
 }
 
+function initCanyonsSoundscape() {
+  const button = document.querySelector<HTMLButtonElement>("[data-canyons-audio]");
+  if (!button) return;
+
+  let audioContext: AudioContext | null = null;
+  let gain: GainNode | null = null;
+  let filter: BiquadFilterNode | null = null;
+  let oscillator: OscillatorNode | null = null;
+  let enabled = false;
+
+  const scrollRatio = () => {
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    return clamp(window.scrollY / maxScroll, 0, 1);
+  };
+
+  const ensureAudio = () => {
+    if (audioContext) return audioContext;
+    const AudioCtor = window.AudioContext || (window as any).webkitAudioContext;
+    audioContext = new AudioCtor();
+    gain = audioContext.createGain();
+    gain.gain.value = 0.0001;
+    filter = audioContext.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 420;
+
+    const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+    let last = 0;
+    for (let index = 0; index < data.length; index += 1) {
+      last = (last + (Math.random() * 2 - 1) * 0.035) * 0.985;
+      data[index] = last;
+    }
+
+    const noise = audioContext.createBufferSource();
+    noise.buffer = buffer;
+    noise.loop = true;
+    oscillator = audioContext.createOscillator();
+    oscillator.type = "sine";
+    oscillator.frequency.value = 72;
+    const oscillatorGain = audioContext.createGain();
+    oscillatorGain.gain.value = 0.012;
+
+    noise.connect(filter);
+    filter.connect(gain);
+    oscillator.connect(oscillatorGain);
+    oscillatorGain.connect(gain);
+    gain.connect(audioContext.destination);
+    noise.start();
+    oscillator.start();
+    return audioContext;
+  };
+
+  const updateAudio = () => {
+    if (!audioContext || !gain || !filter || !oscillator || !enabled) return;
+    const progress = scrollRatio();
+    const intensity = 0.5 + Math.sin(progress * Math.PI) * 0.5;
+    gain.gain.setTargetAtTime(0.028 + intensity * 0.025, audioContext.currentTime, 0.24);
+    filter.frequency.setTargetAtTime(340 + progress * 620, audioContext.currentTime, 0.3);
+    oscillator.frequency.setTargetAtTime(58 + progress * 34, audioContext.currentTime, 0.3);
+  };
+
+  button.addEventListener("click", async () => {
+    const context = ensureAudio();
+    enabled = !enabled;
+    button.setAttribute("aria-pressed", String(enabled));
+    document.body.classList.toggle("canyons-audio-active", enabled);
+    if (enabled) {
+      await context.resume();
+      updateAudio();
+    } else {
+      gain?.gain.setTargetAtTime(0.0001, context.currentTime, 0.18);
+      await context.suspend();
+    }
+  });
+
+  window.addEventListener("scroll", updateAudio, {passive: true});
+}
+
 initEmblaCarousels();
 initPhotoSwipe();
 initRouteCards();
 initScrollReveals();
+initCanyonsSoundscape();

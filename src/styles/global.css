@@ -493,6 +493,96 @@ main:has(.about-page) {
   margin-bottom: 2rem;
 }
 
+.canyons-post {
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 22rem),
+    linear-gradient(180deg, #080908 0%, var(--bg) 38rem),
+    var(--bg);
+}
+
+.canyons-post main.shell {
+  width: 100%;
+  max-width: none;
+  padding-top: clamp(22px, 4vw, 54px);
+  overflow: clip;
+}
+
+.canyons-article {
+  --canyons-wide: min(calc(100vw - 28px), 1320px);
+  --canyons-text: min(calc(100vw - 40px), 720px);
+}
+
+.canyons-article .page-header {
+  width: var(--canyons-text);
+  margin: 0 auto clamp(2.2rem, 7vw, 5rem);
+  padding: clamp(2.2rem, 8vw, 7rem) 0 clamp(1.2rem, 4vw, 3rem);
+}
+
+.canyons-article .page-title {
+  max-width: 10ch;
+  font-size: clamp(4.4rem, 15vw, 11rem);
+  line-height: 0.84;
+}
+
+.canyons-article .page-intro {
+  margin-top: clamp(1.2rem, 3vw, 2rem);
+  font-family: var(--font-mono);
+  font-size: clamp(0.86rem, 1.5vw, 1rem);
+}
+
+.canyons-post .prose {
+  padding-top: 0;
+}
+
+.canyons-post .prose > p,
+.canyons-post .prose > h2 {
+  width: var(--canyons-text);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.canyons-experience {
+  width: var(--canyons-text);
+  margin: 0 auto clamp(1.4rem, 4vw, 2.8rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--subtle);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+}
+
+.canyons-experience button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--panel) 56%, transparent);
+  color: color-mix(in srgb, var(--text) 76%, transparent);
+  cursor: pointer;
+}
+
+.canyons-experience button i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--subtle);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.canyons-experience button[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--accent) 62%, var(--border));
+  color: var(--accent);
+}
+
+.canyons-experience button[aria-pressed="true"] i {
+  background: var(--accent);
+  animation: canyons-audio-pulse 1.2s ease-in-out infinite;
+}
+
 .race-stats {
   margin-top: 1.7rem;
   margin-bottom: 2rem;
@@ -538,6 +628,21 @@ main:has(.about-page) {
   margin-bottom: 3.2rem;
 }
 
+.canyons-post .race-stats {
+  width: var(--canyons-text);
+  margin-top: clamp(2rem, 6vw, 4.5rem);
+  margin-bottom: clamp(4rem, 10vw, 8rem);
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
+}
+
+.canyons-post .race-chapter {
+  width: 100%;
+  max-width: none;
+  margin: clamp(4.8rem, 12vw, 10rem) 0;
+  padding: clamp(1.2rem, 4vw, 2.5rem) 0;
+  transform: none;
+}
+
 .race-chapter > h2 {
   width: min(100%, 690px);
   margin-right: auto;
@@ -546,10 +651,28 @@ main:has(.about-page) {
   line-height: 1.05;
 }
 
+.canyons-post .race-chapter > h2 {
+  width: var(--canyons-text);
+  margin-bottom: clamp(1rem, 3vw, 1.8rem);
+  color: #fffaf0;
+  font-size: clamp(2.35rem, 7vw, 6.4rem);
+  letter-spacing: 0;
+}
+
 .race-chapter__text {
   width: min(100%, 690px);
   margin-right: auto;
   margin-left: auto;
+}
+
+.canyons-post .race-chapter__text {
+  width: var(--canyons-text);
+  margin-top: clamp(1.4rem, 4vw, 2.8rem);
+  font-size: clamp(1.03rem, 1.8vw, 1.18rem);
+}
+
+.canyons-post .race-chapter__text p {
+  color: color-mix(in srgb, var(--muted) 92%, #fffaf0);
 }
 
 .race-chapter--weird-good {
@@ -573,6 +696,13 @@ main:has(.about-page) {
   line-height: 1.55;
 }
 
+.canyons-post .chapter-callout {
+  width: var(--canyons-text);
+  margin-top: clamp(1.2rem, 4vw, 2rem);
+  border-left-color: var(--accent);
+  background: color-mix(in srgb, var(--panel) 52%, transparent);
+}
+
 .prose .route-card {
   position: relative;
   min-height: clamp(440px, 54vw, 580px);
@@ -587,6 +717,34 @@ main:has(.about-page) {
   box-shadow:
     0 30px 90px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 250, 240, 0.08);
+}
+
+.canyons-post .prose .route-card {
+  width: var(--canyons-wide);
+  min-height: clamp(620px, 86vh, 900px);
+  margin-top: 0;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+  border: 0;
+  border-radius: 16px;
+  background: #050705;
+  box-shadow:
+    0 34px 110px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 250, 240, 0.08);
+}
+
+.canyons-post .canyons-hero-map,
+.canyons-post .race-chapter,
+.canyons-post .prose .photo-carousel {
+  width: var(--canyons-wide);
+}
+
+.canyons-post .canyons-hero-map {
+  margin-top: 0;
+  margin-bottom: clamp(2.6rem, 8vw, 6rem);
+}
+
+.canyons-post .canyons-hero-map .route-card {
+  min-height: clamp(650px, 88vh, 960px);
 }
 
 .prose .route-card--compact {
@@ -629,10 +787,56 @@ main:has(.about-page) {
   cursor: default;
 }
 
-.route-card__scrim {
+.route-card__ambient {
   position: absolute;
   inset: 0;
   z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.72;
+  mix-blend-mode: screen;
+}
+
+.route-card__ambient span {
+  position: absolute;
+  width: 36vmax;
+  height: 36vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 18%, transparent), transparent 64%);
+  filter: blur(14px);
+  transform: translate3d(0, 0, 0);
+  animation: route-ambient-drift 18s ease-in-out infinite alternate;
+}
+
+.route-card__ambient span:nth-child(1) {
+  top: -10%;
+  left: -12%;
+}
+
+.route-card__ambient span:nth-child(2) {
+  right: -16%;
+  bottom: -22%;
+  animation-duration: 22s;
+  animation-delay: -6s;
+}
+
+.route-card__ambient span:nth-child(3) {
+  top: 28%;
+  left: 38%;
+  width: 24vmax;
+  height: 24vmax;
+  animation-duration: 26s;
+  animation-delay: -11s;
+}
+
+.canyons-post .route-card__ambient {
+  opacity: calc(0.3 + var(--route-progress, 0) * 0.42);
+}
+
+.route-card__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   pointer-events: none;
   background:
     linear-gradient(180deg, rgba(4, 5, 4, 0.78), transparent 28%),
@@ -649,10 +853,22 @@ main:has(.about-page) {
     linear-gradient(90deg, rgba(4, 5, 4, 0.34), transparent 48%);
 }
 
+.canyons-post .route-card__map .mapboxgl-canvas {
+  filter: saturate(1.08) contrast(1.08) brightness(0.86);
+}
+
+.canyons-post .route-card--map-ready .route-card__scrim {
+  background:
+    linear-gradient(180deg, rgba(4, 5, 4, 0.34), transparent 20%),
+    linear-gradient(0deg, rgba(4, 5, 4, 0.62), transparent 38%),
+    radial-gradient(circle at calc(18% + var(--route-progress, 0) * 64%) 52%, rgba(183, 211, 154, 0.18), transparent 28%),
+    linear-gradient(90deg, rgba(4, 5, 4, 0.28), transparent 44%);
+}
+
 .route-card__overlay {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
 }
 
@@ -716,7 +932,7 @@ main:has(.about-page) {
   position: absolute;
   top: 18px;
   left: 18px;
-  z-index: 3;
+  z-index: 4;
   width: min(76%, 460px);
   padding: 14px 15px;
   border: 1px solid rgba(255, 250, 240, 0.12);
@@ -724,6 +940,17 @@ main:has(.about-page) {
   background: rgba(5, 7, 5, 0.58);
   box-shadow: 0 16px 42px rgba(0, 0, 0, 0.24);
   backdrop-filter: blur(12px);
+}
+
+.canyons-post .route-card__meta {
+  top: clamp(18px, 4vw, 34px);
+  left: clamp(18px, 4vw, 34px);
+  width: min(520px, calc(100% - 42px));
+  border: 0;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 72%, transparent);
+  border-radius: 0;
+  background: linear-gradient(90deg, rgba(5, 7, 5, 0.68), rgba(5, 7, 5, 0.18) 76%, transparent);
+  box-shadow: none;
 }
 
 .route-card__meta h3,
@@ -752,18 +979,61 @@ main:has(.about-page) {
   line-height: 1.45;
 }
 
+.route-card__progress {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  z-index: 4;
+  display: grid;
+  gap: 8px;
+  width: min(190px, 34%);
+  color: color-mix(in srgb, #fffaf0 78%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  pointer-events: none;
+}
+
+.route-card__progress i {
+  display: block;
+  height: 2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+  overflow: hidden;
+}
+
+.route-card__progress i::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transform: scaleX(var(--route-progress, 0));
+  transform-origin: left center;
+}
+
 .route-card__elevation {
   position: absolute;
   right: 18px;
   bottom: 18px;
   left: 18px;
-  z-index: 3;
+  z-index: 4;
   padding: 10px 12px;
   border: 1px solid rgba(255, 250, 240, 0.12);
   border-radius: 9px;
   background: rgba(4, 6, 5, 0.66);
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(10px);
+}
+
+.canyons-post .route-card__elevation {
+  right: clamp(18px, 4vw, 34px);
+  bottom: clamp(18px, 4vw, 34px);
+  left: clamp(18px, 4vw, 34px);
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(0deg, rgba(4, 6, 5, 0.54), rgba(4, 6, 5, 0.12));
+  box-shadow: none;
 }
 
 .route-card__elevation:empty {
@@ -803,6 +1073,15 @@ main:has(.about-page) {
     0 8px 18px rgba(0, 0, 0, 0.35);
 }
 
+.canyons-post .route-marker {
+  width: 20px;
+  height: 20px;
+  box-shadow:
+    0 0 0 10px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 0 34px color-mix(in srgb, var(--accent) 68%, transparent),
+    0 8px 24px rgba(0, 0, 0, 0.42);
+}
+
 .route-label {
   opacity: 0;
   padding: 5px 8px;
@@ -815,6 +1094,11 @@ main:has(.about-page) {
   white-space: nowrap;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(10px);
+}
+
+.canyons-post .route-label {
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  background: rgba(4, 7, 5, 0.64);
 }
 
 .route-card--error .route-card__scrim,
@@ -877,6 +1161,45 @@ main:has(.about-page) {
   border-radius: 7px;
   object-fit: cover;
   will-change: transform;
+}
+
+.canyons-post .prose .photo-carousel {
+  margin-top: clamp(2rem, 6vw, 4rem);
+  margin-bottom: clamp(2rem, 6vw, 4rem);
+}
+
+.canyons-post .embla__container {
+  gap: 14px;
+}
+
+.canyons-post .embla__slide {
+  flex-basis: min(78vw, 560px);
+}
+
+.canyons-post .embla__slide img {
+  height: clamp(360px, 62vw, 640px);
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.42);
+}
+
+@keyframes route-ambient-drift {
+  from {
+    transform: translate3d(-4%, -2%, 0) scale(0.95);
+  }
+  to {
+    transform: translate3d(8%, 6%, 0) scale(1.12);
+  }
+}
+
+@keyframes canyons-audio-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 44%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent);
+  }
 }
 
 .prose .photo-carousel figcaption {
@@ -2795,6 +3118,54 @@ body.travel-app .travel-timeline-rail__axis {
     left: 14px;
     width: calc(100% - 28px);
     padding: 12px;
+  }
+
+  .canyons-post main.shell {
+    padding-top: 24px;
+  }
+
+  .canyons-article {
+    --canyons-wide: calc(100vw - 12px);
+    --canyons-text: calc(100vw - 28px);
+  }
+
+  .canyons-article .page-header {
+    padding-top: 3rem;
+  }
+
+  .canyons-article .page-title {
+    font-size: clamp(3.8rem, 20vw, 6rem);
+  }
+
+  .canyons-experience {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .canyons-post .prose .route-card,
+  .canyons-post .canyons-hero-map .route-card {
+    min-height: min(78vh, 680px);
+    border-radius: 10px;
+  }
+
+  .canyons-post .race-chapter {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .canyons-post .route-card__meta {
+    top: 14px;
+    left: 14px;
+    width: calc(100% - 28px);
+    padding: 12px 12px 12px 14px;
+  }
+
+  .route-card__progress {
+    top: auto;
+    right: 14px;
+    bottom: 94px;
+    left: 14px;
+    width: auto;
   }
 
   .route-card__elevation {

@@ -42,12 +42,17 @@ if (post.url) {
 }
 
 const isTerigoPost = post.slug === "terigo-app-store";
+const isCanyonsPost =
+  post.id === "post.canyons-100k-truckee-week" ||
+  post.slug === "canyons-100k" ||
+  post.slug === "canyons-100k-truckee-week" ||
+  post.slug === "canyons-100k-2026";
 const terigoAppStoreUrl = "https://apps.apple.com/us/app/terigo/id6761634158";
 ---
 
-<BaseLayout title={post.title} description={post.description}>
-  <article>
-    <header class:list={["page-header", { "page-header--terigo": isTerigoPost }]}>
+<BaseLayout title={post.title} description={post.description} bodyClass={isCanyonsPost ? "canyons-post" : ""}>
+  <article class:list={[{ "canyons-article": isCanyonsPost }]}>
+    <header class:list={["page-header", { "page-header--terigo": isTerigoPost, "page-header--canyons": isCanyonsPost }]}>
       {
         isTerigoPost ? (
           <>

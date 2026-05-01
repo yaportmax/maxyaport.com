@@ -327,7 +327,7 @@ function renderRouteCard(payload: any, caption = "") {
   const callout = payload.callout ? `<p>${attr(payload.callout)}</p>` : "";
   const figcaption = caption ? `<figcaption>${attr(caption)}</figcaption>` : "";
 
-  return `<figure class="route-card route-card--${attr(payload.mood || "neutral")} route-card--${attr(payload.height || "standard")}" data-route-card="${jsonAttr(payload)}"><div class="route-card__map"></div><div class="route-card__scrim"></div><div class="route-card__meta">${title}${mileRange}${callout}</div><div class="route-card__elevation" aria-hidden="true"></div>${figcaption}</figure>`;
+  return `<figure class="route-card route-card--${attr(payload.mood || "neutral")} route-card--${attr(payload.height || "standard")}" data-route-card="${jsonAttr(payload)}"><div class="route-card__map"></div><div class="route-card__ambient" aria-hidden="true"><span></span><span></span><span></span></div><div class="route-card__scrim"></div><div class="route-card__meta">${title}${mileRange}${callout}</div><div class="route-card__progress" aria-hidden="true"><span data-route-mile>${mileRange ? "Mile " + formatMile(payload.mileStart || 0) : "Route"}</span><i></i></div><div class="route-card__elevation" aria-hidden="true"></div>${figcaption}</figure>`;
 }
 
 function renderMapBlock(value: any) {
@@ -524,7 +524,7 @@ function renderCanyonsAutoChapter(title: string, blocks: any[], routeUrl: string
   });
   const callout = config.callout ? `<aside class="chapter-callout">${attr(config.callout)}</aside>` : "";
 
-  return `<section class="race-chapter race-chapter--${attr(config.mood)}"><h2>${attr(title)}</h2><div class="race-chapter__text">${renderPortableText(textBlocks)}</div>${route}${renderPortableText(mediaBlocks)}${callout}</section>`;
+  return `<section class="race-chapter race-chapter--${attr(config.mood)}"><h2>${attr(title)}</h2>${route}<div class="race-chapter__text">${renderPortableText(textBlocks)}</div>${renderPortableText(mediaBlocks)}${callout}</section>`;
 }
 
 function renderCanyonsArticle(body: any[] = []) {
@@ -532,6 +532,7 @@ function renderCanyonsArticle(body: any[] = []) {
   let index = 0;
   const routeUrl = canyonsGpxUrl;
 
+  output.push(`<section class="canyons-experience" aria-label="Canyons ambient layer"><button type="button" data-canyons-audio aria-pressed="false"><span>ambient</span><i aria-hidden="true"></i></button><p>63.1 mi / 15:46 / Auburn</p></section>`);
   output.push(`<section class="canyons-hero-map">${renderRouteCard({
     title: "Canyons 100K",
     gpxUrl: routeUrl,
