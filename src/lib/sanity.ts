@@ -528,8 +528,8 @@ export async function getSanityPosts(): Promise<SanityPost[]> {
           return {
             source: "sanity" as const,
             id: post._id,
-            title: "Terigo - Strava routes done better",
-            description: "",
+            title: "Terigo",
+            description: "strava routes done better",
             date: parseDate(post.date),
             slug,
             url: terigoAppStoreUrl,
