@@ -2764,6 +2764,12 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
 
   const lerp = (start, end, progress) => start + (end - start) * progress;
 
+  const planeGroundBoundaryZoom = (planeZoom, groundZoom) => {
+    if (!Number.isFinite(planeZoom) || !Number.isFinite(groundZoom)) return planeZoom;
+    const approachDelta = mapElement.clientWidth < 680 ? 1.55 : 1.9;
+    return Math.min(groundZoom, planeZoom + approachDelta);
+  };
+
   const stateForNeighborSegment = (state, segmentIndex, segmentProgress) => {
     const segments = state?.playbackSegments || [];
     const segment = segments[segmentIndex];
@@ -2794,9 +2800,9 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     const previousZoom = previousState ? rawZoomForState(previousState) : null;
     const nextZoom = nextState ? rawZoomForState(nextState) : null;
 
-    const longPlaneStartWindow = 0.4;
-    const longPlaneEndWindow = 0.68;
-    const groundAfterPlaneWindow = 0.48;
+    const longPlaneStartWindow = 0.36;
+    const longPlaneEndWindow = 0.42;
+    const groundAfterPlaneWindow = 0.62;
     const groundBeforePlaneWindow = 0.36;
 
     if (currentMode === "plane") {
@@ -2804,13 +2810,15 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
         return lerp(previousZoom, targetZoom, transitionEase(segmentProgress / longPlaneStartWindow));
       }
       if (nextState && nextMode !== "plane" && segmentProgress > 1 - longPlaneEndWindow) {
-        return lerp(targetZoom, nextZoom, transitionEase((segmentProgress - (1 - longPlaneEndWindow)) / longPlaneEndWindow));
+        const approachZoom = planeGroundBoundaryZoom(targetZoom, nextZoom);
+        return lerp(targetZoom, approachZoom, transitionEase((segmentProgress - (1 - longPlaneEndWindow)) / longPlaneEndWindow));
       }
       return targetZoom;
     }
 
     if (previousState && previousMode === "plane" && segmentProgress < groundAfterPlaneWindow) {
-      return lerp(previousZoom, targetZoom, transitionEase(segmentProgress / groundAfterPlaneWindow));
+      const approachZoom = planeGroundBoundaryZoom(previousZoom, targetZoom);
+      return lerp(approachZoom, targetZoom, transitionEase(segmentProgress / groundAfterPlaneWindow));
     }
     if (nextState && nextMode === "plane" && segmentProgress > 1 - groundBeforePlaneWindow) {
       return lerp(targetZoom, nextZoom, transitionEase((segmentProgress - (1 - groundBeforePlaneWindow)) / groundBeforePlaneWindow));
@@ -3051,9 +3059,9 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     const terrainAware = Boolean(terrainProfile) || isActivity;
     setTerrainExaggeration(
       terrainProfile === "canyon-race"
-        ? 2.8
+        ? 2.35
         : terrainProfile === "trail-race" || isActivity
-          ? 2.15
+          ? 1.85
           : 1.35,
     );
     const segmentProgress = Math.min(1, Math.max(0, Number(state.segmentProgress ?? state.routeProgress) || 0));
@@ -3078,13 +3086,13 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     const basePitch = state.inGap
       ? compact ? 20 : 32
       : terrainProfile === "canyon-race"
-        ? compact ? 62 : 72
+        ? compact ? 54 : 62
       : terrainProfile === "trail-race"
-        ? compact ? 60 : 70
+        ? compact ? 52 : 60
       : isActivity
-        ? compact ? 58 : 70
+        ? compact ? 50 : 58
       : playbackMode === "car"
-        ? compact ? 48 : 58
+        ? compact ? 44 : 52
         : compact ? 38 : 50;
     const camera = cameraWithUserOffset({
       bearing: routeBearing,
@@ -3202,7 +3210,7 @@ const serializedTripPhotoManifest = JSON.stringify(tripPhotoManifest).replace(/<
     car: 32.4,
     boat: 3.4,
     helicopter: 7.2,
-    plane: 1620,
+    plane: 1215,
   };
   const activityPaceScaleLimitsByMode = {
     race: [0.3, 2.4],
