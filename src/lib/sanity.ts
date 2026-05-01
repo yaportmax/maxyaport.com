@@ -87,6 +87,7 @@ const postsQuery = `*[_type == "post" && !(_id in path("drafts.**"))] | order(da
 const canyonsGpxUrl = "/routes/canyons-2026.gpx";
 const terigoAppStoreUrl = "https://apps.apple.com/us/app/terigo/id6761634158";
 const terigoPostSlug = "terigo-app-store";
+const canyonsPlanPostSlug = "canyons-plan";
 
 const canyonsChapters: Record<string, any> = {
   "Race Start to Deadwood 1": {
@@ -612,6 +613,18 @@ export async function getSanityPosts(): Promise<SanityPost[]> {
             date: parseDate(post.date),
             slug,
             html: renderTerigoArticle(),
+          };
+        }
+        if (slug === canyonsPlanPostSlug) {
+          return {
+            source: "sanity" as const,
+            id: post._id,
+            title: post.title || "Canyons Plan",
+            description: "I love logistics",
+            date: parseDate(post.date),
+            slug,
+            url: post.url,
+            html: renderPostBody(post),
           };
         }
         return {
